@@ -48,7 +48,7 @@ export const saveLanguage = (language) => writeLocal(LANGUAGE_KEY, language);
 
 // Downloads data.json holding every published game plus the given finished local games.
 export function exportData(published, finishedLocal) {
-  const games = [...published, ...finishedLocal].sort((a, b) => a.date.localeCompare(b.date));
+  const games = [...published, ...finishedLocal].sort((a, b) => a.date.localeCompare(b.date) || (a.createdAt ?? '').localeCompare(b.createdAt ?? ''));
   const blob = new Blob([JSON.stringify({ version: 1, games }, null, 2) + '\n'], { type: 'application/json' });
   const link = document.createElement('a');
   link.href = URL.createObjectURL(blob);

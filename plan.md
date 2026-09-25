@@ -25,7 +25,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - If an edit means the game should have ended earlier, the game screen says after which round, and Scott fixes or deletes the rounds after it.
 
 ## Display
-- Yaku names and round labels follow a Japanese / romaji / English toggle. The rest of the interface is in English.
+- All text on screen follows a Japanese / romaji / English toggle. Japanese mode translates everything. Romaji mode is English except for mahjong terms, which are in romaji (Ryuukyoku, Houjuu, Genten, Kaeshi, Tobi, Tenpai, All Noten…). English mode keeps the usual mahjong terms (Ron, Tsumo, Riichi, Tenpai, Chombo). The app title stays "Riichi Tracker" in every mode. Riichi sticks on the table are 供託 in Japanese.
 - Japanese yaku names use short forms where common (ツモ, 全帯, 一通).
 - Round labels: 東2局 1本場 in Japanese, East 2 + 1 in romaji and English. The honba part is left out at 0 honba.
 - When riichi sticks carry over from earlier rounds, the round label shows a riichi stick icon and the count (× 2).
@@ -36,7 +36,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 ## Game modes
 - 4-player and 3-player (sanma) are both supported.
 - Both East-only (tonpuusen) and East-South (hanchan) games are supported. New games default to East-South.
-- Rules are configurable per game, with Scott's preferred settings as the default. The setup screen sets players, length, start and return points, uma, and switches for kiriage mangan, kazoe yakuman, busting, nagashi mangan, and abortive draws. Oka follows from start and return points. Uma must add up to 0.
+- Rules are configurable per game, with Scott's preferred settings as the default. The setup screen sets the date (default today), players, length, start and return points, uma, and switches for kiriage mangan, kazoe yakuman, busting, nagashi mangan, and abortive draws. Oka follows from start and return points. Uma must add up to 0.
 - Players are picked from everyone in past games, or typed in as a new name.
 
 ## Default rules
@@ -88,6 +88,7 @@ Between players: relationship stats, such as who deals into whom.
 - `js/tiles.js`: tile notation and helpers. Tiles are written `1m`–`9m`, `1p`–`9p`, `1s`–`9s`, and `1z`–`7z` (East, South, West, North, Haku, Hatsu, Chun); a red five is `0m`, `0p`, or `0s`.
 - `js/scoring.js`: rule defaults and every point payment (wins, pao, nagashi, draws, chombo, final standings).
 - `js/names.js`: every display name for yaku, dora, honor tiles, winds, and round labels, in all three languages. The analyzer returns yaku ids, never display text.
+- `js/text.js`: all other interface text, in all three languages. Every language has the same keys.
 - `js/analyzer.js`: turns a winning hand into yaku, fu, and han. It returns a clear error for an incomplete hand, a hand with no yaku, or impossible input (such as a 5th copy of a tile).
 
 ## Testing

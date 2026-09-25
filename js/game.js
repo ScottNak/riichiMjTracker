@@ -1,7 +1,7 @@
 // Game tracking: round progression, riichi sticks, honba, and when a game ends.
 // Pure functions only; saving and display live elsewhere.
 //
-// A game: { id, date, notes, rules, players: [name by seat], rounds: [round], endedBy: null | 'manual' | 'yame' }
+// A game: { id, date ('YYYY-MM-DD', the day it was played), createdAt, notes, rules, players: [name by seat], rounds: [round], endedBy: null | 'manual' | 'yame' }
 // A round is what Scott entered plus the resulting point change for every seat:
 //   { outcome: 'ron',      winner, loser, han, fu, yakuman, pao, riichi, deltas }
 //   { outcome: 'tsumo',    winner, han, fu, yakuman, pao, riichi, deltas }
@@ -19,10 +19,11 @@ export function defaultRules(players) {
   return { ...rules, uma: [...rules.uma] };
 }
 
-export function newGame({ players, rules, notes = '' }) {
+export function newGame({ players, rules, date, notes = '' }) {
   return {
     id: `${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`,
-    date: new Date().toISOString(),
+    date,
+    createdAt: new Date().toISOString(),
     notes,
     rules,
     players,
