@@ -60,13 +60,17 @@ input[type="checkbox"] { min-height: 0; width: 20px; height: 20px; }
 .row > button { flex: 1; }
 .seg { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
 .seg button { flex: 1 1 auto; }
+.title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.title-row input { min-height: 34px; padding: 4px 8px; }
 .row.toggles { margin: 8px 0; }
+/* Setup form: a label column and input columns, so every box lines up. */
+.setup-grid { display: grid; grid-template-columns: 3.6em 1fr 3.6em 1fr; gap: 6px 8px; align-items: center; }
+.setup-grid > span { color: var(--muted); font-size: 0.9rem; }
+.setup-grid .wide { grid-column: 2 / -1; }
+.setup-grid input { min-width: 0; width: 100%; min-height: 34px; padding: 4px 8px; }
+.setup-grid hr { grid-column: 1 / -1; width: 100%; border: none; border-top: 1px solid var(--line); margin: 6px 0; }
 .row.toggles .seg { flex-wrap: nowrap; gap: 4px; }
 .row.toggles button { white-space: nowrap; padding: 8px 6px; font-size: 0.9rem; }
-.field.pair { gap: 8px; }
-.field.pair label { flex: 1; min-width: 0; display: flex; align-items: center; gap: 8px; }
-.field.pair label span { color: var(--muted); }
-.field.pair input { flex: 1; min-width: 0; width: 100%; }
 
 .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px; margin: 12px 0; }
 .hint { color: var(--muted); font-size: 0.9rem; }

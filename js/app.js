@@ -110,21 +110,21 @@ function setupView() {
   const { rules, names, notes } = setupDraft;
   const oka = (rules.returnPoints - rules.startPoints) * rules.players;
   return `
-    <h2>${t().newGame}</h2>
-    <label class="field"><span>${t().date}</span><input type="date" data-draft-date value="${setupDraft.date}"></label>
+    <div class="title-row"><h2>${t().newGame}</h2>
+      <input type="date" data-draft-date value="${setupDraft.date}" aria-label="${t().date}"></div>
     <div class="row toggles">${seg('players', t().playerOptions, rules.players)}${seg('length', t().lengthOptions, rules.length)}</div>
-    <h3>${t().seats}</h3>
     <datalist id="roster">${roster().map((name) => `<option value="${esc(name)}">`).join('')}</datalist>
-    ${names.map((name, seat) => `<label class="field"><span>${windName(seat, language)}</span>
-      <input list="roster" data-name="${seat}" value="${esc(name)}" autocomplete="off" placeholder="${t().namePlaceholder}"></label>`).join('')}
-    <h3>${t().points}</h3>
-    <div class="field pair">
-      <label><span>${t().start}</span><input type="number" inputmode="numeric" step="1000" data-rule="startPoints" value="${rules.startPoints}"></label>
-      <label><span>${t().return}</span><input type="number" inputmode="numeric" step="1000" data-rule="returnPoints" value="${rules.returnPoints}"></label>
+    <div class="setup-grid">
+      <hr aria-label="${t().seats}">
+      ${names.map((name, seat) => `<span>${windName(seat, language)}</span>
+        <input class="wide" list="roster" data-name="${seat}" value="${esc(name)}" autocomplete="off" placeholder="${t().namePlaceholder}" aria-label="${windName(seat, language)}">`).join('')}
+      <hr aria-label="${t().points}">
+      <span>${t().start}</span><input type="number" inputmode="numeric" step="1000" data-rule="startPoints" value="${rules.startPoints}" aria-label="${t().start}">
+      <span>${t().return}</span><input type="number" inputmode="numeric" step="1000" data-rule="returnPoints" value="${rules.returnPoints}" aria-label="${t().return}">
+      <span>${t().uma}</span><div class="wide uma">${rules.uma.map((value, place) =>
+        `<input type="number" inputmode="numeric" data-uma="${place}" value="${value}" aria-label="${t().umaFor(t().places[place])}">`).join('')}</div>
+      <span>${t().oka}</span><span class="wide">${t().okaTo1st(oka.toLocaleString())}</span>
     </div>
-    <div class="field"><span>${t().uma}</span><div class="uma">${rules.uma.map((value, place) =>
-      `<input type="number" inputmode="numeric" data-uma="${place}" value="${value}" aria-label="${t().umaFor(t().places[place])}">`).join('')}</div></div>
-    <div class="field"><span>${t().oka}</span><span>${t().okaTo1st(oka.toLocaleString())}</span></div>
     <h3>${t().rules}</h3>
     ${SWITCHES.map((key) => `<label class="check"><input type="checkbox" data-switch="${key}" ${rules[key] ? 'checked' : ''}> ${t().switches[key]}</label>`).join('')}
     <label class="field column"><span>${t().notes}</span><textarea data-draft-notes rows="2">${esc(notes)}</textarea></label>
