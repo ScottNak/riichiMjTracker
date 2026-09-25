@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tests</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 16px; background: #fff; color: #222; }
+    .pass { color: #1a7f37; }
+    .fail { color: #cf222e; font-weight: bold; }
+    li { margin: 4px 0; }
+  </style>
+</head>
+<body>
+  <h1 id="summary">Running tests…</h1>
+  <ul id="results"></ul>
+  <script type="module">
+    import { getResults } from './js/tests/runner.js';
+    import './js/tests/scoring.test.js';
+
+    const results = getResults();
+    const failed = results.filter((r) => !r.ok).length;
+    document.getElementById('summary').textContent =
+      failed === 0 ? `All ${results.length} tests passed` : `${failed} of ${results.length} tests failed`;
+    document.getElementById('summary').className = failed === 0 ? 'pass' : 'fail';
+
+    const list = document.getElementById('results');
+    for (const r of results) {
+      const item = document.createElement('li');
+      item.className = r.ok ? 'pass' : 'fail';
+      item.textContent = r.ok ? `✓ ${r.name}` : `✗ ${r.name}: ${r.message}`;
+      list.appendChild(item);
+    }
+  </script>
+</body>
+</html>
