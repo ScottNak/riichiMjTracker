@@ -233,3 +233,7 @@ test('final standings for the 2/6/2024 sheet', () => {
 test('points display', () => {
   assertEqual([53.3, -47.3, 8, 0].map(formatPoints), ['+53.3', '▲47.3', '+8.0', '0.0']);
 });
+
+test('3-player tsumo with honba: 150 per honba from each payer', () => {
+  assertEqual(winPayments({ winner: 1, dealer: 0, han: 5, fu: 30, honba: 2 }, RULES_3P), [-4300, 6600, -2300]);
+});

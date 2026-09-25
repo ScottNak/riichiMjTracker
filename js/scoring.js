@@ -25,7 +25,7 @@ export const RULES_3P = {
   startPoints: 35000,
   returnPoints: 40000,
   uma: [30, 0, -30],
-  honbaTsumoEach: null,      // not decided yet; a 3-player tsumo with honba throws until it is
+  honbaTsumoEach: 150,       // honba stays worth 300 in total despite tsumo loss
 };
 
 const roundUp100 = (points) => Math.ceil(points / 100) * 100;
@@ -74,9 +74,6 @@ export function winPayments({ winner, loser = null, dealer, han, fu, yakuman = 0
     deltas[loser] -= amount;
     deltas[winner] += amount;
   } else {
-    if (honba > 0 && rules.honbaTsumoEach == null) {
-      throw new Error('Tsumo honba payment is not set for these rules');
-    }
     for (let seat = 0; seat < rules.players; seat++) {
       if (seat === winner) continue;
       const multiplier = winnerIsDealer || seat === dealer ? 2 : 1;

@@ -27,17 +27,19 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 
 ## Game modes
 - 4-player and 3-player (sanma) are both supported.
-- Both East-only (tonpuusen) and East-South (hanchan) games are supported.
+- Both East-only (tonpuusen) and East-South (hanchan) games are supported. New games default to East-South.
 - Rules are configurable per game, with Scott's preferred settings as the default.
 
 ## Default rules
 Based on M-League rules, with these settings:
 - 4-player: 25,000 start, 30,000 return, uma +30/+10/−10/−30, and 20,000 oka to 1st place.
 - 3-player: 35,000 start, 40,000 return, uma +30/0/−30, and 15,000 oka to 1st place (+45/0/−30 in total).
-- 3-player removes 2m–8m, uses tsumo loss, and counts north tiles as nuki-dora.
+- 3-player removes 2m–8m, uses tsumo loss, and counts north tiles as nuki-dora. A player may instead keep north tiles in the hand as normal tiles; a north set is not a value tile (yakuhai).
 - Three red fives. Open tanyao allowed.
+- Standard M-League yaku only; no local yaku.
+- A pair of a wind that is both the seat wind and the round wind is worth 2 fu, as in M-League.
 - Head bump: only one player can win off a discard.
-- Each honba adds 300 to a ron. On a 4-player tsumo, each payer pays 100 per honba.
+- Each honba is worth 300. On a ron the discarder pays all of it; on a tsumo it is split evenly among the payers (100 each in 4-player, 150 each in 3-player).
 - Tenpai payments at an exhaustive draw total 3,000, in both 3-player and 4-player.
 - Busting is on: the game ends when a player drops below 0.
 - Kiriage mangan is on. Kazoe yakuman is on.
@@ -46,7 +48,7 @@ Based on M-League rules, with these settings:
 - Pao is on for daisangen and daisuushii. On a tsumo, the liable player pays the full ron value of the pao yakuman plus all honba. On a ron by someone else, the discarder and the liable player each pay half of that yakuman and half of the honba. Any other yakuman in the hand is paid normally.
 - All abortive draws are on.
 - The dealer may choose to end the game when winning or in tenpai in the last round (agari-yame, tenpai-yame).
-- If nobody has reached the return points (30,000 in 4-player, 40,000 in 3-player) after South 4, play continues into West. The game ends at the end of the first hand in which someone has reached it, with no round limit.
+- If nobody has reached the return points (30,000 in 4-player, 40,000 in 3-player) after the last scheduled round (East 4 in East-only, South 4 in East-South), play continues into the next wind with sudden death: the game ends at the end of the first hand in which someone has reached it, with no round limit.
 - Chombo: the offender pays a mangan as if every other player won by tsumo. A non-dealer pays 4,000 to the dealer and 2,000 to each other player; the dealer pays 4,000 to each player. Riichi sticks go back to their owners, and the round is replayed with the same honba count.
 - Tied final scores are ranked by seat order, starting from East.
 - Riichi sticks left on the table at the end go to 1st place.
