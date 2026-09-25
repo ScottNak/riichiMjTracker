@@ -36,7 +36,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 ## Game modes
 - 4-player and 3-player (sanma) are both supported.
 - Both East-only (tonpuusen) and East-South (hanchan) games are supported. New games default to East-South.
-- Rules are configurable per game, with Scott's preferred settings as the default. The setup screen sets the date (default today), players, length, start and return points, uma, and switches for kiriage mangan, kazoe yakuman, busting, nagashi mangan, and abortive draws. Oka follows from start and return points. Uma must add up to 0.
+- Rules are configurable per game, with Scott's preferred settings as the default. The setup screen sets the date (default today), players, length, start and return points, uma, and switches for kiriage mangan, kazoe yakuman, busting, nagashi mangan, abortive draws, agari-yame, and sudden death. The switches sit in a collapsible Rules shelf, closed by default; each has a short note under its name. Games saved before the agari-yame and sudden-death switches existed treat them as on. Oka follows from start and return points. Uma must add up to 0.
 - Players are picked from everyone in past games, or typed in as a new name.
 
 ## Default rules
@@ -58,8 +58,8 @@ Based on M-League rules, with these settings:
 - Nagashi mangan is treated exactly like a mangan tsumo win by that player: it pays honba and riichi sticks, and a dealer nagashi keeps the deal.
 - Pao is on for daisangen, daisuushii, and suukantsu. Scott picks the liable player when entering the round. On a tsumo, the liable player pays the full ron value of the pao yakuman plus all honba, in 3-player too. On a ron by someone else, the discarder and the liable player each pay half of that yakuman and half of the honba. Any other yakuman in the hand is paid normally.
 - All abortive draws are on. After one, the dealer repeats, honba goes up, and riichi sticks stay on the table.
-- The dealer may choose to end the game when winning or in tenpai in the last scheduled round, if someone has reached the return points (agari-yame, tenpai-yame). The app offers an End game button; entering the next round continues the game.
-- If nobody has reached the return points (30,000 in 4-player, 40,000 in 3-player) after the last scheduled round (East 4 in East-only, South 4 in East-South), play continues into the next wind with sudden death: the game ends at the end of the first hand in which someone has reached it, with no round limit.
+- The dealer may choose to end the game when winning or in tenpai in the last scheduled round, if someone has reached the return points or sudden death is off (agari-yame, tenpai-yame). The app offers an End game button; entering the next round continues the game. With agari-yame off, the game just continues.
+- If nobody has reached the return points (30,000 in 4-player, 40,000 in 3-player) after the last scheduled round (East 4 in East-only, South 4 in East-South), play continues into the next wind with sudden death: the game ends at the end of the first hand in which someone has reached it, with no round limit. With sudden death off, the game always ends after the last scheduled round.
 - Chombo: the offender pays a mangan as if every other player won by tsumo. A non-dealer pays 4,000 to the dealer and 2,000 to each other player; the dealer pays 4,000 to each player. Riichi sticks go back to their owners, and the round is replayed with the same honba count.
 - Tied final scores are ranked by seat order, starting from East.
 - Riichi sticks left on the table at the end go to 1st place.

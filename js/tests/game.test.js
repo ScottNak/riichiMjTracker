@@ -110,6 +110,29 @@ test('dealer win in South 4 with nobody at 30,000: no choice to end', () => {
   assertEqual([replay(game).over, replay(game).canYame], [false, false]);
 });
 
+test('sudden death off: game ends after South 4 even if nobody has 30,000', () => {
+  const game = play(toSouth4(game4({ suddenDeath: false })), [noten4]);
+  assertEqual([replay(game).over, replay(game).reason], [true, 'normal']);
+});
+
+test('sudden death off: dealer may end South 4 even if nobody has 30,000', () => {
+  const game = play(toSouth4(game4({ suddenDeath: false })), [{ outcome: 'ron', winner: 3, loser: 0, han: 1, fu: 30, riichi: [] }]);
+  assertEqual(replay(game).canYame, true);
+});
+
+test('agari-yame off: no choice to end, the game continues', () => {
+  const game = play(toSouth4(game4({ agariYame: false })), [{ outcome: 'ron', winner: 3, loser: 0, han: 5, fu: 30, riichi: [] }]);
+  assertEqual([replay(game).over, replay(game).canYame], [false, false]);
+});
+
+test('games saved without the new switches behave as if they are on', () => {
+  const rules = { ...defaultRules(4) };
+  delete rules.suddenDeath;
+  delete rules.agariYame;
+  const game = play(toSouth4(newGame({ players: ['A', 'B', 'C', 'D'], rules })), [{ outcome: 'ron', winner: 3, loser: 0, han: 5, fu: 30, riichi: [] }]);
+  assertEqual(replay(game).canYame, true);
+});
+
 test('bust ends the game immediately', () => {
   const game = play(game4(), [{ outcome: 'ron', winner: 1, loser: 2, han: 0, fu: 0, yakuman: 1, riichi: [] }]);
   assertEqual([replay(game).over, replay(game).reason], [true, 'bust']);

@@ -115,16 +115,20 @@ function endCheck(before, after, round, rules) {
   if (rules.busting && after.scores.some((score) => score < 0)) return { over: true, reason: 'bust', canYame: false };
   if (round.outcome === 'chombo') return { over: false, canYame: false };
 
+  // Games saved before these switches existed have them missing; they count as on.
+  const suddenDeath = rules.suddenDeath !== false;
+  const agariYame = rules.agariYame !== false;
   const last = lastHand(rules);
   const reached = after.scores.some((score) => score >= rules.returnPoints);
+  const canEnd = reached || !suddenDeath;
   if (before.hand > last) return { over: reached, reason: 'normal', canYame: false }; // sudden death
   if (before.hand < last) return { over: false, canYame: false };
 
   // The last scheduled round.
-  if (after.hand > last) return { over: reached, reason: 'normal', canYame: false };
+  if (after.hand > last) return { over: canEnd, reason: 'normal', canYame: false };
   const dealer = dealerOf(before, rules);
   const dealerKept = winnerOf(round) === dealer || (round.outcome === 'draw' && round.tenpai[dealer]);
-  return { over: false, canYame: reached && dealerKept };
+  return { over: false, canYame: agariYame && canEnd && dealerKept };
 }
 
 // Replays every round. Returns the state before each round, the current state, and whether the game is over.

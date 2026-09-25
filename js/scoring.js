@@ -12,6 +12,8 @@ const SHARED_RULES = {
   busting: true,             // the game ends when a player drops below 0
   nagashiMangan: true,
   abortiveDraws: true,
+  agariYame: true,           // the dealer may end the game in the last round when winning or tenpai
+  suddenDeath: true,         // play continues past the last round until someone reaches the return points
 };
 
 export const RULES_4P = {

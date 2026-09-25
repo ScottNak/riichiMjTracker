@@ -18,7 +18,7 @@ let editIndex = null; // round being edited, or null when entering a new round
 let armed = null;     // an action waiting for a second tap to confirm
 let rulesOpen = false; // whether the rules shelf on the setup screen is expanded
 
-const SWITCHES = ['kiriageMangan', 'kazoeYakuman', 'busting', 'nagashiMangan', 'abortiveDraws'];
+const SWITCHES = ['kiriageMangan', 'kazoeYakuman', 'busting', 'nagashiMangan', 'abortiveDraws', 'agariYame', 'suddenDeath'];
 const t = () => TEXT[language];
 const FU = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
 const STICK = '<svg width="54" height="10" viewBox="0 0 60 11" aria-hidden="true"><rect x="0.5" y="0.5" width="59" height="10" rx="5"/><circle cx="30" cy="5.5" r="2.8" fill="#d32f2f"/></svg>';
@@ -106,6 +106,12 @@ function seg(key, options, current) {
     `<button class="${String(value) === String(current) ? 'on' : ''}" data-action="seg" data-key="${key}" data-value="${value}">${label}</button>`).join('')}</div>`;
 }
 
+// A rule switch label, with its note in parentheses shown as a smaller second line.
+function switchLabel(key, rules) {
+  const [, name, note] = t().switches[key](rules.returnPoints.toLocaleString()).match(/^(.*?)\s*(?:[（(](.*)[）)])?$/);
+  return `<span>${name}${note ? `<small>${note}</small>` : ''}</span>`;
+}
+
 function setupView() {
   if (!setupDraft) setupDraft = freshDraft(4);
   const { rules, names, notes } = setupDraft;
@@ -127,7 +133,7 @@ function setupView() {
       <span>${t().oka}</span><span class="wide">${t().okaTo1st(oka.toLocaleString())}</span>
     </div>
     <details class="shelf" data-shelf="rules" ${rulesOpen ? 'open' : ''}><summary>${t().rules}</summary>
-    ${SWITCHES.map((key) => `<label class="check"><input type="checkbox" data-switch="${key}" ${rules[key] ? 'checked' : ''}> ${t().switches[key]}</label>`).join('')}
+    ${SWITCHES.map((key) => `<label class="check"><input type="checkbox" data-switch="${key}" ${rules[key] ? 'checked' : ''}> ${switchLabel(key, rules)}</label>`).join('')}
     </details>
     <label class="field column"><span>${t().notes}</span><textarea data-draft-notes rows="2">${esc(notes)}</textarea></label>
     <p class="error" id="setup-error"></p>
