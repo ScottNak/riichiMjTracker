@@ -8,6 +8,10 @@ const SHARED_RULES = {
   kazoeYakuman: true,
   honbaRon: 300,             // added to a ron per honba
   notenPaymentTotal: 3000,   // total tenpai payment at an exhaustive draw
+  length: 'south',           // 'east' (tonpuusen) or 'south' (hanchan)
+  busting: true,             // the game ends when a player drops below 0
+  nagashiMangan: true,
+  abortiveDraws: true,
 };
 
 export const RULES_4P = {

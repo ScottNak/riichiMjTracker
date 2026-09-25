@@ -69,3 +69,15 @@ export function yakuName(yaku, language) {
   const tileName = HONOR_NAMES[language][yaku.tile - 27];
   return language === 'jp' ? `${name} ${tileName}` : `${name}: ${tileName}`;
 }
+
+// Round labels: 東2局 1本場 in Japanese, East 2 + 1 otherwise (romaji uses the English form).
+const ROUND_WINDS = { jp: ['東', '南', '西', '北'], en: ['East', 'South', 'West', 'North'] };
+
+export function windName(wind, language) {
+  return (language === 'jp' ? ROUND_WINDS.jp : ROUND_WINDS.en)[wind % 4];
+}
+
+export function roundLabel(wind, handNumber, honba, language) {
+  if (language === 'jp') return `${windName(wind, language)}${handNumber}局${honba ? ` ${honba}本場` : ''}`;
+  return `${windName(wind, language)} ${handNumber}${honba ? ` + ${honba}` : ''}`;
+}
