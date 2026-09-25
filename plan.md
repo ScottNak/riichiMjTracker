@@ -37,7 +37,8 @@ Based on M-League rules, with these settings:
 - 3-player: 35,000 start, 40,000 return, uma +30/0/−30, and 15,000 oka to 1st place (+45/0/−30 in total).
 - 3-player removes 2m–8m, uses tsumo loss, and counts north tiles as nuki-dora. A player may instead keep north tiles in the hand as normal tiles; a north set is not a value tile (yakuhai).
 - Three red fives. Open tanyao allowed.
-- Standard M-League yaku only; no local yaku.
+- Standard M-League yaku only; no local yaku. Ryuuiisou counts with or without Hatsu.
+- Each red five is listed as Aka Dora, separate from regular dora.
 - A pair of a wind that is both the seat wind and the round wind is worth 2 fu, as in M-League.
 - Head bump: only one player can win off a discard.
 - Each honba is worth 300. On a ron the discarder pays all of it; on a tsumo it is split evenly among the payers (100 each in 4-player, 150 each in 3-player).
@@ -45,8 +46,8 @@ Based on M-League rules, with these settings:
 - Busting is on: the game ends when a player drops below 0.
 - Kiriage mangan is on. Kazoe yakuman is on.
 - Double yakuman is on for 13-wait kokushi, suuankou tanki, junsei chuuren, and daisuushii.
-- Nagashi mangan is paid exactly like a mangan tsumo win by that player, including honba and riichi sticks.
-- Pao is on for daisangen, daisuushii, and suukantsu. On a tsumo, the liable player pays the full ron value of the pao yakuman plus all honba. On a ron by someone else, the discarder and the liable player each pay half of that yakuman and half of the honba. Any other yakuman in the hand is paid normally.
+- Nagashi mangan is treated exactly like a mangan tsumo win by that player: it pays honba and riichi sticks, and a dealer nagashi keeps the deal.
+- Pao is on for daisangen, daisuushii, and suukantsu. Scott picks the liable player when entering the round. On a tsumo, the liable player pays the full ron value of the pao yakuman plus all honba, in 3-player too. On a ron by someone else, the discarder and the liable player each pay half of that yakuman and half of the honba. Any other yakuman in the hand is paid normally.
 - All abortive draws are on.
 - The dealer may choose to end the game when winning or in tenpai in the last round (agari-yame, tenpai-yame).
 - If nobody has reached the return points (30,000 in 4-player, 40,000 in 3-player) after the last scheduled round (East 4 in East-only, South 4 in East-South), play continues into the next wind with sudden death: the game ends at the end of the first hand in which someone has reached it, with no round limit.
@@ -79,6 +80,11 @@ Between players: relationship stats, such as who deals into whom.
 ## Testing
 - A `test.html` page runs the test suite in a browser. Nothing needs to be installed, but the page must be served over http (GitHub Pages, or a local server), since browsers block ES modules opened straight from a file.
 - The scoring engine and hand analyzer are tested before the UI that uses them is built.
+
+## Progress
+- Phases 1 and 2 are complete, with all tests passing.
+- The display names in `js/names.js` are drafts. Scott approved ツモ, 全帯, and 一通; the rest are waiting on his review.
+- Next: phase 3.
 
 ## Phases
 1. **Scoring engine:** han and fu to points, dealer and non-dealer payments, tsumo splits, honba, riichi sticks, draw tenpai payments, nagashi mangan, pao, chombo, 3-player payments, and final standings.
