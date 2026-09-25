@@ -17,6 +17,7 @@
   <script type="module">
     import { getResults } from './js/tests/runner.js';
     import './js/tests/scoring.test.js';
+    import './js/tests/analyzer.test.js';
 
     const results = getResults();
     const failed = results.filter((r) => !r.ok).length;

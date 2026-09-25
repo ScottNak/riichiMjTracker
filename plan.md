@@ -45,13 +45,14 @@ Based on M-League rules, with these settings:
 - Kiriage mangan is on. Kazoe yakuman is on.
 - Double yakuman is on for 13-wait kokushi, suuankou tanki, junsei chuuren, and daisuushii.
 - Nagashi mangan is paid exactly like a mangan tsumo win by that player, including honba and riichi sticks.
-- Pao is on for daisangen and daisuushii. On a tsumo, the liable player pays the full ron value of the pao yakuman plus all honba. On a ron by someone else, the discarder and the liable player each pay half of that yakuman and half of the honba. Any other yakuman in the hand is paid normally.
+- Pao is on for daisangen, daisuushii, and suukantsu. On a tsumo, the liable player pays the full ron value of the pao yakuman plus all honba. On a ron by someone else, the discarder and the liable player each pay half of that yakuman and half of the honba. Any other yakuman in the hand is paid normally.
 - All abortive draws are on.
 - The dealer may choose to end the game when winning or in tenpai in the last round (agari-yame, tenpai-yame).
 - If nobody has reached the return points (30,000 in 4-player, 40,000 in 3-player) after the last scheduled round (East 4 in East-only, South 4 in East-South), play continues into the next wind with sudden death: the game ends at the end of the first hand in which someone has reached it, with no round limit.
 - Chombo: the offender pays a mangan as if every other player won by tsumo. A non-dealer pays 4,000 to the dealer and 2,000 to each other player; the dealer pays 4,000 to each player. Riichi sticks go back to their owners, and the round is replayed with the same honba count.
 - Tied final scores are ranked by seat order, starting from East.
 - Riichi sticks left on the table at the end go to 1st place.
+- Scott can end a game at any point (for example, when someone has to leave). It is scored and counted in stats exactly like a game that ended normally.
 
 ## Stats
 Per player, across all games: average placement, placement counts, win rate, deal-in rate, riichi rate, average win value, and total score.
@@ -67,6 +68,11 @@ Between players: relationship stats, such as who deals into whom.
 - Yaku that the tiles can't show are toggles: riichi, double riichi, ippatsu, haitei, houtei, rinshan, chankan, tenhou, chihou. Tsumo or ron is also a toggle.
 - Dora and ura dora indicators are tapped in, and the app counts dora itself.
 - When a hand can be read more than one way, the app uses the highest-scoring reading.
+
+## Code
+- `js/tiles.js`: tile notation and helpers. Tiles are written `1m`–`9m`, `1p`–`9p`, `1s`–`9s`, and `1z`–`7z` (East, South, West, North, Haku, Hatsu, Chun); a red five is `0m`, `0p`, or `0s`.
+- `js/scoring.js`: rule defaults and every point payment (wins, pao, nagashi, draws, chombo, final standings).
+- `js/analyzer.js`: turns a winning hand into yaku, fu, and han. It returns a clear error for an incomplete hand, a hand with no yaku, or impossible input (such as a 5th copy of a tile).
 
 ## Testing
 - A `test.html` page runs the test suite in a browser. Nothing needs to be installed, but the page must be served over http (GitHub Pages, or a local server), since browsers block ES modules opened straight from a file.
