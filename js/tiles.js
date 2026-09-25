@@ -13,7 +13,6 @@ export const HATSU = 32;
 export const CHUN = 33;
 
 const SUITS = ['m', 'p', 's', 'z'];
-const HONOR_NAMES = ['East', 'South', 'West', 'North', 'Haku', 'Hatsu', 'Chun'];
 
 // '0p' -> { index: 13, red: true }
 export function parseTile(text) {
@@ -54,10 +53,6 @@ export const isTerminalOrHonor = (index) => isHonor(index) || isTerminal(index);
 export const isDragon = (index) => index >= HAKU;
 export const isWind = (index) => index >= EAST && index <= NORTH;
 export const suitOf = (index) => Math.floor(index / 9);
-
-export function honorName(index) {
-  return HONOR_NAMES[index - EAST];
-}
 
 // The dora is the tile after the indicator. Winds and dragons each wrap around.
 // In 3-player, 2m-8m are removed, so 1m indicates 9m and 9m indicates 1m.

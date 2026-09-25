@@ -12,12 +12,13 @@
 //   doraIndicators, uraIndicators   tiles
 //   nukiDora     number of North tiles pulled as nuki-dora (3-player only)
 //
-// Output: { ok: true, yaku: [{ name, han }], han, fu, yakuman } or { ok: false, error }.
+// Output: { ok: true, yaku: [{ id, han, tile? }], han, fu, yakuman } or { ok: false, error }.
+// Yaku are returned as ids (see names.js for display names). yakuhai, seatWind, and roundWind also carry the tile index.
 // For a yakuman hand, yaku lists the yakuman with han 13 per yakuman (26 for a double), and han and fu are 0.
 
 import {
   parseTile, isHonor, isTerminal, isTerminalOrHonor, isDragon, isWind, suitOf,
-  honorName, doraFromIndicator, isRemovedIn3p, EAST, NORTH, HATSU,
+  doraFromIndicator, isRemovedIn3p, EAST, NORTH, HATSU,
 } from './tiles.js';
 import { basePoints } from './scoring.js';
 
@@ -235,7 +236,7 @@ function scoreReading(reading, hand, rules) {
   if (yakuman.length > 0) {
     const count = yakuman.reduce((sum, y) => sum + y.count, 0);
     return {
-      yaku: yakuman.map((y) => ({ name: y.name, han: 13 * y.count })),
+      yaku: yakuman.map((y) => ({ id: y.id, han: 13 * y.count })),
       han: 0, fu: 0, yakuman: count,
     };
   }
@@ -266,21 +267,21 @@ function allTileIndexes(reading, hand) {
 
 function findYakuman(reading, hand) {
   const found = [];
-  const add = (name, count = 1) => found.push({ name, count });
+  const add = (id, count = 1) => found.push({ id, count });
   const indexes = allTileIndexes(reading, hand);
 
-  if (hand.tenhou) add('Tenhou');
-  if (hand.chihou) add('Chihou');
+  if (hand.tenhou) add('tenhou');
+  if (hand.chihou) add('chihou');
 
   if (reading.form === 'kokushi') {
     const thirteenWait = reading.counts[hand.win.index] === 2;
-    add(thirteenWait ? 'Kokushi Musou 13-Wait' : 'Kokushi Musou', thirteenWait ? 2 : 1);
+    add(thirteenWait ? 'kokushi13' : 'kokushi', thirteenWait ? 2 : 1);
     return found;
   }
 
-  if (indexes.every(isHonor)) add('Tsuuiisou');
-  if (indexes.every((index) => GREEN_TILES.has(index))) add('Ryuuiisou');
-  if (indexes.every(isTerminal)) add('Chinroutou');
+  if (indexes.every(isHonor)) add('tsuuiisou');
+  if (indexes.every((index) => GREEN_TILES.has(index))) add('ryuuiisou');
+  if (indexes.every(isTerminal)) add('chinroutou');
 
   if (reading.form === 'standard') {
     const sets = reading.groups.filter((g) => g.kind !== 'pair');
@@ -290,21 +291,21 @@ function findYakuman(reading, hand) {
     const concealedSets = sets.filter((g) => g.kind !== 'seq' && g.concealed).length;
     if (concealedSets === 4) {
       const tanki = reading.wait === 'tanki';
-      add(tanki ? 'Suuankou Tanki' : 'Suuankou', tanki ? 2 : 1);
+      add(tanki ? 'suuankouTanki' : 'suuankou', tanki ? 2 : 1);
     }
 
     const dragonSets = setIndexes.filter(isDragon).length;
-    if (dragonSets === 3) add('Daisangen');
+    if (dragonSets === 3) add('daisangen');
 
     const windSets = setIndexes.filter(isWind).length;
-    if (windSets === 4) add('Daisuushii', 2);
-    else if (windSets === 3 && isWind(pair.index)) add('Shousuushii');
+    if (windSets === 4) add('daisuushii', 2);
+    else if (windSets === 3 && isWind(pair.index)) add('shousuushii');
 
-    if (sets.filter((g) => g.kind === 'kan').length === 4) add('Suukantsu');
+    if (sets.filter((g) => g.kind === 'kan').length === 4) add('suukantsu');
 
     const chuuren = chuurenType(reading.counts, hand);
-    if (chuuren === 'junsei') add('Junsei Chuuren Poutou', 2);
-    else if (chuuren === 'normal') add('Chuuren Poutou');
+    if (chuuren === 'junsei') add('junseiChuuren', 2);
+    else if (chuuren === 'normal') add('chuuren');
   }
   return found;
 }
@@ -325,31 +326,31 @@ function chuurenType(counts, hand) {
 
 function findYaku(reading, hand) {
   const yaku = [];
-  const add = (name, han) => yaku.push({ name, han });
+  const add = (id, han, tile) => yaku.push(tile === undefined ? { id, han } : { id, han, tile });
   const closed = hand.isClosed;
   const indexes = allTileIndexes(reading, hand);
 
   // Yaku from the situation rather than the tiles
-  if (hand.doubleRiichi) add('Double Riichi', 2);
-  else if (hand.riichi) add('Riichi', 1);
-  if (hand.ippatsu) add('Ippatsu', 1);
-  if (closed && hand.tsumo) add('Menzen Tsumo', 1);
-  if (hand.haitei) add('Haitei', 1);
-  if (hand.houtei) add('Houtei', 1);
-  if (hand.rinshan) add('Rinshan Kaihou', 1);
-  if (hand.chankan) add('Chankan', 1);
+  if (hand.doubleRiichi) add('doubleRiichi', 2);
+  else if (hand.riichi) add('riichi', 1);
+  if (hand.ippatsu) add('ippatsu', 1);
+  if (closed && hand.tsumo) add('menzenTsumo', 1);
+  if (hand.haitei) add('haitei', 1);
+  if (hand.houtei) add('houtei', 1);
+  if (hand.rinshan) add('rinshan', 1);
+  if (hand.chankan) add('chankan', 1);
 
   // Yaku from the tiles, for any shape
-  if (indexes.every((index) => !isTerminalOrHonor(index))) add('Tanyao', 1);
+  if (indexes.every((index) => !isTerminalOrHonor(index))) add('tanyao', 1);
   const suits = new Set(indexes.filter((index) => !isHonor(index)).map(suitOf));
   const hasHonors = indexes.some(isHonor);
-  if (suits.size === 1 && !hasHonors) add('Chinitsu', closed ? 6 : 5);
-  if (suits.size === 1 && hasHonors) add('Honitsu', closed ? 3 : 2);
+  if (suits.size === 1 && !hasHonors) add('chinitsu', closed ? 6 : 5);
+  if (suits.size === 1 && hasHonors) add('honitsu', closed ? 3 : 2);
   const allTerminalOrHonor = indexes.every(isTerminalOrHonor);
-  if (allTerminalOrHonor) add('Honroutou', 2);
+  if (allTerminalOrHonor) add('honroutou', 2);
 
   if (reading.form === 'chiitoi') {
-    add('Chiitoitsu', 2);
+    add('chiitoitsu', 2);
     return yaku;
   }
 
@@ -360,48 +361,48 @@ function findYaku(reading, hand) {
   const triplets = sets.filter((g) => g.kind !== 'seq');
 
   // Pinfu: closed, all sequences, a pair worth no fu, and a two-sided wait
-  if (closed && sequences.length === 4 && pairFu(pair.index, hand) === 0 && reading.wait === 'ryanmen') add('Pinfu', 1);
+  if (closed && sequences.length === 4 && pairFu(pair.index, hand) === 0 && reading.wait === 'ryanmen') add('pinfu', 1);
 
   // Iipeikou / Ryanpeikou (closed only)
   if (closed) {
     const seqCounts = {};
     for (const s of sequences) seqCounts[s.index] = (seqCounts[s.index] ?? 0) + 1;
     const identicalPairs = Object.values(seqCounts).reduce((sum, count) => sum + Math.floor(count / 2), 0);
-    if (identicalPairs === 2) add('Ryanpeikou', 3);
-    else if (identicalPairs === 1) add('Iipeikou', 1);
+    if (identicalPairs === 2) add('ryanpeikou', 3);
+    else if (identicalPairs === 1) add('iipeikou', 1);
   }
 
   // Yakuhai
   for (const t of triplets) {
-    if (isDragon(t.index)) add(`Yakuhai: ${honorName(t.index)}`, 1);
-    if (t.index === hand.seatWind) add(`Seat Wind: ${honorName(t.index)}`, 1);
-    if (t.index === hand.roundWind) add(`Round Wind: ${honorName(t.index)}`, 1);
+    if (isDragon(t.index)) add('yakuhai', 1, t.index);
+    if (t.index === hand.seatWind) add('seatWind', 1, t.index);
+    if (t.index === hand.roundWind) add('roundWind', 1, t.index);
   }
 
   // Chanta / Junchan: every group has a terminal or honor, with at least one sequence
   const groupHasTerminalOrHonor = (g) => (g.kind === 'seq' ? g.index % 9 === 0 || g.index % 9 === 6 : isTerminalOrHonor(g.index));
   if (sequences.length > 0 && groups.every(groupHasTerminalOrHonor)) {
-    if (hasHonors) add('Chanta', closed ? 2 : 1);
-    else add('Junchan', closed ? 3 : 2);
+    if (hasHonors) add('chanta', closed ? 2 : 1);
+    else add('junchan', closed ? 3 : 2);
   }
 
   // Ittsu: 123, 456, 789 in one suit
   for (let suit = 0; suit < 3; suit++) {
     const starts = new Set(sequences.filter((s) => suitOf(s.index) === suit).map((s) => s.index % 9));
-    if (starts.has(0) && starts.has(3) && starts.has(6)) add('Ittsu', closed ? 2 : 1);
+    if (starts.has(0) && starts.has(3) && starts.has(6)) add('ittsu', closed ? 2 : 1);
   }
 
   // Sanshoku doujun / doukou: the same sequence or triplet in all three suits
   for (let number = 0; number < 9; number++) {
     const hasIn = (list, suit) => list.some((g) => g.index === suit * 9 + number);
-    if ([0, 1, 2].every((suit) => hasIn(sequences, suit))) add('Sanshoku Doujun', closed ? 2 : 1);
-    if ([0, 1, 2].every((suit) => hasIn(triplets, suit))) add('Sanshoku Doukou', 2);
+    if ([0, 1, 2].every((suit) => hasIn(sequences, suit))) add('sanshokuDoujun', closed ? 2 : 1);
+    if ([0, 1, 2].every((suit) => hasIn(triplets, suit))) add('sanshokuDoukou', 2);
   }
 
-  if (triplets.length === 4) add('Toitoi', 2);
-  if (triplets.filter((t) => t.concealed).length === 3) add('Sanankou', 2);
-  if (sets.filter((g) => g.kind === 'kan').length === 3) add('Sankantsu', 2);
-  if (triplets.filter((t) => isDragon(t.index)).length === 2 && isDragon(pair.index)) add('Shousangen', 2);
+  if (triplets.length === 4) add('toitoi', 2);
+  if (triplets.filter((t) => t.concealed).length === 3) add('sanankou', 2);
+  if (sets.filter((g) => g.kind === 'kan').length === 3) add('sankantsu', 2);
+  if (triplets.filter((t) => isDragon(t.index)).length === 2 && isDragon(pair.index)) add('shousangen', 2);
 
   return yaku;
 }
@@ -417,7 +418,7 @@ function pairFu(index, hand) {
 
 function calculateFu(reading, hand, yaku) {
   if (reading.form === 'chiitoi') return 25;
-  const isPinfu = yaku.some((y) => y.name === 'Pinfu');
+  const isPinfu = yaku.some((y) => y.id === 'pinfu');
   if (isPinfu) return hand.tsumo ? 20 : 30;
 
   let fu = 20;
@@ -454,13 +455,13 @@ function countDora(reading, hand, rules) {
 
   const result = [];
   const dora = countMatching(hand.doraIndicators);
-  if (dora > 0) result.push({ name: 'Dora', han: dora });
+  if (dora > 0) result.push({ id: 'dora', han: dora });
   const red = [...hand.concealed, hand.win, ...hand.melds.flatMap((m) => m.tiles)].filter((t) => t.red).length;
-  if (red > 0) result.push({ name: 'Aka Dora', han: red });
+  if (red > 0) result.push({ id: 'akaDora', han: red });
   if (hand.riichi || hand.doubleRiichi) {
     const ura = countMatching(hand.uraIndicators);
-    if (ura > 0) result.push({ name: 'Ura Dora', han: ura });
+    if (ura > 0) result.push({ id: 'uraDora', han: ura });
   }
-  if (hand.nukiDora > 0) result.push({ name: 'Nuki Dora', han: hand.nukiDora });
+  if (hand.nukiDora > 0) result.push({ id: 'nukiDora', han: hand.nukiDora });
   return result;
 }

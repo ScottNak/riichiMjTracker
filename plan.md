@@ -23,6 +23,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - Stored point changes are never recalculated. Changing rule settings later does not alter past games.
 
 ## Display
+- Yaku names can be shown in Japanese, romaji, or English, chosen with a toggle. Japanese uses short forms where common (ツモ, 全帯, 一通).
 - Negative final points are shown with a triangle, like the spreadsheet: ▲17.3. Positive points show a plus sign: +53.3.
 
 ## Game modes
@@ -72,6 +73,7 @@ Between players: relationship stats, such as who deals into whom.
 ## Code
 - `js/tiles.js`: tile notation and helpers. Tiles are written `1m`–`9m`, `1p`–`9p`, `1s`–`9s`, and `1z`–`7z` (East, South, West, North, Haku, Hatsu, Chun); a red five is `0m`, `0p`, or `0s`.
 - `js/scoring.js`: rule defaults and every point payment (wins, pao, nagashi, draws, chombo, final standings).
+- `js/names.js`: every display name for yaku, dora, and honor tiles, in all three languages. The analyzer returns yaku ids, never display text.
 - `js/analyzer.js`: turns a winning hand into yaku, fu, and han. It returns a clear error for an incomplete hand, a hand with no yaku, or impossible input (such as a 5th copy of a tile).
 
 ## Testing

@@ -2,12 +2,14 @@ import { test, assertEqual } from './runner.js';
 import { analyzeHand } from '../analyzer.js';
 import { tiles, parseTile, doraFromIndicator } from '../tiles.js';
 import { RULES_4P, RULES_3P } from '../scoring.js';
+import { YAKU_NAMES, LANGUAGES, yakuName } from '../names.js';
 
 // Defaults: South seat (non-dealer), East round, ron.
 function analyze(concealed, winTile, options = {}, rules = RULES_4P) {
   return analyzeHand({ concealed: tiles(concealed), winTile, seatWind: 1, roundWind: 0, ...options }, rules);
 }
-const yakuNames = (result) => result.yaku.map((y) => y.name);
+// Tests read yaku in romaji.
+const yakuNames = (result) => result.yaku.map((y) => yakuName(y, 'romaji'));
 const summary = (result) => (result.ok ? { han: result.han, fu: result.fu, yaku: yakuNames(result) } : result.error);
 
 // --- Tiles ---
@@ -82,7 +84,7 @@ test('open honitsu, ittsu, and yakuhai', () => {
 
 test('seat and round wind triplet count separately', () => {
   const result = analyze('111z234m567p8s', '8s', { seatWind: 0, melds: [{ type: 'chi', tiles: tiles('678s') }] });
-  assertEqual(yakuNames(result), ['Seat Wind: East', 'Round Wind: East']);
+  assertEqual(yakuNames(result), ['Jikaze: Ton', 'Bakaze: Ton']);
 });
 
 test('junchan, read as a two-sided wait for pinfu', () => {
@@ -120,7 +122,7 @@ test('shousangen', () => {
 
 test('honroutou with toitoi', () => {
   assertEqual(summary(analyze('111m999p111s11z99s', '1z')),
-    { han: 7, fu: 60, yaku: ['Honroutou', 'Round Wind: East', 'Toitoi', 'Sanankou'] });
+    { han: 7, fu: 60, yaku: ['Honroutou', 'Bakaze: Ton', 'Toitoi', 'Sanankou'] });
 });
 
 test('rinshan kaihou after an open kan', () => {
@@ -192,7 +194,7 @@ test('3-player: nuki dora, and North indicated by West', () => {
   const result = analyze('99m123p456p789s23s', '4s', { riichi: true, doraIndicators: ['1m', '3z'], nukiDora: 2 }, RULES_3P);
   // Dora: 9m x2 (indicator 1m) + 2 pulled Norths (indicator West); plus 2 nuki dora
   assertEqual(summary(result), { han: 8, fu: 30, yaku: ['Riichi', 'Pinfu', 'Dora', 'Nuki Dora'] });
-  assertEqual(result.yaku.find((y) => y.name === 'Dora').han, 4);
+  assertEqual(result.yaku.find((y) => y.id === 'dora').han, 4);
 });
 
 // --- Invalid input ---
@@ -205,4 +207,18 @@ test('invalid hands give a clear error', () => {
   assertEqual(analyze('123m456p789s23s99p', '4s', { haitei: true }).error, 'Haitei needs tsumo');
   assertEqual(analyze('234m456p789s23s99p', '4s', {}, RULES_3P).error, '2m-8m are not used in 3-player');
   assertEqual(analyze('123m406p789s23s09p', '4s').error, 'More than 1 red five of the same suit');
+});
+
+// --- Display names ---
+
+test('every yaku has a name in all three languages', () => {
+  const missing = Object.entries(YAKU_NAMES).flatMap(([id, names]) => LANGUAGES.filter((lang) => !names[lang]).map((lang) => `${id}.${lang}`));
+  assertEqual(missing, []);
+});
+
+test('yaku names with a tile', () => {
+  const haku = { id: 'yakuhai', han: 1, tile: 31 };
+  assertEqual(LANGUAGES.map((lang) => yakuName(haku, lang)), ['役牌 白', 'Yakuhai: Haku', 'Dragon: White']);
+  const east = { id: 'seatWind', han: 1, tile: 27 };
+  assertEqual(LANGUAGES.map((lang) => yakuName(east, lang)), ['自風 東', 'Jikaze: Ton', 'Seat Wind: East']);
 });
