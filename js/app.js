@@ -16,6 +16,7 @@ let setupDraft = null;
 let form = blankForm();
 let editIndex = null; // round being edited, or null when entering a new round
 let armed = null;     // an action waiting for a second tap to confirm
+let rulesOpen = false; // whether the rules shelf on the setup screen is expanded
 
 const SWITCHES = ['kiriageMangan', 'kazoeYakuman', 'busting', 'nagashiMangan', 'abortiveDraws'];
 const t = () => TEXT[language];
@@ -125,8 +126,9 @@ function setupView() {
         `<input type="number" inputmode="numeric" data-uma="${place}" value="${value}" aria-label="${t().umaFor(t().places[place])}">`).join('')}</div>
       <span>${t().oka}</span><span class="wide">${t().okaTo1st(oka.toLocaleString())}</span>
     </div>
-    <h3>${t().rules}</h3>
+    <details class="shelf" data-shelf="rules" ${rulesOpen ? 'open' : ''}><summary>${t().rules}</summary>
     ${SWITCHES.map((key) => `<label class="check"><input type="checkbox" data-switch="${key}" ${rules[key] ? 'checked' : ''}> ${t().switches[key]}</label>`).join('')}
+    </details>
     <label class="field column"><span>${t().notes}</span><textarea data-draft-notes rows="2">${esc(notes)}</textarea></label>
     <p class="error" id="setup-error"></p>
     <div class="row"><button data-action="cancel-setup">${t().cancel}</button><button class="primary" data-action="start-game">${t().startGame}</button></div>`;
@@ -463,6 +465,11 @@ document.addEventListener('change', (event) => {
   else return;
   render();
 });
+
+// The toggle event doesn't bubble, so listen in the capture phase.
+document.addEventListener('toggle', (event) => {
+  if (event.target.dataset?.shelf === 'rules') rulesOpen = event.target.open;
+}, true);
 
 window.addEventListener('hashchange', () => {
   armed = null;
