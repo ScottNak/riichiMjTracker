@@ -1,6 +1,6 @@
 import { test, assertEqual } from './runner.js';
-import { roundLabel } from '../names.js';
-import { defaultRules, newGame, saveRound, deleteRound, replay, standings } from '../game.js';
+import { roundLabel, shortRoundLabel } from '../names.js';
+import { defaultRules, newGame, saveRound, deleteRound, replay, standings, stickDeltas } from '../game.js';
 
 const game4 = (overrides = {}) => newGame({ players: ['A', 'B', 'C', 'D'], rules: { ...defaultRules(4), ...overrides } });
 const game3 = (overrides = {}) => newGame({ players: ['A', 'B', 'C'], rules: { ...defaultRules(3), ...overrides } });
@@ -189,4 +189,48 @@ test('final standings include leftover sticks for 1st place', () => {
 test('round labels: 東2局 1本場 in Japanese, East 2 + 1 otherwise, no honba shown at 0', () => {
   assertEqual([roundLabel(0, 2, 1, 'jp'), roundLabel(1, 4, 0, 'jp'), roundLabel(0, 2, 1, 'romaji'), roundLabel(2, 1, 0, 'en')],
     ['東2局 1本場', '南4局', 'East 2 + 1', 'West 1']);
+});
+
+test('short round labels: 東1+1 in Japanese, E1+1 otherwise, no honba shown at 0', () => {
+  assertEqual([shortRoundLabel(0, 1, 1, 'jp'), shortRoundLabel(1, 3, 0, 'jp'), shortRoundLabel(0, 1, 1, 'romaji'), shortRoundLabel(1, 3, 2, 'en')],
+    ['東1+1', '南3', 'E1+1', 'S3+2']);
+});
+
+// --- Riichi stick part of a round (the round table's small line) ---
+
+const sticksOf = (game, index) => stickDeltas(game.rounds[index], replay(game).before[index], game.rules);
+
+test('stick part: deposits, and the winner collects this round\'s and carried-over sticks', () => {
+  const game = play(game4(), [
+    { outcome: 'abortive', kind: 'kyuushu', riichi: [0] },
+    { outcome: 'ron', winner: 1, loser: 2, han: 1, fu: 30, riichi: [1, 3] },
+  ]);
+  assertEqual(sticksOf(game, 0), [-1000, 0, 0, 0]);
+  assertEqual(sticksOf(game, 1), [0, -1000 + 3000, 0, -1000]);
+  // What's left is the payment for the hand, honba included: 1,000 + 300 from the discarder.
+  assertEqual(game.rounds[1].deltas.map((d, seat) => d - sticksOf(game, 1)[seat]), [0, 1300, -1300, 0]);
+});
+
+test('stick part: draws keep the sticks on the table; nagashi collects them', () => {
+  const game = play(game4(), [
+    { outcome: 'draw', tenpai: [true, false, false, true], riichi: [3] },
+    { outcome: 'nagashi', seat: 2, riichi: [] },
+  ]);
+  assertEqual(sticksOf(game, 0), [0, 0, 0, -1000]);
+  assertEqual(sticksOf(game, 1), [0, 0, 1000, 0]);
+});
+
+test('stick part: chombo and imported rounds have none', () => {
+  const game = play(game4(), [{ outcome: 'chombo', offender: 1 }]);
+  assertEqual(sticksOf(game, 0), [0, 0, 0, 0]);
+  assertEqual(stickDeltas({ deltas: [1000, -1000, 0, 0] }, { hand: 0, honba: 0, sticks: 2, scores: [] }, game.rules), [0, 0, 0, 0]);
+});
+
+test('stick part with pao: the winner still collects every stick', () => {
+  const game = play(game4(), [
+    { outcome: 'abortive', kind: 'suukaikan', riichi: [2] },
+    { outcome: 'tsumo', winner: 1, han: 0, fu: 0, yakuman: 1, pao: { seat: 3, yakuman: 1 }, riichi: [] },
+  ]);
+  assertEqual(sticksOf(game, 1), [0, 1000, 0, 0]);
+  assertEqual(game.rounds[1].deltas.reduce((a, b) => a + b, 0), 1000);
 });

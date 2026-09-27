@@ -10,6 +10,7 @@
   --minus: #c62828;
   --warn-bg: #fff4d6;
   --warn-text: #6b4b00;
+  --active: #eceae5;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -24,6 +25,7 @@
     --minus: #ff7b72;
     --warn-bg: #3a3220;
     --warn-text: #f3d68a;
+    --active: #2b2f35;
   }
 }
 
@@ -87,25 +89,60 @@ input[type="checkbox"] { min-height: 0; width: 20px; height: 20px; }
 .sticks svg rect { fill: #ffffff; stroke: var(--muted); }
 
 .num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
-table.scores .score { font-size: 1.15rem; font-weight: 600; }
 .tiles { display: flex; gap: 6px; }
-.tile { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 8px 6px; }
+.tile { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 4px; background: color-mix(in srgb, var(--tint) 16%, var(--card)); border: 1px solid var(--line); border-radius: 12px; padding: 8px 6px; }
 .tile.highlight { border-color: var(--accent); border-width: 2px; padding: 7px 5px; }
 .tile-top { display: flex; justify-content: space-between; align-items: baseline; gap: 4px; font-size: 0.8rem; }
-.tile .corner { color: var(--muted); flex-shrink: 0; }
+.tile .corner { color: var(--muted); flex-shrink: 0; font-size: 1rem; }
 .tile.highlight .corner { color: var(--accent); font-weight: 700; }
 .tile-name { font-weight: 600; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .tile-score { text-align: center; font-size: clamp(1rem, 5vw, 1.6rem); font-weight: 700; font-variant-numeric: tabular-nums; padding: 6px 0; }
-.tile-points { text-align: center; font-size: 0.9rem; font-variant-numeric: tabular-nums; }
+.tile-points { text-align: center; font-size: 1.05rem; font-variant-numeric: tabular-nums; }
 .plus { color: var(--plus); }
 .minus { color: var(--minus); }
 
-.preview { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; margin-top: 10px; }
-
-ul.history, ul.games { list-style: none; padding: 0; margin: 0; }
-ul.history li { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 8px 10px; margin: 6px 0; }
-ul.history li.editing { border-color: var(--accent); }
-.history .line { display: flex; align-items: baseline; gap: 8px; }
-.history .line .what { flex: 1; font-size: 0.9rem; color: var(--muted); }
-.history .deltas { display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.9rem; margin-top: 4px; }
+ul.games { list-style: none; padding: 0; margin: 0; }
 ul.games li a { display: block; padding: 12px; margin: 6px 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; color: var(--text); text-decoration: none; }
+
+/* Round table: round, winner strip, one column per player. */
+table.rounds { width: 100%; border-collapse: collapse; table-layout: fixed; margin: 12px 0; background: var(--card); border: 1px solid var(--line); }
+.rounds th, .rounds td { border-bottom: 1px solid var(--line); padding: 6px 2px; text-align: center; vertical-align: middle; }
+.rounds thead th { font-size: 0.85rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rounds .rc { width: 3.4em; font-size: 0.85rem; white-space: nowrap; }
+.rounds tbody .rc[data-action] { color: var(--accent); cursor: pointer; }
+.rounds .strip { width: 6px; padding: 0; }
+.rounds td.pc + td.pc { border-left: 1px solid var(--line); }
+.rounds svg { width: 28px; height: auto; display: inline-block; vertical-align: middle; }
+.rounds svg rect { fill: #ffffff; stroke: var(--muted); }
+.rounds .sticks { display: flex; justify-content: center; font-size: 0.75rem; font-weight: 400; gap: 2px; }
+.pc .main { font-size: clamp(0.85rem, 3.8vw, 1.1rem); font-weight: 700; font-variant-numeric: tabular-nums; }
+.pc .main:not(.plus):not(.minus) { color: var(--muted); font-weight: 400; }
+.pc .main.word { font-size: 0.8rem; }
+.pc .stk { display: flex; justify-content: center; align-items: center; gap: 3px; font-size: 0.75rem; font-variant-numeric: tabular-nums; }
+.pc .stk svg { width: 18px; }
+
+/* Entry row: tap a player's cell to pick them; the riichi toggle sits at the bottom of each cell. */
+.entry-row > *, .controls td { background: var(--active); }
+.entry-row > * { border-top: 2px solid var(--accent); vertical-align: top; }
+.pc.tap { cursor: pointer; }
+/* The tap area above the riichi toggle, so picking a player doesn't hit the toggle. */
+.pc .pick { min-height: 3.6em; }
+.pc.win { box-shadow: inset 0 0 0 2px var(--accent); }
+.pc.lose { box-shadow: inset 0 0 0 2px var(--minus); }
+.pc .tag { font-size: 0.75rem; font-weight: 700; }
+.pc.win .tag { color: var(--accent); }
+.pc.lose .tag { color: var(--minus); }
+button.riichi-toggle { width: 100%; min-height: 30px; margin-top: 4px; padding: 2px; line-height: 0; }
+.rounds button.riichi-toggle svg { width: 40px; }
+.controls td { text-align: left; padding: 8px; }
+.controls .seg { margin-top: 6px; }
+.controls .hint { margin: 8px 0 0; }
+.value-row { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 16px; margin-top: 8px; }
+.value-row .group { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px; }
+.value-row button, .value-row .muted { white-space: nowrap; }
+.hint.center { text-align: center; }
+.num-field { display: flex; align-items: center; gap: 4px; color: var(--muted); }
+.num-field input { width: 3.5em; text-align: center; font-size: 1.1rem; }
+.num-field.faded { opacity: 0.45; }
+.value-row .muted { color: var(--muted); }
+.value-row select { min-width: 0; }

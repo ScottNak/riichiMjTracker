@@ -17,7 +17,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 ## Data model
 - A game holds its date, notes, rule settings, its players, and an ordered list of rounds.
 - Seat 0 is the starting dealer (East). Seats go in turn order from there.
-- Each round stores its outcome (ron, tsumo, exhaustive draw, nagashi mangan, abortive draw, or chombo), who was involved, who declared riichi, and the point change for every player. Point changes include riichi deposits and collected sticks.
+- Each round stores its outcome (ron, tsumo, exhaustive draw, nagashi mangan, abortive draw, or chombo), who was involved, who declared riichi, the kind of an abortive draw, and the point change for every player. Point changes include riichi deposits and collected sticks.
 - A round from a tapped-in hand also stores the hand, so it can be reviewed later.
 - Current scores are the sum of all point changes. Dealer, honba, and riichi sticks are recalculated from the round list.
 - Loading a game never recalculates its point changes, so changing rule settings or fixing the engine does not alter past games.
@@ -27,11 +27,33 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 ## Display
 - All text on screen follows a Japanese / romaji / English toggle. Japanese mode translates everything. Romaji mode is English except for mahjong terms, which are in romaji (Ryuukyoku, Houjuu, Genten, Kaeshi, Tobi, Tenpai, All Noten…). English mode keeps the usual mahjong terms (Ron, Tsumo, Riichi, Tenpai, Chombo). The app title stays "Riichi Tracker" in every mode. Riichi sticks on the table are 供託 in Japanese.
 - Japanese yaku names use short forms where common (ツモ, 全帯, 一通).
-- Round labels: 東2局 1本場 in Japanese, East 2 + 1 in romaji and English. The honba part is left out at 0 honba.
+- Round labels: 東2局 1本場 in Japanese, East 2 + 1 in romaji and English. The round table uses short labels: 東1+1 in Japanese, E1+1 in romaji and English. The honba part is left out at 0 honba.
 - When riichi sticks carry over from earlier rounds, the round label shows a riichi stick icon and the count (× 2).
-- Scores are shown as one tile per player, all in a single row in seat order. Each tile has the seat wind top left (東 in Japanese, E/S/W/N otherwise), the name top right, the score large in the middle, and at the bottom the final points the player would get if the game ended now. The dealer's tile is outlined.
+- Scores are shown as one tile per player, all in a single row in seat order. Each tile has the seat wind top left (東 in Japanese, E/S/W/N otherwise), the name top right, the score large in the middle, and at the bottom the final points the player would get if the game ended now. Each tile is tinted with the player's identity color. The dealer's tile is outlined.
 - When the game is over, the same tiles are sorted by placement, with the place (1st, 2nd…) top left, the final score including leftover sticks, and final points. 1st place is outlined.
 - Negative final points are shown with a triangle, like the spreadsheet: ▲17.3. Positive points show a plus sign: +53.3.
+
+## Round table
+- Right under the score tiles, a table builds up the game one row per round, oldest at the top. Viewers see the same table.
+- Columns: the round, a thin winner strip, and one column per player in seat order.
+- Round cell: the short round label. Under it, when riichi sticks carried into that round from earlier rounds, a riichi stick icon and the count; nothing when there are none.
+- Winner strip: the winner's identity color for ron, tsumo, and nagashi mangan; gray for exhaustive and abortive draws; black for chombo.
+- Player header: the player's name on their identity color. Identity colors appear only in the score tiles (as a tint), the headers, and the winner strip.
+- Thin vertical lines separate the player columns.
+- Identity colors are the colors the players picked, listed by name in `js/colors.js`. A player not listed gets a placeholder color by seat.
+- Player cell: the whole payment for the hand, including honba, in large type. Under it, one small line holds a small riichi stick icon if the player declared riichi, then the riichi stick movement: −1,000 for the player's deposit, and the sticks the winner collects (this round's plus any carried over). The amount is left out when it is 0, and the line when there is nothing on it. In an exhaustive draw where everyone is tenpai or nobody is, the large 0 is replaced with a small gray Tenpai or Noten (テンパイ / ノーテン in Japanese). Imported rounds without entered details show their whole point change in large type.
+
+## Round entry
+- The table's last row is the entry row for the next round, on a light gray background to show it is active. It is hidden when the game is over and for viewers.
+- Each player cell in the entry row has a Riichi toggle, shown as a riichi stick, available at every step. It is disabled for chombo, since chombo returns riichi sticks.
+- A win is entered by tapping cells, with no Ron or Tsumo button: tap the winner's cell, then the cell of the player who dealt in for ron, or the winner's cell again for tsumo.
+- Under the entry row are two buttons, Draw and Other. They are hidden once a winner is tapped; Back brings them back.
+  - Draw (Ryuukyoku, 流局): the exhaustive draw. Players already marked riichi start out marked tenpai, as does anyone marked riichi afterward. Tap to change who is tenpai (nobody for all noten).
+  - Other: Abortive draw, Nagashi Mangan, or Chombo. Abortive draw then asks for the kind (Kyuushu Kyuuhai, Suufon Renda, Suucha Riichi, Suukaikan); 3-player offers only Kyuushu Kyuuhai and Suukaikan, and Suucha Riichi needs every player marked riichi. Nagashi Mangan and Chombo then ask to tap the player.
+  - Abortive draws and Nagashi Mangan are offered only when their rule switches are on.
+- Ron and tsumo then show typed Han and Fu boxes and a Yakuman button under the row. Fu is hidden at 5 han or more. Save needs a possible fu: 20, 25, or 30 to 110 in tens, and at least 30 at 1 han. Each tap on Yakuman adds one yakuman (Yakuman, Double Yakuman, and so on up to 6, then back to Yakuman). The boxes and the Yakuman button are centered. While yakuman is on, the pao picker shows beside the Yakuman button, and typing in the Han or Fu box switches back to han and fu. Once tile entry is built, ron and tsumo go to tile entry instead, with this entry still available.
+- Once everything is picked, the entry row's cells preview the point changes, and Save records the round. Back clears the picks but keeps the riichi toggles. Once a win is picked, the winner's cell is tagged Ron or Tsumo and the discarder's cell Dealt in.
+- To fix a round, tap its round cell. That row turns into an entry row loaded with the round's details, with Save changes, Cancel, and Delete round (tap twice), plus Back once a winner is tapped. The new-round entry row is hidden during an edit.
 
 ## Game modes
 - 4-player and 3-player (sanma) are both supported.
@@ -82,8 +104,9 @@ Between players: relationship stats, such as who deals into whom.
 - When a hand can be read more than one way, the app uses the highest-scoring reading.
 
 ## Code
-- `index.html`, `css/style.css`, `js/app.js`: the page. Home (game lists and export), game setup, and the game screen (scoreboard, round entry with a live point preview, round history with edit and delete). Every change re-renders the view from the data.
+- `index.html`, `css/style.css`, `js/app.js`: the page. Home (game lists and export), game setup, and the game screen (score tiles, and the round table with its entry row and round editing). Every change re-renders the view from the data.
 - `js/game.js`: round progression, riichi sticks, honba, when a game ends, and recalculating rounds after an edit.
+- `js/colors.js`: each player's identity color, and the draw and chombo strip colors.
 - `js/store.js`: loading `data.json`, saving games in the browser, and exporting `data.json`.
 - `js/tiles.js`: tile notation and helpers. Tiles are written `1m`–`9m`, `1p`–`9p`, `1s`–`9s`, and `1z`–`7z` (East, South, West, North, Haku, Hatsu, Chun); a red five is `0m`, `0p`, or `0s`.
 - `js/scoring.js`: rule defaults and every point payment (wins, pao, nagashi, draws, chombo, final standings).

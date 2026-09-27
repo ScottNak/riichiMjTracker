@@ -1,9 +1,10 @@
 // The page: home, game setup, and the game screen (scoreboard, round entry, history).
 // Every change re-renders the whole view from the data; there is no other UI state to keep in sync.
 
-import { defaultRules, newGame, saveRound, deleteRound, replay, computeDeltas, dealerOf, windOf, handNumberOf } from './game.js';
+import { defaultRules, newGame, saveRound, deleteRound, replay, computeDeltas, stickDeltas, dealerOf, windOf, handNumberOf } from './game.js';
 import { finalStandings, formatPoints, limitName } from './scoring.js';
-import { roundLabel, windName } from './names.js';
+import { roundLabel, shortRoundLabel, windName } from './names.js';
+import { playerColor, textOn, DRAW_COLOR, CHOMBO_COLOR } from './colors.js';
 import { TEXT, limitText } from './text.js';
 import * as store from './store.js';
 
@@ -20,7 +21,6 @@ let rulesOpen = false; // whether the rules shelf on the setup screen is expande
 
 const SWITCHES = ['kiriageMangan', 'kazoeYakuman', 'busting', 'nagashiMangan', 'abortiveDraws', 'agariYame', 'suddenDeath'];
 const t = () => TEXT[language];
-const FU = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
 const STICK = '<svg width="54" height="10" viewBox="0 0 60 11" aria-hidden="true"><rect x="0.5" y="0.5" width="59" height="10" rx="5"/><circle cx="30" cy="5.5" r="2.8" fill="#d32f2f"/></svg>';
 
 const esc = (text) => String(text).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -37,8 +37,10 @@ const fmtDate = (date) => {
 const fmtDelta = (d) => (d > 0 ? `+${d.toLocaleString()}` : d < 0 ? `−${(-d).toLocaleString()}` : '0');
 const signClass = (d) => (d > 0 ? 'plus' : d < 0 ? 'minus' : '');
 
-function blankForm() {
-  return { outcome: 'ron', winner: null, loser: null, han: 1, fu: 30, yakuman: 0, paoSeat: null, paoYakuman: 1, riichi: [], tenpai: [], seat: null, offender: null };
+// The round being entered. A tapped winner with outcome still null is a win waiting for its second tap.
+// menu is 'other' while the Other choices are open. Riichi toggles can be kept when the rest is cleared.
+function blankForm(riichi = []) {
+  return { outcome: null, menu: null, winner: null, loser: null, han: null, fu: null, yakuman: 0, paoSeat: null, paoYakuman: 1, riichi: [...riichi], tenpai: [], seat: null, offender: null, kind: null };
 }
 
 // ---------- Data ----------
@@ -148,8 +150,9 @@ function sticksBadge(count) {
 const tileWind = (wind) => (language === 'jp' ? windName(wind, language) : windName(wind, language)[0]);
 
 // One tile per player in a single row: wind (or place) top left, name top right, score in the middle, final points at the bottom.
-function scoreTiles(tiles) {
-  return `<div class="tiles">${tiles.map((tile) => `<div class="tile${tile.highlight ? ' highlight' : ''}">
+// Each tile is tinted with the player's identity color.
+function scoreTiles(tiles, players) {
+  return `<div class="tiles">${tiles.map((tile) => `<div class="tile${tile.highlight ? ' highlight' : ''}" style="--tint:${playerColor(tile.name, players.indexOf(tile.name))}">
     <div class="tile-top"><span class="corner">${tile.corner}</span><span class="tile-name">${esc(tile.name)}</span></div>
     <div class="tile-score">${tile.score.toLocaleString()}</div>
     <div class="tile-points ${signClass(tile.points)}">${formatPoints(tile.points)}</div></div>`).join('')}</div>`;
@@ -173,13 +176,13 @@ function gameView(id) {
     const order = players.map((_, seat) => seat).sort((a, b) => live[a].rank - live[b].rank);
     html += scoreTiles(order.map((seat) => ({
       corner: t().places[live[seat].rank], name: players[seat], score: live[seat].score, points: live[seat].points, highlight: live[seat].rank === 0,
-    })));
+    })), players);
   } else {
     html += scoreTiles(players.map((name, seat) => ({
       corner: tileWind((seat - dealer + rules.players) % rules.players), name, score: state.scores[seat], points: live[seat].points, highlight: seat === dealer,
-    })));
-    html += `<p class="hint">${t().tileHint}</p>`;
+    })), players);
   }
+  html += roundTable(game, result, editable);
 
   if (editable && result.endsAt !== null && result.endsAt < game.rounds.length - 1) {
     html += `<p class="warning">${t().endsAtWarning(result.endsAt + 1)}</p>`;
@@ -187,21 +190,97 @@ function gameView(id) {
   if (editable && result.canYame && editIndex === null) {
     html += `<div class="banner"><span>${t().yameBanner}</span><button class="small" data-action="yame">${t().endGame}</button></div>`;
   }
-  if (editable && (!result.over || editIndex !== null)) {
-    html += formView(game, editIndex === null ? state : result.before[editIndex]);
-  }
-  html += historyView(game, result, editable);
   if (editable) html += gameFooter(game, result);
   return html + `<p><a href="#">${t().allGames}</a></p>`;
 }
 
+// ---------- Round table ----------
+
+// The thin strip next to the round: the winner's color, gray for a draw, black for chombo.
+function stripColor(round, game) {
+  switch (round.outcome) {
+    case 'ron':
+    case 'tsumo': return playerColor(game.players[round.winner], round.winner);
+    case 'nagashi': return playerColor(game.players[round.seat], round.seat);
+    case 'draw':
+    case 'abortive': return DRAW_COLOR;
+    case 'chombo': return CHOMBO_COLOR;
+    default: return null; // imported rounds without entered details
+  }
+}
+
+const strip = (color) => `<td class="strip"${color ? ` style="background:${color}"` : ''}></td>`;
+
+// Short round label, with the riichi sticks carried into the round under it.
+function roundCell(stateAt, rules, attributes = '') {
+  const label = shortRoundLabel(windOf(stateAt, rules), handNumberOf(stateAt, rules), stateAt.honba, language);
+  const sticks = stateAt.sticks > 0 ? `<div class="sticks" title="${t().sticksTitle}">${STICK}×${stateAt.sticks}</div>` : '';
+  return `<th class="rc" scope="row" ${attributes}>${label}${sticks}</th>`;
+}
+
+// The payment for the hand (honba included) in large type, or a word in its place. Under it, on one small line,
+// a riichi stick if they declared riichi and the riichi stick movement when it isn't 0.
+function payment(total, sticks, riichi, word = null) {
+  const main = total - sticks;
+  const line = riichi || sticks
+    ? `<div class="stk ${signClass(sticks)}">${riichi ? STICK : ''}${sticks ? fmtDelta(sticks) : ''}</div>` : '';
+  return `<div class="main ${word ? 'word' : signClass(main)}">${word ?? fmtDelta(main)}</div>${line}`;
+}
+
+function roundRow(game, round, stateAt, index, canEdit) {
+  const { rules } = game;
+  const sticks = stickDeltas(round, stateAt, rules);
+  const riichi = round.outcome === 'chombo' ? [] : round.riichi ?? [];
+  const edit = canEdit ? `data-action="edit-round" data-index="${index}"` : '';
+  // A draw where everyone is tenpai, or nobody is, pays nothing; say which instead of showing 0s.
+  const word = round.outcome === 'draw' && new Set(round.tenpai).size === 1 ? (round.tenpai[0] ? t().tenpai : t().noten) : null;
+  return `<tr>${roundCell(stateAt, rules, edit)}${strip(stripColor(round, game))}${game.players.map((_, seat) =>
+    `<td class="pc">${payment(round.deltas[seat], sticks[seat], riichi.includes(seat), word)}</td>`).join('')}</tr>`;
+}
+
+function roundTable(game, result, editable) {
+  const rows = game.rounds.map((round, index) => (index === editIndex
+    ? entryRows(game, result.before[index])
+    : roundRow(game, round, result.before[index], index, editable && editIndex === null)));
+  if (editable && editIndex === null && !result.over) rows.push(entryRows(game, result.state));
+  if (rows.length === 0) return '';
+  const head = game.players.map((name, seat) => {
+    const color = playerColor(name, seat);
+    return `<th style="background:${color};color:${textOn(color)}">${esc(name)}</th>`;
+  }).join('');
+  return `<table class="rounds"><thead><tr><th class="rc"></th><th class="strip"></th>${head}</tr></thead><tbody>${rows.join('')}</tbody></table>`;
+}
+
 // ---------- Round entry ----------
 
-function seatButtons(game, field, selected, { multi = false, disabled = () => false } = {}) {
-  return `<div class="seg">${game.players.map((name, seat) => {
-    const on = multi ? selected.includes(seat) : selected === seat;
-    return `<button class="${on ? 'on' : ''}" data-action="${multi ? 'toggle' : 'pick'}" data-field="${field}" data-seat="${seat}" ${disabled(seat) ? 'disabled' : ''}>${esc(name)}</button>`;
-  }).join('')}</div>`;
+// Outcomes where the next step is tapping players' cells. With nothing picked, tapping a cell starts a win.
+const TAP_OUTCOMES = new Set([null, 'ron', 'tsumo', 'draw', 'nagashi', 'chombo']);
+// Suufon renda and suucha riichi need four players.
+const ABORTIVE_KINDS = { 4: ['kyuushu', 'suufon', 'suucha', 'suukaikan'], 3: ['kyuushu', 'suukaikan'] };
+
+function tapCell(seat) {
+  const f = form;
+  switch (f.outcome) {
+    case null:
+      // First tap: the winner. Second tap: the winner again for tsumo, anyone else for ron.
+      if (f.menu !== null) break;
+      if (f.winner === null) f.winner = seat;
+      else if (seat === f.winner) f.outcome = 'tsumo';
+      else { f.outcome = 'ron'; f.loser = seat; }
+      break;
+    case 'ron':
+    case 'tsumo':
+      // A tap after the win is picked starts over with a new winner.
+      f.outcome = null;
+      f.winner = seat;
+      f.loser = null;
+      break;
+    case 'draw': f.tenpai = f.tenpai.includes(seat) ? f.tenpai.filter((s) => s !== seat) : [...f.tenpai, seat]; break;
+    case 'nagashi': f.seat = seat; break;
+    case 'chombo': f.offender = seat; break;
+    default: break;
+  }
+  if (f.paoSeat === f.winner) f.paoSeat = null;
 }
 
 function select(key, options, current) {
@@ -209,33 +288,53 @@ function select(key, options, current) {
     `<option value="${value}" ${String(value) === String(current) ? 'selected' : ''}>${label}</option>`).join('')}</select>`;
 }
 
+// Typed han and fu boxes and a Yakuman button. Each tap on Yakuman adds one, cycling from 6 back to 1.
+// While yakuman is on, the boxes are faded and the pao picker shows under them; typing in a box switches back.
 function valueFields(game) {
   const { rules, players } = game;
   const f = form;
-  const yakumanOptions = [[0, t().hanAndFu], ...[1, 2, 3, 4, 5, 6].map((n) => [n, t().yakuman(n)])];
-  let html = `<div class="field"><span>${t().value}</span>${select('yakuman', yakumanOptions, f.yakuman)}</div>`;
-  if (f.yakuman === 0) {
-    const limit = limitText(limitName({ han: f.han, fu: f.fu }, rules), 0, t());
-    html += `<div class="field"><span>${t().hanLabel}</span>${select('han', Array.from({ length: 13 }, (_, i) => [i + 1, t().han(i + 1)]), f.han)}
-      ${f.han < 5 ? select('fu', FU.map((fu) => [fu, t().fu(fu)]), f.fu) : ''}</div>
-      ${limit ? `<p class="hint">${limit}</p>` : ''}`;
-  } else {
+  const box = (key, label) => `<label class="num-field${f.yakuman ? ' faded' : ''}"><input type="text" inputmode="numeric" data-number="${key}" value="${f[key] ?? ''}">${label}</label>`;
+  // Two groups that wrap as units: the boxes, and the Yakuman button with pao beside it.
+  const boxes = `<span class="group">${box('han', t().hanLabel)}${f.han === null || f.han < 5 ? box('fu', t().fuLabel) : ''}</span>`;
+  let yakuman = `<button class="${f.yakuman ? 'on' : ''}" data-action="yakuman">${t().yakuman(Math.max(f.yakuman, 1))}</button>`;
+  if (f.yakuman > 0) {
     const others = players.map((name, seat) => [seat, esc(name)]).filter(([seat]) => seat !== f.winner);
-    html += `<div class="field"><span>${t().pao}</span>${select('paoSeat', [['', t().noPao], ...others], f.paoSeat ?? '')}</div>`;
+    yakuman += `<span class="muted">${t().pao}</span>${select('paoSeat', [['', t().noPao], ...others], f.paoSeat ?? '')}`;
     if (f.paoSeat !== null && f.yakuman > 1) {
-      html += `<div class="field"><span>${t().paoFor}</span>${select('paoYakuman', Array.from({ length: f.yakuman }, (_, i) => [i + 1, t().yakuman(i + 1)]), f.paoYakuman)}</div>`;
+      yakuman += select('paoYakuman', Array.from({ length: f.yakuman }, (_, i) => [i + 1, t().yakuman(i + 1)]), f.paoYakuman);
     }
   }
-  return html;
+  const limit = f.yakuman === 0 && valueProblem(f) === null ? limitText(limitName({ han: f.han, fu: f.fu }, rules), 0, t()) : null;
+  return `<div class="value-row">${boxes}<span class="group">${yakuman}</span></div>${limit ? `<p class="hint center">${limit}</p>` : ''}`;
 }
 
-function formProblem(f) {
-  if ((f.outcome === 'ron' || f.outcome === 'tsumo') && f.winner === null) return t().pickWinner;
-  if (f.outcome === 'ron' && f.loser === null) return t().pickLoser;
-  if (f.outcome === 'nagashi' && f.seat === null) return t().pickNagashi;
-  if (f.outcome === 'chombo' && f.offender === null) return t().pickChombo;
-  if (f.outcome === 'draw' && f.riichi.some((seat) => !f.tenpai.includes(seat))) return t().riichiMustBeTenpai;
-  return null;
+// Fu a hand can have: 20, 25, or 30 to 110 in tens. 1 han needs at least 30 fu.
+const VALID_FU = [20, 25, 30, 40, 50, 60, 70, 80, 90, 100, 110];
+
+// What is wrong with the typed han and fu, or null when they are fine. Fu doesn't matter at 5 han or more.
+function valueProblem(f) {
+  if (f.yakuman > 0) return null;
+  if (!Number.isInteger(f.han) || f.han < 1) return t().needHanFu;
+  if (f.han >= 5) return null;
+  if (f.fu === null) return t().needHanFu;
+  return VALID_FU.includes(f.fu) && !(f.han === 1 && f.fu < 30) ? null : t().badFu;
+}
+
+// What is still missing before the round can be saved, or null when it is ready.
+function formProblem(f, rules) {
+  switch (f.outcome) {
+    case 'ron':
+    case 'tsumo': return valueProblem(f);
+    case 'draw': return f.riichi.some((seat) => !f.tenpai.includes(seat)) ? t().riichiMustBeTenpai : null;
+    case 'abortive':
+      if (f.kind === null) return t().pickAbortive;
+      return f.kind === 'suucha' && f.riichi.length < rules.players ? t().suuchaNeedsRiichi : null;
+    case 'nagashi': return f.seat === null ? t().tapNagashi : null;
+    case 'chombo': return f.offender === null ? t().tapChombo : null;
+    default:
+      if (f.menu !== null) return ''; // Other is open, nothing picked in it yet
+      return f.winner === null ? t().tapToWin : t().tapLoserOrTsumo;
+  }
 }
 
 function entryFromForm(f, players) {
@@ -244,13 +343,13 @@ function entryFromForm(f, players) {
     case 'ron':
     case 'tsumo': {
       const pao = f.yakuman > 0 && f.paoSeat !== null ? { seat: f.paoSeat, yakuman: Math.min(f.paoYakuman, f.yakuman) } : null;
-      const entry = { outcome: f.outcome, winner: f.winner, han: f.yakuman ? 0 : f.han, fu: f.yakuman ? 0 : f.fu, yakuman: f.yakuman, pao, riichi };
+      const entry = { outcome: f.outcome, winner: f.winner, han: f.yakuman ? 0 : f.han, fu: f.yakuman || f.han >= 5 ? 0 : f.fu, yakuman: f.yakuman, pao, riichi };
       if (f.outcome === 'ron') entry.loser = f.loser;
       return entry;
     }
     case 'draw': return { outcome: 'draw', tenpai: Array.from({ length: players }, (_, seat) => f.tenpai.includes(seat)), riichi };
     case 'nagashi': return { outcome: 'nagashi', seat: f.seat, riichi };
-    case 'abortive': return { outcome: 'abortive', riichi };
+    case 'abortive': return { outcome: 'abortive', kind: f.kind, riichi };
     default: return { outcome: 'chombo', offender: f.offender };
   }
 }
@@ -258,11 +357,12 @@ function entryFromForm(f, players) {
 function formFromEntry(entry) {
   return {
     ...blankForm(),
-    outcome: entry.outcome,
+    outcome: entry.outcome ?? null,
+    menu: ['abortive', 'nagashi', 'chombo'].includes(entry.outcome) ? 'other' : null,
     winner: entry.winner ?? null,
     loser: entry.loser ?? null,
-    han: entry.han || 1,
-    fu: entry.fu || 30,
+    han: entry.han || null,
+    fu: entry.fu || null,
     yakuman: entry.yakuman ?? 0,
     paoSeat: entry.pao?.seat ?? null,
     paoYakuman: entry.pao?.yakuman ?? 1,
@@ -270,85 +370,70 @@ function formFromEntry(entry) {
     tenpai: (entry.tenpai ?? []).flatMap((isTenpai, seat) => (isTenpai ? [seat] : [])),
     seat: entry.seat ?? null,
     offender: entry.offender ?? null,
+    kind: entry.kind ?? null,
   };
 }
 
-function formView(game, stateAt) {
+// The tag on a player's entry cell for what they were picked as: [class, text], or null.
+function cellTag(f, seat) {
+  if (f.outcome === null && f.menu === null && f.winner === seat) return ['win', t().winner];
+  if ((f.outcome === 'ron' || f.outcome === 'tsumo') && f.winner === seat) return ['win', t().outcomes[f.outcome]];
+  if (f.outcome === 'ron' && f.loser === seat) return ['lose', t().dealtIn];
+  if (f.outcome === 'draw' && f.tenpai.includes(seat)) return ['win', t().tenpai];
+  if (f.outcome === 'nagashi' && f.seat === seat) return ['win', t().outcomes.nagashi];
+  if (f.outcome === 'chombo' && f.offender === seat) return ['lose', t().outcomes.chombo];
+  return null;
+}
+
+// The entry row (for the next round, or in place of the round being edited) and the controls under it.
+function entryRows(game, stateAt) {
   const { rules, players } = game;
   const f = form;
-  const outcomes = ['ron', 'tsumo', 'draw', ...(rules.nagashiMangan ? ['nagashi'] : []), ...(rules.abortiveDraws ? ['abortive'] : []), 'chombo'];
-  const label = roundLabel(windOf(stateAt, rules), handNumberOf(stateAt, rules), stateAt.honba, language);
-  let html = `<div class="card"><h3>${editIndex === null ? t().recordRound : t().editing(label)}</h3>
-    <div class="seg">${outcomes.map((value) => `<button class="${f.outcome === value ? 'on' : ''}" data-action="outcome" data-value="${value}">${t().outcomes[value]}</button>`).join('')}</div>`;
+  const editing = editIndex !== null;
+  const problem = formProblem(f, rules);
+  const entry = problem === null ? entryFromForm(f, rules.players) : null;
+  const deltas = entry && computeDeltas(entry, stateAt, rules);
+  const sticks = entry && stickDeltas(entry, stateAt, rules);
+  const tappable = TAP_OUTCOMES.has(f.outcome);
+  const noRiichi = f.outcome === 'chombo'; // chombo returns riichi sticks
 
-  if (f.outcome === 'ron' || f.outcome === 'tsumo') {
-    html += `<h3>${t().winner}</h3>${seatButtons(game, 'winner', f.winner)}`;
-    if (f.outcome === 'ron') html += `<h3>${t().dealtIn}</h3>${seatButtons(game, 'loser', f.loser, { disabled: (seat) => seat === f.winner })}`;
-    html += valueFields(game);
+  const cells = players.map((_, seat) => {
+    const tag = cellTag(f, seat);
+    const tap = tappable ? ` data-action="cell" data-seat="${seat}"` : '';
+    return `<td class="pc entry${tappable ? ' tap' : ''}${tag ? ` ${tag[0]}` : ''}"${tap}>
+      <div class="pick">${tag ? `<div class="tag">${tag[1]}</div>` : ''}${entry ? payment(deltas[seat], sticks[seat], false) : ''}</div>
+      <button class="riichi-toggle${f.riichi.includes(seat) && !noRiichi ? ' on' : ''}" data-action="riichi" data-seat="${seat}" aria-label="${t().riichi}" title="${t().riichi}" ${noRiichi ? 'disabled' : ''}>${STICK}</button></td>`;
+  }).join('');
+
+  const button = (action, value, label, on) => `<button class="${on ? 'on' : ''}" data-action="${action}" data-value="${value}">${label}</button>`;
+  let controls = editing ? `<p class="hint">${t().editing(shortRoundLabel(windOf(stateAt, rules), handNumberOf(stateAt, rules), stateAt.honba, language))}</p>` : '';
+  // Once a winner is tapped, the round is a win, so Draw and Other are hidden until Back.
+  if (f.winner === null) {
+    controls += `<div class="seg">${button('mode', 'draw', t().outcomes.draw, f.outcome === 'draw')}${button('mode', 'other', t().outcomes.other, f.menu === 'other')}</div>`;
   }
-  if (f.outcome === 'draw') html += `<h3>${t().tenpai}</h3>${seatButtons(game, 'tenpai', f.tenpai, { multi: true })}`;
-  if (f.outcome === 'nagashi') html += `<h3>${t().nagashiBy}</h3>${seatButtons(game, 'seat', f.seat)}`;
-  if (f.outcome === 'chombo') html += `<h3>${t().chomboBy}</h3>${seatButtons(game, 'offender', f.offender)}<p class="hint">${t().chomboHint}</p>`;
-  if (f.outcome !== 'chombo') html += `<h3>${t().riichiThisRound}</h3>${seatButtons(game, 'riichi', f.riichi, { multi: true })}`;
+  if (f.menu === 'other') {
+    controls += `<div class="seg">${rules.abortiveDraws ? button('sub', 'abortive', t().outcomes.abortive, f.outcome === 'abortive') : ''}${rules.nagashiMangan ? button('sub', 'nagashi', t().outcomes.nagashi, f.outcome === 'nagashi') : ''}${button('sub', 'chombo', t().outcomes.chombo, f.outcome === 'chombo')}</div>`;
+  }
+  if (f.outcome === 'abortive') {
+    controls += `<div class="seg">${ABORTIVE_KINDS[rules.players].map((kind) => button('kind', kind, t().abortiveKinds[kind], f.kind === kind)).join('')}</div>`;
+  }
+  if (f.outcome === 'draw') controls += `<p class="hint">${t().tapTenpai}</p>`;
+  if (f.outcome === 'chombo') controls += `<p class="hint">${t().chomboHint}</p>`;
+  if (f.outcome === 'ron' || f.outcome === 'tsumo') controls += valueFields(game);
+  if (problem) controls += `<p class="hint">${problem}</p>`;
 
-  const problem = formProblem(f);
-  if (problem) {
-    html += `<p class="hint">${problem}</p>`;
-  } else {
-    const deltas = computeDeltas(entryFromForm(f, rules.players), stateAt, rules);
-    html += `<div class="preview">${players.map((name, seat) =>
-      `<span>${esc(name)}</span><span class="num ${signClass(deltas[seat])}">${fmtDelta(deltas[seat])}</span>`).join('')}</div>`;
+  const picked = f.outcome !== null || f.menu !== null || f.winner !== null;
+  const save = `<button class="primary" data-action="save-round" ${problem !== null ? 'disabled' : ''}>${editing ? t().saveChanges : t().saveRound}</button>`;
+  if (editing) {
+    controls += `<div class="row"><button data-action="cancel-edit">${t().cancel}</button>
+      <button class="danger" data-action="delete-round">${armed === 'delete-round' ? t().tapToDeleteRound : t().deleteRound}</button>
+      ${f.winner !== null ? `<button data-action="back">${t().back}</button>` : ''}${save}</div>`;
+  } else if (picked) {
+    controls += `<div class="row"><button data-action="back">${t().back}</button>${save}</div>`;
   }
 
-  html += `<div class="row">${editIndex === null ? '' : `<button data-action="cancel-edit">${t().cancel}</button>
-      <button class="danger" data-action="delete-round">${armed === 'delete-round' ? t().tapToDeleteRound : t().deleteRound}</button>`}
-    <button class="primary" data-action="save-round" ${problem ? 'disabled' : ''}>${editIndex === null ? t().saveRound : t().saveChanges}</button></div></div>`;
-  return html;
-}
-
-// ---------- History ----------
-
-function describe(round, game) {
-  const name = (seat) => esc(game.players[seat]);
-  const tx = t();
-  const value = () => {
-    const limit = limitText(limitName(round, game.rules), round.yakuman ?? 0, tx);
-    if (round.yakuman) return limit;
-    const base = round.han < 5 ? `${tx.han(round.han)} ${tx.fu(round.fu)}` : tx.han(round.han);
-    return limit ? `${base} · ${limit}` : base;
-  };
-  let text;
-  switch (round.outcome) {
-    case 'ron': text = `${tx.ronFrom(name(round.winner), name(round.loser))} · ${value()}`; break;
-    case 'tsumo': text = `${tx.tsumoBy(name(round.winner))} · ${value()}`; break;
-    case 'draw': {
-      const tenpai = round.tenpai.flatMap((isTenpai, seat) => (isTenpai ? [name(seat)] : []));
-      text = tenpai.length ? tx.drawTenpai(tenpai.join(', ')) : tx.drawAllNoten;
-      break;
-    }
-    case 'nagashi': text = tx.nagashiRow(name(round.seat)); break;
-    case 'abortive': text = tx.abortiveRow; break;
-    case 'chombo': text = tx.chomboRow(name(round.offender)); break;
-    default: text = '';
-  }
-  if (round.pao) text += ` · ${tx.paoRow(name(round.pao.seat))}`;
-  if (round.riichi?.length && round.outcome !== 'chombo') text += ` · ${tx.riichiRow(round.riichi.map(name).join(', '))}`;
-  return text;
-}
-
-function historyView(game, result, editable) {
-  if (game.rounds.length === 0) return '';
-  const { rules, players } = game;
-  const items = game.rounds.map((round, index) => {
-    const before = result.before[index];
-    const label = roundLabel(windOf(before, rules), handNumberOf(before, rules), before.honba, language);
-    return `<li class="${index === editIndex ? 'editing' : ''}">
-      <div class="line"><strong>${label}</strong><span class="what">${describe(round, game)}</span>
-        ${editable ? `<button class="small" data-action="edit-round" data-index="${index}">${t().edit}</button>` : ''}</div>
-      <div class="deltas">${players.map((name, seat) =>
-        `<span>${esc(name)} <b class="${signClass(round.deltas[seat])}">${fmtDelta(round.deltas[seat])}</b></span>`).join('')}</div></li>`;
-  });
-  return `<section><h2>${t().rounds}</h2><ul class="history">${items.reverse().join('')}</ul></section>`;
+  return `<tr class="entry-row">${roundCell(stateAt, rules)}${strip(entry && stripColor(entry, game))}${cells}</tr>
+    <tr class="controls"><td colspan="${players.length + 2}">${controls}</td></tr>`;
 }
 
 function gameFooter(game, result) {
@@ -393,17 +478,23 @@ const ACTIONS = {
   },
   export: () => store.exportData(published, local.filter((game) => replay(game).over)),
 
-  outcome: ({ value }) => { form.outcome = value; },
-  pick: ({ field, seat }) => {
-    form[field] = Number(seat);
-    if (field === 'winner') {
-      if (form.loser === form.winner) form.loser = null;
-      if (form.paoSeat === form.winner) form.paoSeat = null;
-    }
+  mode: ({ value }) => {
+    if (value === 'other') form = { ...blankForm(form.riichi), menu: 'other' };
+    // A player in riichi must be tenpai, so they start out marked tenpai.
+    else form = { ...blankForm(form.riichi), outcome: 'draw', tenpai: [...form.riichi] };
   },
-  toggle: ({ field, seat }) => {
+  sub: ({ value }) => { form = { ...blankForm(form.riichi), menu: form.menu, outcome: value }; },
+  kind: ({ value }) => { form.kind = value; },
+  cell: ({ seat }) => tapCell(Number(seat)),
+  riichi: ({ seat }) => {
     const s = Number(seat);
-    form[field] = form[field].includes(s) ? form[field].filter((x) => x !== s) : [...form[field], s];
+    form.riichi = form.riichi.includes(s) ? form.riichi.filter((x) => x !== s) : [...form.riichi, s];
+    if (form.outcome === 'draw' && form.riichi.includes(s) && !form.tenpai.includes(s)) form.tenpai.push(s);
+  },
+  back: () => { form = blankForm(form.riichi); },
+  yakuman: () => {
+    form.yakuman = form.yakuman >= 6 ? 1 : form.yakuman + 1;
+    form.paoYakuman = Math.min(form.paoYakuman, form.yakuman);
   },
   'save-round': () => {
     const game = currentGame();
@@ -415,7 +506,6 @@ const ACTIONS = {
   'edit-round': ({ index }) => {
     editIndex = Number(index);
     form = formFromEntry(currentGame().rounds[editIndex]);
-    window.scrollTo(0, 0);
   },
   'cancel-edit': () => { editIndex = null; form = blankForm(); },
   'delete-round': () => {
@@ -458,6 +548,19 @@ document.addEventListener('input', (event) => {
   if (el.dataset.name !== undefined) setupDraft.names[Number(el.dataset.name)] = el.value;
   if (el.dataset.draftNotes !== undefined) setupDraft.notes = el.value;
   if (el.dataset.draftDate !== undefined) setupDraft.date = el.value;
+  if (el.dataset.number !== undefined) {
+    // Han and fu: digits only. Re-render so the preview follows the typing, then put the cursor back.
+    const key = el.dataset.number;
+    if (form.yakuman) Object.assign(form, { yakuman: 0, paoSeat: null, paoYakuman: 1 });
+    const digits = el.value.replace(/\D/g, '').slice(0, 3);
+    form[key] = digits === '' ? null : Number(digits);
+    render();
+    const again = document.querySelector(`[data-number="${key}"]`);
+    if (again) {
+      again.focus();
+      again.setSelectionRange(again.value.length, again.value.length);
+    }
+  }
 });
 
 document.addEventListener('change', (event) => {

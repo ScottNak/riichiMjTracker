@@ -7,7 +7,7 @@
 //   { outcome: 'tsumo',    winner, han, fu, yakuman, pao, riichi, deltas }
 //   { outcome: 'draw',     tenpai: [bool by seat], riichi, deltas }
 //   { outcome: 'nagashi',  seat, riichi, deltas }
-//   { outcome: 'abortive', riichi, deltas }
+//   { outcome: 'abortive', kind, riichi, deltas }   kind: 'kyuushu' | 'suufon' | 'suucha' | 'suukaikan' (missing in older games)
 //   { outcome: 'chombo',   offender, deltas }
 // riichi lists the seats that declared riichi this round. pao is null or { seat, yakuman }.
 // deltas include riichi deposits (-1000) and collected sticks, so scores are just the sum of deltas.
@@ -83,6 +83,19 @@ function winnerOf(round) {
   if (round.outcome === 'ron' || round.outcome === 'tsumo') return round.winner;
   if (round.outcome === 'nagashi') return round.seat;
   return null;
+}
+
+// The riichi stick part of a round's point changes: -1000 for each deposit, and every stick on the table
+// (carried over plus this round's) to the winner. The rest of the deltas is the payment for the hand, honba included.
+// Chombo returns riichi sticks, and imported rounds have no entered details, so both have no stick part.
+export function stickDeltas(round, state, rules) {
+  const deltas = new Array(rules.players).fill(0);
+  if (!round.outcome || round.outcome === 'chombo') return deltas;
+  const riichi = round.riichi ?? [];
+  for (const seat of riichi) deltas[seat] -= 1000;
+  const winner = winnerOf(round);
+  if (winner !== null) deltas[winner] += (state.sticks + riichi.length) * 1000;
+  return deltas;
 }
 
 // State at the start of the next round.

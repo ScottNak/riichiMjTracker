@@ -81,3 +81,9 @@ export function roundLabel(wind, handNumber, honba, language) {
   if (language === 'jp') return `${windName(wind, language)}${handNumber}局${honba ? ` ${honba}本場` : ''}`;
   return `${windName(wind, language)} ${handNumber}${honba ? ` + ${honba}` : ''}`;
 }
+
+// Short round labels for the round table: 東1+1 in Japanese, E1+1 otherwise.
+export function shortRoundLabel(wind, handNumber, honba, language) {
+  const name = windName(wind, language);
+  return `${language === 'jp' ? name : name[0]}${handNumber}${honba ? `+${honba}` : ''}`;
+}
