@@ -5,7 +5,8 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 ## Platform
 - Static site on GitHub Pages. Plain HTML, CSS, and JavaScript (ES modules). No build step and no third-party libraries.
 - Only Scott enters data. Anyone with the link can view games and stats.
-- Repo: https://github.com/ScottNak/riichiMjTracker. Scott's local copy is `C:\Users\scott\Claude\RiichiTracker`. Scott runs all git commands himself.
+- Repo: https://github.com/ScottNak/riichiMjTracker. Live site: https://scottnak.github.io/riichiMjTracker/
+- The version lives in `index.html`, after the title. Each commit raises its last number by one, and the commit message starts with the new version (`0.0.15: …`). Scott's local copy is `C:\Users\scott\Claude\RiichiTracker`. Scott runs all git commands himself.
 - Tiles are the Regular SVGs from FluffyStuff's riichi-mahjong-tiles (public domain, CC0), stored in `tiles/`.
 
 ## Data flow
@@ -25,7 +26,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - If an edit means the game should have ended earlier, the game screen says after which round, and Scott fixes or deletes the rounds after it.
 
 ## Display
-- All text on screen follows a Japanese / romaji / English toggle. Japanese mode translates everything. Romaji mode is English except for mahjong terms, which are in romaji (Ryuukyoku, Houjuu, Genten, Kaeshi, Tobi, Tenpai, All Noten…). English mode keeps the usual mahjong terms (Ron, Tsumo, Riichi, Tenpai, Chombo). The app title stays "Riichi Tracker" in every mode. Riichi sticks on the table are 供託 in Japanese.
+- All text on screen follows a Japanese / romaji / English toggle. Japanese mode translates everything. Romaji mode is English except for mahjong terms, which are in romaji (Ryuukyoku, Houjuu, Genten, Kaeshi, Tobi, Tenpai, All Noten…). English mode keeps the usual mahjong terms (Ron, Tsumo, Riichi, Tenpai, Chombo). The app title stays "Riichi Tracker" in every mode, followed by the version number in small gray type. Riichi sticks on the table are 供託 in Japanese.
 - Japanese yaku names use short forms where common (ツモ, 全帯, 一通).
 - Round labels: 東2局 1本場 in Japanese, East 2 + 1 in romaji and English. The round table uses short labels: 東1+1 in Japanese, E1+1 in romaji and English. The honba part is left out at 0 honba.
 - When riichi sticks carry over from earlier rounds, the round label shows a riichi stick icon and the count (× 2).
