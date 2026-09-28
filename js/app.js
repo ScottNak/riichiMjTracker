@@ -476,8 +476,10 @@ function entryRows(game, stateAt) {
     controls += `<div class="row"><button data-action="back">${t().back}</button>${save}</div>`;
   }
 
-  return `<tr class="entry-row">${roundCell(stateAt, rules)}${strip(entry && stripColor(entry, game))}${cells}</tr>
-    <tr class="controls"><td colspan="${players.length + 2}">${controls}</td></tr>`;
+  // A round being edited is tinted yellow; the new-round entry row stays gray.
+  const tint = editing ? ' editing' : '';
+  return `<tr class="entry-row${tint}">${roundCell(stateAt, rules)}${strip(entry && stripColor(entry, game))}${cells}</tr>
+    <tr class="controls${tint}"><td colspan="${players.length + 2}">${controls}</td></tr>`;
 }
 
 // ---------- Hand entry screen ----------

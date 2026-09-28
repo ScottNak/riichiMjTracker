@@ -53,7 +53,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
   - Abortive draws and Nagashi Mangan are offered only when their rule switches are on.
 - Once a win is picked, the hand entry screen opens (see "Hand entry"). The winner's cell is tagged Ron or Tsumo and the discarder's cell Fed (Houjuu in romaji, 放銃者 in Japanese).
 - For draws and Other, once everything is picked, the entry row's cells preview the point changes, and Save records the round. Back clears the picks but keeps the riichi toggles.
-- To fix a round, tap its round cell. That row turns into an entry row loaded with the round's details, with Save changes, Cancel, and Delete round (tap twice). A win reopens the hand entry screen; its Back returns to the row, where Cancel and Delete round are. The new-round entry row is hidden during an edit.
+- To fix a round, tap its round cell. That row turns into an entry row on a light yellow background (instead of gray, to show it is being edited), loaded with the round's details, with Save changes, Cancel, and Delete round (tap twice). A win reopens the hand entry screen; its Back returns to the row, where Cancel and Delete round are. The new-round entry row is hidden during an edit.
 
 ## Game modes
 - 4-player and 3-player (sanma) are both supported.

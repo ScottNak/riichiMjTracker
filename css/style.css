@@ -11,6 +11,7 @@
   --warn-bg: #fff4d6;
   --warn-text: #6b4b00;
   --active: #eceae5;
+  --editing: #fdf3c8;
 }
 @media (prefers-color-scheme: dark) {
   :root {
@@ -26,6 +27,7 @@
     --warn-bg: #3a3220;
     --warn-text: #f3d68a;
     --active: #2b2f35;
+    --editing: #3b3522;
   }
 }
 
@@ -123,6 +125,7 @@ table.rounds { width: 100%; border-collapse: collapse; table-layout: fixed; marg
 
 /* Entry row: tap a player's cell to pick them; the riichi toggle sits at the bottom of each cell. */
 .entry-row > *, .controls td { background: var(--active); }
+.entry-row.editing > *, .controls.editing td { background: var(--editing); }
 .entry-row > * { border-top: 2px solid var(--accent); vertical-align: top; }
 .pc.tap { cursor: pointer; }
 /* The tap area above the riichi toggle, so picking a player doesn't hit the toggle. */
