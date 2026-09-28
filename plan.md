@@ -18,7 +18,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - A game holds its date, notes, rule settings, its players, and an ordered list of rounds.
 - Seat 0 is the starting dealer (East). Seats go in turn order from there.
 - Each round stores its outcome (ron, tsumo, exhaustive draw, nagashi mangan, abortive draw, or chombo), who was involved, who declared riichi, the kind of an abortive draw, and the point change for every player. Point changes include riichi deposits and collected sticks.
-- A round from a tapped-in hand also stores the hand, so it can be reviewed later.
+- A round from a tapped-in hand also stores the hand: the hand tiles, winning tile, melds, dora and ura indicators, nuki-dora count, and the yaku toggles that were on. Riichi, ron or tsumo, and the winds come from the round and game, not the stored hand. Its han, fu, yakuman count, and pao are stored as well, and recalculating later rounds uses those, never a new reading of the hand.
 - Current scores are the sum of all point changes. Dealer, honba, and riichi sticks are recalculated from the round list.
 - Loading a game never recalculates its point changes, so changing rule settings or fixing the engine does not alter past games.
 - Editing or deleting a round recalculates the point changes of every round after it from their entered details and the game's own rules, since their honba and sticks may have changed. Rounds without entered details (imported history) keep their recorded point changes.
@@ -51,9 +51,9 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
   - Draw (Ryuukyoku, 流局): the exhaustive draw. Players already marked riichi start out marked tenpai, as does anyone marked riichi afterward. Tap to change who is tenpai (nobody for all noten).
   - Other: Abortive draw, Nagashi Mangan, or Chombo. Abortive draw then asks for the kind (Kyuushu Kyuuhai, Suufon Renda, Suucha Riichi, Suukaikan); 3-player offers only Kyuushu Kyuuhai and Suukaikan, and Suucha Riichi needs every player marked riichi. Nagashi Mangan and Chombo then ask to tap the player.
   - Abortive draws and Nagashi Mangan are offered only when their rule switches are on.
-- Ron and tsumo then show typed Han and Fu boxes and a Yakuman button under the row. Fu is hidden at 5 han or more. Save needs a possible fu: 20, 25, or 30 to 110 in tens, and at least 30 at 1 han. Each tap on Yakuman adds one yakuman (Yakuman, Double Yakuman, and so on up to 6, then back to Yakuman). The boxes and the Yakuman button are centered. While yakuman is on, the pao picker shows beside the Yakuman button, and typing in the Han or Fu box switches back to han and fu. Once tile entry is built, ron and tsumo go to tile entry instead, with this entry still available.
-- Once everything is picked, the entry row's cells preview the point changes, and Save records the round. Back clears the picks but keeps the riichi toggles. Once a win is picked, the winner's cell is tagged Ron or Tsumo and the discarder's cell Dealt in.
-- To fix a round, tap its round cell. That row turns into an entry row loaded with the round's details, with Save changes, Cancel, and Delete round (tap twice), plus Back once a winner is tapped. The new-round entry row is hidden during an edit.
+- Once a win is picked, the hand entry screen opens (see "Hand entry"). The winner's cell is tagged Ron or Tsumo and the discarder's cell Fed (Houjuu in romaji, 放銃者 in Japanese).
+- For draws and Other, once everything is picked, the entry row's cells preview the point changes, and Save records the round. Back clears the picks but keeps the riichi toggles.
+- To fix a round, tap its round cell. That row turns into an entry row loaded with the round's details, with Save changes, Cancel, and Delete round (tap twice). A win reopens the hand entry screen; its Back returns to the row, where Cancel and Delete round are. The new-round entry row is hidden during an edit.
 
 ## Game modes
 - 4-player and 3-player (sanma) are both supported.
@@ -97,14 +97,29 @@ Between players: relationship stats, such as who deals into whom.
 - Imported games keep their point changes exactly as recorded. They are never checked against current scoring rules, because older games used different rules (for example, no kiriage mangan).
 
 ## Hand entry
-- A win can be entered as han and fu (or a yakuman count, with an optional pao player). This stays available after tile entry is built, for hands nobody remembers exactly.
-- Scott taps in the 14 tiles, including red fives, and marks called melds (chi, pon, kan).
-- Yaku that the tiles can't show are toggles: riichi, double riichi, ippatsu, haitei, houtei, rinshan, chankan, tenhou, chihou. Tsumo or ron is also a toggle.
-- Dora and ura dora indicators are tapped in, and the app counts dora itself.
-- When a hand can be read more than one way, the app uses the highest-scoring reading.
+- The hand entry screen covers the whole game screen. Its top line shows the round, the winner with Ron or Tsumo, and who dealt in on the left, and two tabs on the right: Tiles (selected first) and Han/Fu.
+- Tiles tab:
+  - The picker has one row per suit (man, pin, sou, honors), with red 5m, 5p, and 5s buttons beside the regular fives. 3-player leaves out 2m–8m. A button is grayed out once all its copies are used across the hand, melds, and indicators: 4 of each tile, 3 regular fives, and 1 red five per suit.
+  - The hand, melds, and indicators are left-aligned; the mode buttons and the picker are centered.
+  - Mode buttons above the picker: Hand, Chi, Pon, Kan, and Closed kan. In Hand, each tap adds a tile. The hand holds 14 tiles minus 3 per meld, and the last tile tapped is the winning tile, shown apart from the rest. In Chi, Pon, Kan, and Closed kan, one tap places the whole meld (chi takes its lowest tile), then the mode goes back to Hand. A kan of 5s always includes the red five.
+  - With one hand tile left to tap, picker tiles that can't complete a winning shape are faded but still tappable. Yaku don't count here, since toggles and dora can still change them.
+  - Tapping a hand tile removes it. Holding one makes it the winning tile once the hand is full.
+  - Melds show without a label. A closed kan shows as a dark green face-down tile at each end. Each meld has a ✕ that removes it; tapping a 5 inside a chi or pon switches it between red and regular.
+  - Dora and Ura share one line. Each label is a button that points the picker at its indicators; each tap then adds one, and tapping an indicator removes it. Dora holds up to 4 indicators, and Ura no more than Dora. Dora and ura pair up by position: removing one always leaves a dark green face-down placeholder, the other row keeps its tile, and the next tap in that row fills the placeholder. Tapping a placeholder drops that whole position, dora and ura both. Ura appears only when the winner is in riichi. Save needs at least one dora indicator and, when the winner is in riichi, as many ura indicators as dora. Once the hand is full, a missing dora indicator, then a missing ura, takes over the picker so the next tap fills it, and its button shows as selected.
+  - 3-player has a North dora counter with − and +.
+  - Toggles for yaku the tiles can't show. Riichi is always there and is the winner's riichi toggle from the entry row, so turning it on or off here changes that toggle too. The rest are offered only where they can apply: double riichi and ippatsu when the winner is in riichi; haitei, rinshan (once a kan is placed), and tenhou (dealer) or chihou (non-dealer) for tsumo; houtei and chankan for ron.
+  - Ron or tsumo comes from how the cells were tapped, and the seat and round winds from the game; neither is a toggle here.
+  - Once the hand is complete, the screen lists each yaku with its han, then the total han, fu, and limit, or the yakuman count. A problem with the hand (incomplete, no yaku, impossible input) shows as a message instead.
+  - Once the hand scores, the mode buttons, picker, nuki-dora counter, and yaku toggles hide, leaving the hand, melds, Dora/Ura line, yaku list, and preview. They come back when a hand tile is removed or Dora or Ura is tapped, and hide again after the next indicator or tile is added if the hand still scores.
+  - When a hand can be read more than one way, the app uses the highest-scoring reading.
+  - The pao picker appears only when the hand has daisangen, daisuushii, or suukantsu, and covers those yakuman.
+- Han/Fu tab, for hands nobody remembers tile by tile: typed Han and Fu boxes and a Yakuman button, centered. Fu is hidden at 5 han or more. Save needs a possible fu: 20, 25, or 30 to 110 in tens, and at least 30 at 1 han. Each tap on Yakuman adds one yakuman (Yakuman, Double Yakuman, and so on up to 6, then back to Yakuman). While yakuman is on, the pao picker shows beside the Yakuman button, and typing in the Han or Fu box switches back to han and fu.
+- The bottom of the screen previews each player's point change, with Back and Save round (Save changes when editing). The tab showing at Save decides what is saved: from Tiles, the hand and what it scores; from Han/Fu, the typed values and no hand.
+- Back closes the screen and clears the win picks, but keeps the riichi toggles and any tapped-in tiles.
+- Editing a round saved from tiles opens the Tiles tab loaded with its hand; a round saved from han and fu opens the Han/Fu tab.
 
 ## Code
-- `index.html`, `css/style.css`, `js/app.js`: the page. Home (game lists and export), game setup, and the game screen (score tiles, and the round table with its entry row and round editing). Every change re-renders the view from the data.
+- `index.html`, `css/style.css`, `js/app.js`: the page. Home (game lists and export), game setup, and the game screen (score tiles, and the round table with its entry row and round editing). The hand entry screen is in `js/handview.js`. Every change re-renders the view from the data.
 - `js/game.js`: round progression, riichi sticks, honba, when a game ends, and recalculating rounds after an edit.
 - `js/colors.js`: each player's identity color, and the draw and chombo strip colors.
 - `js/store.js`: loading `data.json`, saving games in the browser, and exporting `data.json`.
@@ -112,7 +127,9 @@ Between players: relationship stats, such as who deals into whom.
 - `js/scoring.js`: rule defaults and every point payment (wins, pao, nagashi, draws, chombo, final standings).
 - `js/names.js`: every display name for yaku, dora, honor tiles, winds, and round labels, in all three languages. The analyzer returns yaku ids, never display text.
 - `js/text.js`: all other interface text, in all three languages. Every language has the same keys.
-- `js/analyzer.js`: turns a winning hand into yaku, fu, and han. It returns a clear error for an incomplete hand, a hand with no yaku, or impossible input (such as a 5th copy of a tile).
+- `js/analyzer.js`: turns a winning hand into yaku, fu, and han. For an incomplete hand, a hand with no yaku, or impossible input (such as a 5th copy of a tile), it returns an error id, never display text; `js/text.js` has the message for each id.
+- `js/hand.js`: the hand entry screen's pure logic: which picker tiles are still available, placing melds, and turning a stored hand into analyzer input.
+- `js/handview.js`: the hand entry screen's view and its actions.
 
 ## Testing
 - A `test.html` page runs the test suite in a browser. Nothing needs to be installed, but the page must be served over http (GitHub Pages, or a local server), since browsers block ES modules opened straight from a file.
@@ -121,7 +138,7 @@ Between players: relationship stats, such as who deals into whom.
 ## Progress
 - Phases 1, 2, and 3 are complete, with all tests passing.
 - Scott has reviewed and approved the display names in `js/names.js`.
-- Next: phase 4.
+- Phase 4 is built, with all tests passing. Next: Scott tries it on his phone, then phase 5.
 
 ## Phases
 1. **Scoring engine:** han and fu to points, dealer and non-dealer payments, tsumo splits, honba, riichi sticks, draw tenpai payments, nagashi mangan, pao, chombo, 3-player payments, and final standings.

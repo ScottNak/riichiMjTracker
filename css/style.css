@@ -146,3 +146,47 @@ button.riichi-toggle { width: 100%; min-height: 30px; margin-top: 4px; padding: 
 .num-field.faded { opacity: 0.45; }
 .value-row .muted { color: var(--muted); }
 .value-row select { min-width: 0; }
+
+/* Hand entry screen: covers the game screen while a win is entered. */
+body.locked { overflow: hidden; }
+.overlay { position: fixed; inset: 0; z-index: 10; overflow-y: auto; background: var(--bg); }
+.sheet { max-width: 640px; margin: 0 auto; padding: 12px 16px 32px; --tile: min(calc((100vw - 64px) / 15), 36px); }
+.sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 4px 0 10px; }
+.sheet-head p { margin: 0; min-width: 0; }
+.sheet .tabs { flex: 0 0 auto; flex-wrap: nowrap; gap: 0; }
+.sheet .tabs button { border-radius: 0; margin-left: -1px; white-space: nowrap; }
+.sheet .tabs button:first-child { border-radius: 8px 0 0 8px; margin-left: 0; }
+.sheet .tabs button:last-child { border-radius: 0 8px 8px 0; }
+.sheet .hint, .sheet .error { margin: 8px 0; }
+.sheet .error.center { text-align: center; }
+
+/* A tile picture: the tile face on the tile front. */
+.mj { display: inline-block; width: var(--tile); aspect-ratio: 3 / 4; min-height: 0; padding: 0; margin: 0; border: none; border-radius: 3px;
+  background: #fbfaf6 url(../tiles/Front.svg) center / 100% 100% no-repeat; box-shadow: 0 0 0 1px #b9b5aa; line-height: 0; flex: none;
+  user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; touch-action: manipulation; }
+.mj img { pointer-events: none; }
+.mj.back { background: #1f5c3a; box-shadow: 0 0 0 1px #143d27; }
+.mj img { width: 100%; height: 100%; object-fit: contain; }
+button.mj:disabled { opacity: 0.25; }
+button.mj.faded { opacity: 0.35; }
+.hand-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 4px 2px; min-height: calc(var(--tile) * 4 / 3); margin: 6px 0; }
+.win-gap { width: calc(var(--tile) / 2); }
+.meld { display: inline-flex; align-items: flex-end; gap: 1px; margin-right: 10px; }
+.meld button.x { min-height: 0; padding: 2px 6px; margin-left: 4px; font-size: 0.8rem; align-self: center; }
+.ind-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; min-height: calc(var(--tile) * 4 / 3 + 4px); margin: 4px 0; }
+.ind { display: inline-flex; align-items: center; gap: 2px; }
+.ind-row button.small { min-width: 36px; margin-right: 4px; }
+.ind-row .muted { color: var(--muted); font-size: 0.85rem; margin-right: 6px; }
+.ind-row > span:not([class]) { min-width: 1.5em; text-align: center; }
+.sheet .modes { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin: 10px 0 6px; }
+.sheet .modes button { flex: 0 1 auto; padding: 6px 12px; }
+.sheet .toggles { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5em, 1fr)); gap: 4px; margin: 10px 0 6px; }
+.sheet .modes button, .sheet .toggles button { min-height: 34px; font-size: 0.9rem; }
+.sheet .toggles button { padding: 6px 4px; }
+.picker { display: flex; flex-direction: column; gap: 6px; --tile: min(calc((100vw - 76px) / 10), 44px); }
+.picker-row { display: flex; justify-content: center; gap: 4px; }
+.picker-row .mj:last-child:nth-child(10) { margin-left: 6px; }
+ul.yaku { list-style: none; padding: 0; margin: 12px 0 4px; }
+ul.yaku li { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid var(--line); }
+.total { text-align: center; font-weight: 700; margin: 6px 0; }
+table.rounds.preview { margin-top: 14px; }

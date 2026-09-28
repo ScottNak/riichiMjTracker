@@ -13,6 +13,7 @@
 //   nukiDora     number of North tiles pulled as nuki-dora (3-player only)
 //
 // Output: { ok: true, yaku: [{ id, han, tile? }], han, fu, yakuman } or { ok: false, error }.
+// error is an id such as 'incomplete' or 'noYaku'; text.js has the message for each (ANALYZER_ERRORS below lists them all).
 // Yaku are returned as ids (see names.js for display names). yakuhai, seatWind, and roundWind also carry the tile index.
 // For a yakuman hand, yaku lists the yakuman with han 13 per yakuman (26 for a double), and han and fu are 0.
 
@@ -23,6 +24,11 @@ import {
 import { basePoints } from './scoring.js';
 
 const GREEN_TILES = new Set([19, 20, 21, 23, 25, HATSU]); // 2s 3s 4s 6s 8s Hatsu
+export const ANALYZER_ERRORS = [
+  'tileCount', 'badChi', 'badPon', 'badKan', 'badMeld', 'tooMany', 'tooManyRed', 'removedIn3p', 'nukiIn4p', 'northSeat3p',
+  'riichiAndDouble', 'riichiOpen', 'ippatsuNoRiichi', 'uraNoRiichi', 'haiteiRon', 'houteiTsumo', 'rinshanRon', 'rinshanNoKan',
+  'chankanTsumo', 'tenhouChihouCalls', 'tenhouNotDealer', 'chihouDealer', 'incomplete', 'noYaku',
+];
 const KOKUSHI_TILES = [0, 8, 9, 17, 18, 26, 27, 28, 29, 30, 31, 32, 33];
 
 export function analyzeHand(input, rules) {
@@ -31,14 +37,14 @@ export function analyzeHand(input, rules) {
   if (error) return { ok: false, error };
 
   const readings = findReadings(hand);
-  if (readings.length === 0) return { ok: false, error: 'Not a complete hand' };
+  if (readings.length === 0) return { ok: false, error: 'incomplete' };
 
   let best = null;
   for (const reading of readings) {
     const result = scoreReading(reading, hand, rules);
     if (result && (!best || isBetter(result, best, rules))) best = result;
   }
-  if (!best) return { ok: false, error: 'No yaku' };
+  if (!best) return { ok: false, error: 'noYaku' };
   return { ok: true, yaku: best.yaku, han: best.han, fu: best.fu, yakuman: best.yakuman };
 }
 
@@ -72,7 +78,7 @@ function normalize(input) {
 
 function validate(hand, rules) {
   if (hand.concealed.length !== 13 - 3 * hand.melds.length) {
-    return `Expected ${13 - 3 * hand.melds.length} tiles in hand plus the winning tile`;
+    return 'tileCount';
   }
   for (const meld of hand.melds) {
     const error = validateMeld(meld);
@@ -90,27 +96,27 @@ function validate(hand, rules) {
     if (tile.red) redCounts[suitOf(tile.index)]++;
   }
   counts[NORTH] += hand.nukiDora;
-  if (counts.some((count) => count > 4)) return 'More than 4 of the same tile';
-  if (redCounts.some((count) => count > 1)) return 'More than 1 red five of the same suit';
+  if (counts.some((count) => count > 4)) return 'tooMany';
+  if (redCounts.some((count) => count > 1)) return 'tooManyRed';
   if (rules.players === 3 && counts.some((count, index) => count > 0 && isRemovedIn3p(index))) {
-    return '2m-8m are not used in 3-player';
+    return 'removedIn3p';
   }
-  if (rules.players === 4 && hand.nukiDora > 0) return 'Nuki-dora is only used in 3-player';
-  if (hand.seatWind === NORTH && rules.players === 3) return 'There is no North seat in 3-player';
+  if (rules.players === 4 && hand.nukiDora > 0) return 'nukiIn4p';
+  if (hand.seatWind === NORTH && rules.players === 3) return 'northSeat3p';
 
-  if (hand.riichi && hand.doubleRiichi) return 'Choose riichi or double riichi, not both';
+  if (hand.riichi && hand.doubleRiichi) return 'riichiAndDouble';
   const inRiichi = hand.riichi || hand.doubleRiichi;
-  if (inRiichi && !hand.isClosed) return 'Riichi needs a closed hand';
-  if (hand.ippatsu && !inRiichi) return 'Ippatsu needs riichi';
-  if (hand.uraIndicators.length > 0 && !inRiichi) return 'Ura dora needs riichi';
-  if (hand.haitei && !hand.tsumo) return 'Haitei needs tsumo';
-  if (hand.houtei && hand.tsumo) return 'Houtei needs ron';
-  if (hand.rinshan && !hand.tsumo) return 'Rinshan needs tsumo';
-  if (hand.rinshan && !hand.melds.some((meld) => meld.type.endsWith('kan'))) return 'Rinshan needs a kan';
-  if (hand.chankan && hand.tsumo) return 'Chankan needs ron';
-  if ((hand.tenhou || hand.chihou) && (!hand.tsumo || hand.melds.length > 0)) return 'Tenhou and chihou need a tsumo with no calls';
-  if (hand.tenhou && !hand.isDealer) return 'Tenhou is only for the dealer';
-  if (hand.chihou && hand.isDealer) return 'Chihou is only for non-dealers';
+  if (inRiichi && !hand.isClosed) return 'riichiOpen';
+  if (hand.ippatsu && !inRiichi) return 'ippatsuNoRiichi';
+  if (hand.uraIndicators.length > 0 && !inRiichi) return 'uraNoRiichi';
+  if (hand.haitei && !hand.tsumo) return 'haiteiRon';
+  if (hand.houtei && hand.tsumo) return 'houteiTsumo';
+  if (hand.rinshan && !hand.tsumo) return 'rinshanRon';
+  if (hand.rinshan && !hand.melds.some((meld) => meld.type.endsWith('kan'))) return 'rinshanNoKan';
+  if (hand.chankan && hand.tsumo) return 'chankanTsumo';
+  if ((hand.tenhou || hand.chihou) && (!hand.tsumo || hand.melds.length > 0)) return 'tenhouChihouCalls';
+  if (hand.tenhou && !hand.isDealer) return 'tenhouNotDealer';
+  if (hand.chihou && hand.isDealer) return 'chihouDealer';
   return null;
 }
 
@@ -120,11 +126,11 @@ function validateMeld(meld) {
   if (meld.type === 'chi') {
     const ok = indexes.length === 3 && !isHonor(indexes[0]) && suitOf(indexes[0]) === suitOf(indexes[2])
       && indexes[1] === indexes[0] + 1 && indexes[2] === indexes[0] + 2;
-    return ok ? null : 'A chi must be 3 tiles in a row';
+    return ok ? null : 'badChi';
   }
-  if (meld.type === 'pon') return indexes.length === 3 && same ? null : 'A pon must be 3 of the same tile';
-  if (meld.type === 'minkan' || meld.type === 'ankan') return indexes.length === 4 && same ? null : 'A kan must be 4 of the same tile';
-  return `Unknown meld type: ${meld.type}`;
+  if (meld.type === 'pon') return indexes.length === 3 && same ? null : 'badPon';
+  if (meld.type === 'minkan' || meld.type === 'ankan') return indexes.length === 4 && same ? null : 'badKan';
+  return 'badMeld';
 }
 
 // ---------- Readings ----------

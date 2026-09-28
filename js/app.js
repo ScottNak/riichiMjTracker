@@ -7,6 +7,8 @@ import { roundLabel, shortRoundLabel, windName } from './names.js';
 import { playerColor, textOn, DRAW_COLOR, CHOMBO_COLOR } from './colors.js';
 import { TEXT, limitText } from './text.js';
 import * as store from './store.js';
+import { emptyHand, pick, activeMode, toggleMeldRed, removeIndicator, dropPosition, setWinTile, canAddNuki, analyze, paoYakuman, toStored, fromStored } from './hand.js';
+import { tilesTab } from './handview.js';
 
 const app = document.getElementById('app');
 let published = [];
@@ -38,9 +40,14 @@ const fmtDelta = (d) => (d > 0 ? `+${d.toLocaleString()}` : d < 0 ? `−${(-d).t
 const signClass = (d) => (d > 0 ? 'plus' : d < 0 ? 'minus' : '');
 
 // The round being entered. A tapped winner with outcome still null is a win waiting for its second tap.
-// menu is 'other' while the Other choices are open. Riichi toggles can be kept when the rest is cleared.
-function blankForm(riichi = []) {
-  return { outcome: null, menu: null, winner: null, loser: null, han: null, fu: null, yakuman: 0, paoSeat: null, paoYakuman: 1, riichi: [...riichi], tenpai: [], seat: null, offender: null, kind: null };
+// menu is 'other' while the Other choices are open. Riichi toggles and a tapped-in hand can be kept when the rest is cleared.
+// tab is the hand entry screen's tab ('tiles' or 'hanFu'), and mode is the Tiles tab's picker mode.
+// expand keeps the Tiles tab's controls open after the hand scores; tapping Dora or Ura sets it, adding a tile clears it.
+function blankForm(riichi = [], hand = emptyHand()) {
+  return {
+    outcome: null, menu: null, winner: null, loser: null, han: null, fu: null, yakuman: 0, paoSeat: null, paoYakuman: 1,
+    riichi: [...riichi], tenpai: [], seat: null, offender: null, kind: null, tab: 'tiles', mode: 'hand', expand: false, hand,
+  };
 }
 
 // ---------- Data ----------
@@ -77,7 +84,12 @@ function render() {
   const { name, id } = route();
   const view = name === 'new' ? setupView() : name === 'game' ? gameView(id) : homeView();
   const warning = saveFailed ? `<p class="warning">${t().saveFailed}</p>` : '';
+  // Re-rendering replaces the hand entry screen, so keep its scroll position.
+  const scroll = document.querySelector('.overlay')?.scrollTop ?? 0;
   app.innerHTML = warning + view;
+  const overlay = document.querySelector('.overlay');
+  if (overlay) overlay.scrollTop = scroll;
+  document.body.classList.toggle('locked', Boolean(overlay));
   document.documentElement.lang = language === 'jp' ? 'ja' : 'en';
   document.querySelectorAll('[data-lang]').forEach((button) => button.classList.toggle('on', button.dataset.lang === language));
 }
@@ -191,6 +203,7 @@ function gameView(id) {
     html += `<div class="banner"><span>${t().yameBanner}</span><button class="small" data-action="yame">${t().endGame}</button></div>`;
   }
   if (editable) html += gameFooter(game, result);
+  if (editable && isWin(form)) html += handScreen(game, editIndex === null ? state : result.before[editIndex]);
   return html + `<p><a href="#">${t().allGames}</a></p>`;
 }
 
@@ -298,8 +311,7 @@ function valueFields(game) {
   const boxes = `<span class="group">${box('han', t().hanLabel)}${f.han === null || f.han < 5 ? box('fu', t().fuLabel) : ''}</span>`;
   let yakuman = `<button class="${f.yakuman ? 'on' : ''}" data-action="yakuman">${t().yakuman(Math.max(f.yakuman, 1))}</button>`;
   if (f.yakuman > 0) {
-    const others = players.map((name, seat) => [seat, esc(name)]).filter(([seat]) => seat !== f.winner);
-    yakuman += `<span class="muted">${t().pao}</span>${select('paoSeat', [['', t().noPao], ...others], f.paoSeat ?? '')}`;
+    yakuman += paoPicker(game);
     if (f.paoSeat !== null && f.yakuman > 1) {
       yakuman += select('paoYakuman', Array.from({ length: f.yakuman }, (_, i) => [i + 1, t().yakuman(i + 1)]), f.paoYakuman);
     }
@@ -320,11 +332,33 @@ function valueProblem(f) {
   return VALID_FU.includes(f.fu) && !(f.han === 1 && f.fu < 30) ? null : t().badFu;
 }
 
+const isWin = (f) => f.outcome === 'ron' || f.outcome === 'tsumo';
+
+// The parts of a win that come from the round and game rather than the tiles.
+function winContext(f, stateAt, rules) {
+  const dealer = dealerOf(stateAt, rules);
+  return {
+    riichi: f.riichi.includes(f.winner),
+    tsumo: f.outcome === 'tsumo',
+    dealer: f.winner === dealer,
+    seatWind: (f.winner - dealer + rules.players) % rules.players,
+    roundWind: windOf(stateAt, rules),
+  };
+}
+
+// The analyzer's reading of the tapped-in hand, or null when the win isn't being entered from tiles.
+function tileAnalysis(f, stateAt, rules) {
+  return isWin(f) && f.tab === 'tiles' ? analyze(f.hand, winContext(f, stateAt, rules), rules) : null;
+}
+
 // What is still missing before the round can be saved, or null when it is ready.
-function formProblem(f, rules) {
+// For a win from tiles it is '', since the Tiles tab shows its own message.
+function formProblem(f, rules, analysis) {
   switch (f.outcome) {
     case 'ron':
-    case 'tsumo': return valueProblem(f);
+    case 'tsumo':
+      if (f.tab === 'tiles') return analysis.ok ? null : '';
+      return valueProblem(f);
     case 'draw': return f.riichi.some((seat) => !f.tenpai.includes(seat)) ? t().riichiMustBeTenpai : null;
     case 'abortive':
       if (f.kind === null) return t().pickAbortive;
@@ -337,11 +371,18 @@ function formProblem(f, rules) {
   }
 }
 
-function entryFromForm(f, players) {
+function entryFromForm(f, players, analysis) {
   const riichi = [...f.riichi].sort();
   switch (f.outcome) {
     case 'ron':
     case 'tsumo': {
+      if (f.tab === 'tiles') {
+        const liable = paoYakuman(analysis);
+        const pao = liable > 0 && f.paoSeat !== null ? { seat: f.paoSeat, yakuman: liable } : null;
+        const entry = { outcome: f.outcome, winner: f.winner, han: analysis.han, fu: analysis.fu, yakuman: analysis.yakuman, pao, riichi, hand: toStored(f.hand) };
+        if (f.outcome === 'ron') entry.loser = f.loser;
+        return entry;
+      }
       const pao = f.yakuman > 0 && f.paoSeat !== null ? { seat: f.paoSeat, yakuman: Math.min(f.paoYakuman, f.yakuman) } : null;
       const entry = { outcome: f.outcome, winner: f.winner, han: f.yakuman ? 0 : f.han, fu: f.yakuman || f.han >= 5 ? 0 : f.fu, yakuman: f.yakuman, pao, riichi };
       if (f.outcome === 'ron') entry.loser = f.loser;
@@ -371,6 +412,8 @@ function formFromEntry(entry) {
     seat: entry.seat ?? null,
     offender: entry.offender ?? null,
     kind: entry.kind ?? null,
+    tab: entry.hand || !isWin(entry) ? 'tiles' : 'hanFu',
+    hand: entry.hand ? fromStored(entry.hand) : emptyHand(),
   };
 }
 
@@ -390,8 +433,9 @@ function entryRows(game, stateAt) {
   const { rules, players } = game;
   const f = form;
   const editing = editIndex !== null;
-  const problem = formProblem(f, rules);
-  const entry = problem === null ? entryFromForm(f, rules.players) : null;
+  const analysis = tileAnalysis(f, stateAt, rules);
+  const problem = formProblem(f, rules, analysis);
+  const entry = problem === null ? entryFromForm(f, rules.players, analysis) : null;
   const deltas = entry && computeDeltas(entry, stateAt, rules);
   const sticks = entry && stickDeltas(entry, stateAt, rules);
   const tappable = TAP_OUTCOMES.has(f.outcome);
@@ -419,21 +463,65 @@ function entryRows(game, stateAt) {
   }
   if (f.outcome === 'draw') controls += `<p class="hint">${t().tapTenpai}</p>`;
   if (f.outcome === 'chombo') controls += `<p class="hint">${t().chomboHint}</p>`;
-  if (f.outcome === 'ron' || f.outcome === 'tsumo') controls += valueFields(game);
   if (problem) controls += `<p class="hint">${problem}</p>`;
 
   const picked = f.outcome !== null || f.menu !== null || f.winner !== null;
   const save = `<button class="primary" data-action="save-round" ${problem !== null ? 'disabled' : ''}>${editing ? t().saveChanges : t().saveRound}</button>`;
-  if (editing) {
+  // A win's Back and Save are on the hand entry screen.
+  if (editing && !isWin(f)) {
     controls += `<div class="row"><button data-action="cancel-edit">${t().cancel}</button>
       <button class="danger" data-action="delete-round">${armed === 'delete-round' ? t().tapToDeleteRound : t().deleteRound}</button>
       ${f.winner !== null ? `<button data-action="back">${t().back}</button>` : ''}${save}</div>`;
-  } else if (picked) {
+  } else if (picked && !isWin(f)) {
     controls += `<div class="row"><button data-action="back">${t().back}</button>${save}</div>`;
   }
 
   return `<tr class="entry-row">${roundCell(stateAt, rules)}${strip(entry && stripColor(entry, game))}${cells}</tr>
     <tr class="controls"><td colspan="${players.length + 2}">${controls}</td></tr>`;
+}
+
+// ---------- Hand entry screen ----------
+
+// Covers the game screen while a win is being entered: the Tiles and Han/Fu tabs, the point preview, Back and Save.
+function handScreen(game, stateAt) {
+  const { rules, players } = game;
+  const f = form;
+  const context = winContext(f, stateAt, rules);
+  const analysis = tileAnalysis(f, stateAt, rules);
+  const problem = formProblem(f, rules, analysis);
+  const entry = problem === null ? entryFromForm(f, rules.players, analysis) : null;
+
+  const who = `<strong>${esc(players[f.winner])}</strong> ${t().outcomes[f.outcome]}${f.outcome === 'ron' ? ` · ${esc(players[f.loser])} ${t().dealtIn}` : ''}`;
+  // The round and who won on the left, the Tiles / Han/Fu tabs on the right.
+  const tabs = `<div class="seg tabs">${['tiles', 'hanFu'].map((tab) => `<button class="small${f.tab === tab ? ' on' : ''}" data-action="tab" data-value="${tab}">${t().tabs[tab]}</button>`).join('')}</div>`;
+  let html = `<div class="sheet-head"><p>${roundLabel(windOf(stateAt, rules), handNumberOf(stateAt, rules), stateAt.honba, language)} · ${who}</p>${tabs}</div>`;
+  if (f.tab === 'tiles') {
+    html += tilesTab({ form: f, rules, ...context, result: analysis, paoPicker: paoPicker(game), t: t(), language });
+  } else {
+    html += valueFields(game);
+    if (problem) html += `<p class="hint center">${problem}</p>`;
+  }
+
+  // The point preview, laid out like a round table row.
+  if (entry) {
+    const deltas = computeDeltas(entry, stateAt, rules);
+    const sticks = stickDeltas(entry, stateAt, rules);
+    const head = players.map((name, seat) => {
+      const color = playerColor(name, seat);
+      return `<th style="background:${color};color:${textOn(color)}">${esc(name)}</th>`;
+    }).join('');
+    html += `<table class="rounds preview"><thead><tr>${head}</tr></thead><tbody><tr>${players.map((_, seat) =>
+      `<td class="pc">${payment(deltas[seat], sticks[seat], entry.riichi.includes(seat))}</td>`).join('')}</tr></tbody></table>`;
+  }
+  html += `<div class="row"><button data-action="back">${t().back}</button>
+    <button class="primary" data-action="save-round" ${problem !== null ? 'disabled' : ''}>${editIndex !== null ? t().saveChanges : t().saveRound}</button></div>`;
+  return `<div class="overlay"><div class="sheet">${html}</div></div>`;
+}
+
+// The pao picker: None, or any player but the winner.
+function paoPicker(game) {
+  const others = game.players.map((name, seat) => [seat, esc(name)]).filter(([seat]) => seat !== form.winner);
+  return `<span class="muted">${t().pao}</span>${select('paoSeat', [['', t().noPao], ...others], form.paoSeat ?? '')}`;
 }
 
 function gameFooter(game, result) {
@@ -491,14 +579,40 @@ const ACTIONS = {
     form.riichi = form.riichi.includes(s) ? form.riichi.filter((x) => x !== s) : [...form.riichi, s];
     if (form.outcome === 'draw' && form.riichi.includes(s) && !form.tenpai.includes(s)) form.tenpai.push(s);
   },
-  back: () => { form = blankForm(form.riichi); },
+  back: () => { form = blankForm(form.riichi, form.hand); },
+  tab: ({ value }) => { form.tab = value; },
+  'hand-mode': ({ value }) => {
+    form.mode = value;
+    if (value === 'dora' || value === 'ura') form.expand = true;
+  },
+  pick: ({ tile }) => {
+    const { rules } = currentGame();
+    const riichi = form.riichi.includes(form.winner);
+    form.mode = pick(form.hand, activeMode(form.hand, form.mode, riichi), tile, rules.players, riichi);
+    form.expand = false;
+  },
+  'hand-remove': ({ pos }) => { form.hand.tiles.splice(Number(pos), 1); },
+  'meld-remove': ({ meld }) => { form.hand.melds.splice(Number(meld), 1); },
+  'meld-red': ({ meld, pos }) => toggleMeldRed(form.hand, Number(meld), Number(pos), currentGame().rules.players),
+  'indicator-remove': ({ kind, pos }) => removeIndicator(form.hand, kind, Number(pos)),
+  'indicator-drop': ({ pos }) => dropPosition(form.hand, Number(pos)),
+  nuki: ({ value }) => {
+    const { hand } = form;
+    if (value === '1' ? canAddNuki(hand, currentGame().rules.players) : hand.nuki > 0) hand.nuki += Number(value);
+  },
+  'hand-toggle': ({ value }) => {
+    const { toggles } = form.hand;
+    form.hand.toggles = toggles.includes(value) ? toggles.filter((id) => id !== value) : [...toggles, value];
+  },
   yakuman: () => {
     form.yakuman = form.yakuman >= 6 ? 1 : form.yakuman + 1;
     form.paoYakuman = Math.min(form.paoYakuman, form.yakuman);
   },
   'save-round': () => {
     const game = currentGame();
-    const entry = entryFromForm(form, game.rules.players);
+    const result = replay(game);
+    const stateAt = editIndex === null ? result.state : result.before[editIndex];
+    const entry = entryFromForm(form, game.rules.players, tileAnalysis(form, stateAt, game.rules));
     updateGame(editIndex === null ? saveRound(game, entry) : saveRound(game, entry, editIndex));
     form = blankForm();
     editIndex = null;
@@ -524,7 +638,29 @@ const ACTIONS = {
   },
 };
 
+// Holding a hand tile makes it the winning tile. The click that follows the hold is ignored.
+const HOLD_MS = 500;
+let holdTimer = null;
+let held = false;
+const stopHold = () => { clearTimeout(holdTimer); holdTimer = null; };
+// If the hold re-rendered the tile away, no click follows; the next press clears the flag instead.
+document.addEventListener('pointerdown', (event) => {
+  held = false;
+  const el = event.target.closest('[data-hold]');
+  if (!el) return;
+  holdTimer = setTimeout(() => {
+    held = true;
+    setWinTile(form.hand, Number(el.dataset.hold));
+    render();
+  }, HOLD_MS);
+});
+for (const type of ['pointerup', 'pointercancel', 'pointerleave']) document.addEventListener(type, stopHold);
+document.addEventListener('contextmenu', (event) => {
+  if (event.target.closest('[data-hold]')) event.preventDefault();
+});
+
 document.addEventListener('click', (event) => {
+  if (held) { held = false; return; }
   const el = event.target.closest('[data-action], [data-lang]');
   if (!el || el.disabled) return;
   if (el.dataset.lang) {

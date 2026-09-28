@@ -187,7 +187,7 @@ test('dora, red fives, and ura dora', () => {
 });
 
 test('dora without a yaku is not a win', () => {
-  assertEqual(analyze('456p789s23s99p', '4s', { melds: [{ type: 'chi', tiles: tiles('123m') }], doraIndicators: ['8s'] }).error, 'No yaku');
+  assertEqual(analyze('456p789s23s99p', '4s', { melds: [{ type: 'chi', tiles: tiles('123m') }], doraIndicators: ['8s'] }).error, 'noYaku');
 });
 
 test('3-player: nuki dora, and North indicated by West', () => {
@@ -200,13 +200,13 @@ test('3-player: nuki dora, and North indicated by West', () => {
 // --- Invalid input ---
 
 test('invalid hands give a clear error', () => {
-  assertEqual(analyze('123m456p789s23s99p', '7s').error, 'Not a complete hand');
-  assertEqual(analyze('11111m456p789s23s', '4s').error, 'More than 4 of the same tile');
-  assertEqual(analyze('123m456p789s23s9p', '4s').error, 'Expected 13 tiles in hand plus the winning tile');
-  assertEqual(analyze('123m456p789s23s99p', '4s', { ippatsu: true }).error, 'Ippatsu needs riichi');
-  assertEqual(analyze('123m456p789s23s99p', '4s', { haitei: true }).error, 'Haitei needs tsumo');
-  assertEqual(analyze('234m456p789s23s99p', '4s', {}, RULES_3P).error, '2m-8m are not used in 3-player');
-  assertEqual(analyze('123m406p789s23s09p', '4s').error, 'More than 1 red five of the same suit');
+  assertEqual(analyze('123m456p789s23s99p', '7s').error, 'incomplete');
+  assertEqual(analyze('11111m456p789s23s', '4s').error, 'tooMany');
+  assertEqual(analyze('123m456p789s23s9p', '4s').error, 'tileCount');
+  assertEqual(analyze('123m456p789s23s99p', '4s', { ippatsu: true }).error, 'ippatsuNoRiichi');
+  assertEqual(analyze('123m456p789s23s99p', '4s', { haitei: true }).error, 'haiteiRon');
+  assertEqual(analyze('234m456p789s23s99p', '4s', {}, RULES_3P).error, 'removedIn3p');
+  assertEqual(analyze('123m406p789s23s09p', '4s').error, 'tooManyRed');
 });
 
 // --- Display names ---
