@@ -1,7 +1,7 @@
 // The Tiles tab of the hand entry screen: the tapped-in hand, melds, indicators, the tile picker,
 // the yaku toggles, and what the hand scores. Its actions are in app.js with the rest.
 
-import { PICKER_ROWS, activeMode, canPick, completesHand, handDisplay, handSize, isFull, canAddNuki, availableToggles, paoYakuman } from './hand.js';
+import { PICKER_ROWS, OPEN_CALLS, activeMode, canPick, completesHand, handDisplay, handSize, isFull, canAddNuki, availableToggles, paoYakuman } from './hand.js';
 import { YAKU_NAMES, yakuName } from './names.js';
 import { limitName } from './scoring.js';
 import { limitText } from './text.js';
@@ -65,7 +65,8 @@ export function tilesTab(ctx) {
   }
 
   // Mode buttons and the picker. 3-player leaves out 2m-8m.
-  if (open) html += `<div class="seg modes">${modes.map((m) => `<button class="${m === mode ? 'on' : ''}" data-action="hand-mode" data-value="${m}">${t.modes[m]}</button>`).join('')}</div>`;
+  // In riichi, Chi, Pon, and Kan are disabled; Closed Kan stays.
+  if (open) html += `<div class="seg modes">${modes.map((m) => `<button class="${m === mode ? 'on' : ''}" data-action="hand-mode" data-value="${m}" ${riichi && OPEN_CALLS.includes(m) ? 'disabled' : ''}>${t.modes[m]}</button>`).join('')}</div>`;
   if (open) html += `<div class="picker">${PICKER_ROWS.map((row) => `<div class="picker-row">${row
     .filter((text) => !(players === 3 && isRemovedIn3p(parseTile(text).index)))
     .map((text) => {

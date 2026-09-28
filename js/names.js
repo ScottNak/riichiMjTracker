@@ -46,8 +46,8 @@ export const YAKU_NAMES = {
   chuuren:        { jp: '九蓮宝燈', romaji: 'Chuuren Poutou', en: 'Nine Gates' },
   junseiChuuren:  { jp: '純正九蓮宝燈', romaji: 'Junsei Chuuren Poutou', en: 'True Nine Gates' },
   suukantsu:      { jp: '四槓子', romaji: 'Suukantsu', en: 'Four Kans' },
-  tenhou:         { jp: '天和', romaji: 'Tenhou', en: 'Blessing of Heaven' },
-  chihou:         { jp: '地和', romaji: 'Chihou', en: 'Blessing of Earth' },
+  tenhou:         { jp: '天和', romaji: 'Tenhou', en: 'Hand of Heavens' },
+  chihou:         { jp: '地和', romaji: 'Chihou', en: 'Hand of Earth' },
 
   dora:           { jp: 'ドラ', romaji: 'Dora', en: 'Dora' },
   akaDora:        { jp: '赤ドラ', romaji: 'Aka Dora', en: 'Red Five' },

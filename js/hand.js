@@ -17,6 +17,7 @@ import { analyzeHand } from './analyzer.js';
 
 // Up to 4 dora indicators, and no more ura indicators than dora.
 export const MAX_DORA = 4;
+export const OPEN_CALLS = ['chi', 'pon', 'kan'];
 const filled = (list) => list.filter(Boolean);
 // The first ura position without a tile, among the dora positions, or -1.
 const openUra = (hand) => Array.from({ length: hand.dora.length }, (_, i) => i).find((i) => !hand.ura[i]) ?? -1;
@@ -131,6 +132,8 @@ export function setWinTile(hand, position) {
 // The picker mode in effect: once the hand is full, a missing dora indicator, then a missing ura indicator
 // (in riichi), takes the picker over so the next tap fills it.
 export function activeMode(hand, mode, riichi) {
+  // A hand in riichi is closed, so calls (chi, pon, open kan) aren't available; closed kan still is.
+  if (riichi && OPEN_CALLS.includes(mode)) return activeMode(hand, 'hand', riichi);
   if (!isFull(hand)) return mode;
   if (hand.dora.length === 0 || hand.dora.includes(null)) return 'dora';
   if (riichi && openUra(hand) >= 0) return 'ura';

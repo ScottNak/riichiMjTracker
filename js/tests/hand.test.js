@@ -196,6 +196,12 @@ test('with one tile left, only tiles that complete the hand count', () => {
   assertEqual(completesHand(tapIn(emptyHand(), '123m'), '5z', RULES_4P), true);
 });
 
+test('in riichi, chi, pon, and open kan fall back to Hand; closed kan stays', () => {
+  const hand = emptyHand();
+  assertEqual(['chi', 'pon', 'kan', 'ankan'].map((m) => activeMode(hand, m, true)), ['hand', 'hand', 'hand', 'ankan']);
+  assertEqual(activeMode(hand, 'pon', false), 'pon');
+});
+
 test('stored hand round trip', () => {
   const hand = emptyHand();
   pick(hand, 'chi', '1m', 4, false);
