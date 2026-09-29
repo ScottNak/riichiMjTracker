@@ -1,7 +1,7 @@
 // The page: home, game setup, and the game screen (scoreboard, round entry, history).
 // Every change re-renders the whole view from the data; there is no other UI state to keep in sync.
 
-import { defaultRules, newGame, saveRound, deleteRound, replay, computeDeltas, stickDeltas, dealerOf, windOf, handNumberOf } from './game.js';
+import { defaultRules, newGame, saveRound, deleteRound, replay, standings, computeDeltas, stickDeltas, dealerOf, windOf, handNumberOf } from './game.js';
 import { finalStandings, formatPoints, limitName } from './scoring.js';
 import { roundLabel, shortRoundLabel, windName } from './names.js';
 import { playerColor, textOn, DRAW_COLOR, CHOMBO_COLOR } from './colors.js';
@@ -94,8 +94,17 @@ function render() {
   document.querySelectorAll('[data-lang]').forEach((button) => button.classList.toggle('on', button.dataset.lang === language));
 }
 
+// A finished game's row is tinted with the winner's identity color: 45%, or 30% for dark colors.
 function gameList(games) {
-  return `<ul class="games">${games.map((game) => `<li><a href="#game/${game.id}">${esc(fmtDate(game.date))} · ${game.players.map(esc).join(', ')}</a></li>`).join('')}</ul>`;
+  return `<ul class="games">${games.map((game) => {
+    let tint = '';
+    if (replay(game).over) {
+      const winner = standings(game).findIndex((s) => s.rank === 0);
+      const color = playerColor(game.players[winner], winner);
+      tint = ` style="--tint:${color};--mix:${textOn(color) === '#ffffff' ? 30 : 45}%"`;
+    }
+    return `<li><a href="#game/${game.id}"${tint}>${esc(fmtDate(game.date))} · ${game.players.map(esc).join(', ')}</a></li>`;
+  }).join('')}</ul>`;
 }
 
 function homeView() {

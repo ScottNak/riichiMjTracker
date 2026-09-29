@@ -105,7 +105,7 @@ input[type="checkbox"] { min-height: 0; width: 20px; height: 20px; }
 .minus { color: var(--minus); }
 
 ul.games { list-style: none; padding: 0; margin: 0; }
-ul.games li a { display: block; padding: 12px; margin: 6px 0; background: var(--card); border: 1px solid var(--line); border-radius: 10px; color: var(--text); text-decoration: none; }
+ul.games li a { display: block; padding: 12px; margin: 6px 0; background: color-mix(in srgb, var(--tint, var(--card)) var(--mix, 0%), var(--card)); border: 1px solid var(--line); border-radius: 10px; color: var(--text); text-decoration: none; }
 
 /* Round table: round, winner strip, one column per player. */
 table.rounds { width: 100%; border-collapse: collapse; table-layout: fixed; margin: 12px 0; background: var(--card); border: 1px solid var(--line); }
