@@ -28,7 +28,6 @@ const COLUMNS = [
   ['avgWinHonba', (s) => whole(s.avgWinHonba)],
   ['avgDealIn', (s) => whole(s.avgDealIn)],
   ['bustRate', (s) => pct(s.bustRate)],
-  ['chombo', (s) => s.chombo],
 ];
 export const LOW_FIRST = new Set(COLUMNS.filter((c) => c[2]).map((c) => c[0]));
 
@@ -65,7 +64,7 @@ export function statsPage({ games, filters, sort, t, esc, topBar }) {
 
   const header = (key, label) => `<th data-action="sort" data-key="${key}" class="${sort.key === key ? 'sorted' : ''}">${label}${sort.key === key ? (sort.desc ? ' ▼' : ' ▲') : ''}</th>`;
   const table = shown.length === 0 ? `<p class="hint">${t.stats.noGames}</p>`
-    : `<div class="table-scroll"><table class="stats"><thead><tr>${header('name', t.stats.player)}${COLUMNS.map(([key]) => header(key, t.stats.columns[key])).join('')}</tr></thead>
+    : `<div class="table-scroll"><table class="stats"><thead><tr>${header('name', t.stats.player)}${COLUMNS.map(([key]) => header(key, t.stats.short[key] ?? t.stats.columns[key])).join('')}</tr></thead>
       <tbody>${shown.map((s) => `<tr><th scope="row">${nameCell(s.name, esc)}</th>${COLUMNS.map(([, show]) => `<td>${show(s)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
   return `${topBar('#', t.stats.title)}${filterBar(filters, t, true)}${table}
     <p class="hint">${t.stats.gameCount(matching.length)}${hidden > 0 ? ` ${t.stats.hiddenPlayers(hidden, filters.minGames)}` : ''}</p>

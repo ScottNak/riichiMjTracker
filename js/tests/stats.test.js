@@ -27,9 +27,10 @@ test('stats: chombo is not a hand, and is counted for the offender', () => {
   assertEqual(find(stats, 'C').chombo, 1);
 });
 
-test('stats: wins, tsumo, and riichi per hand', () => {
+test('stats: wins and riichi per hand, tsumo as a share of wins', () => {
   const b = find(playerStats([sample()]), 'B');
-  assertEqual([b.wins, b.tsumo, b.riichi, b.winRate, b.riichiRate], [1, 1, 2, 1 / 3, 2 / 3]);
+  assertEqual([b.wins, b.tsumo, b.riichi, b.winRate, b.riichiRate, b.tsumoRate], [1, 1, 2, 1 / 3, 2 / 3, 1]);
+  assertEqual(find(playerStats([sample()]), 'D').tsumoRate, 0);
 });
 
 test('stats: win value by hand, with honba, and with sticks', () => {

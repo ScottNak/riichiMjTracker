@@ -139,6 +139,8 @@ const en = {
       hands: 'Hands', winRate: 'Win rate', tsumoRate: 'Tsumo rate', dealInRate: 'Deal-in rate', riichiRate: 'Riichi rate', chombo: 'Chombo',
       avgWinHand: 'Avg win: hand', avgWinHonba: 'Avg win: + honba', avgWinAll: 'Avg win: + sticks', avgDealIn: 'Avg deal-in', best: 'Best hand',
     },
+    // Shorter table headers, where a label needs one. The player page uses the full labels.
+    short: { avgWinHonba: 'Avg win' },
     noGames: 'No finished games match.',
     gameCount: (n) => `${n} game${n === 1 ? '' : 's'}.`,
     hiddenPlayers: (n, min) => `${n} player${n === 1 ? '' : 's'} with fewer than ${min} games hidden.`,
@@ -198,7 +200,6 @@ const romaji = {
     chihouDealer: 'Chihou is only for non-dealers.',
     noYaku: 'No Yaku.',
   },
-  modeTag: { 4: 'Yonma', 3: 'Sanma' },
   stats: {
     ...en.stats,
     columns: { ...en.stats.columns, dealInRate: 'Houjuu rate', bustRate: 'Tobi rate', avgWinHonba: 'Avg win: + Honba', avgDealIn: 'Avg Houjuu' },
@@ -338,11 +339,12 @@ const jp = {
     minGames: '最低対局数',
     player: 'プレイヤー',
     columns: {
-      games: '対局数', avgPlace: '平均順位', points: '合計ポイント', avgPoints: '平均ポイント', raw: '素点収支',
+      games: '対局数', avgPlace: '平均<wbr>順位', points: '合計<wbr>ポイント', avgPoints: '平均<wbr>ポイント', raw: '素点収支',
       firstRate: 'トップ率', lastRate: 'ラス率', bustRate: 'トビ率',
       hands: '局数', winRate: '和了率', tsumoRate: 'ツモ率', dealInRate: '放銃率', riichiRate: 'リーチ率', chombo: 'チョンボ',
       avgWinHand: '平均打点', avgWinHonba: '平均打点（本場込み）', avgWinAll: '平均打点（供託込み）', avgDealIn: '平均放銃点', best: '最高打点',
     },
+    short: { avgWinHonba: '平均打点' },
     noGames: '該当する対局がありません',
     gameCount: (n) => `${n}対局`,
     hiddenPlayers: (n, min) => `${min}対局未満の${n}人は非表示`,

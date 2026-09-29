@@ -210,7 +210,8 @@ table.rounds.preview { margin-top: 14px; }
 .table-scroll { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
 table.stats { border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 0.9rem; }
 .stats th, .stats td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
-.stats thead th { font-size: 0.75rem; color: var(--muted); font-weight: 600; white-space: normal; min-width: 4.5em; vertical-align: bottom; }
+/* keep-all: Japanese headers break only where the label allows it (<wbr>), not mid-word. */
+.stats thead th { font-size: 0.75rem; color: var(--muted); font-weight: 600; white-space: normal; word-break: keep-all; min-width: 4.5em; vertical-align: bottom; }
 .stats thead th[data-action] { cursor: pointer; }
 .stats thead th.sorted { color: var(--accent); }
 .stats th:first-child { position: sticky; left: 0; z-index: 1; background: var(--card); text-align: left; }

@@ -1,7 +1,7 @@
 // Stats across finished games. Pure functions only; statsview.js shows what these return.
 //
 // A hand is every round except chombo (a chombo round is replayed, so it isn't a hand).
-// A win is ron, tsumo, or nagashi mangan; nagashi counts as a tsumo win.
+// A win is ron, tsumo, or nagashi mangan; nagashi counts as a tsumo win. Tsumo rate is the share of wins that were tsumo.
 // A deal-in is the ron discarder, and the pao-liable player whenever they pay.
 // Win values split a round's point changes into the payment for the hand (honba included) and the riichi stick part,
 // using stickDeltas, so imported rounds (which only have point changes) work the same as entered ones.
@@ -69,7 +69,7 @@ function withRates(s) {
     bustRate: ratio(s.busts, s.games),
     avgPoints: ratio(s.points, s.games),
     winRate: ratio(s.wins, s.hands),
-    tsumoRate: ratio(s.tsumo, s.hands),
+    tsumoRate: ratio(s.tsumo, s.wins),
     dealInRate: ratio(s.dealIns, s.hands),
     riichiRate: ratio(s.riichi, s.hands),
     avgWinHand: ratio(s.winHand, s.wins),

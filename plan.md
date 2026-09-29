@@ -33,7 +33,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - Scores are shown as one tile per player, all in a single row in seat order. Each tile has the seat wind top left (東 in Japanese, E/S/W/N otherwise), the name top right, the score large in the middle, and at the bottom the final points the player would get if the game ended now. Each tile is tinted with the player's identity color. The dealer's tile is outlined.
 - When the game is over, the same tiles are sorted by placement, with the place (1st, 2nd…) top left, the final score including leftover sticks, and final points. 1st place is outlined.
 - Every page but Home starts with a bar: a Back link on the left that goes one level up (a player's page to Stats; Stats, new game, and a game to Home), and the page title centered (Stats, the player's name, New game, or the game's current round or result). There is no back link at the bottom of pages. The new game date sits on its own line under the bar.
-- Each game in the home screen's lists starts with a small player-count tag: 四麻 / 三麻 in Japanese, Yonma / Sanma in romaji, 4P / 3P in English.
+- Each game in the home screen's lists starts with a small player-count tag: 四麻 / 三麻 in Japanese, 4P / 3P in romaji and English.
 - Negative final points are shown with a triangle, like the spreadsheet: ▲17.3. Positive points show a plus sign: +53.3.
 
 ## Round table
@@ -91,11 +91,12 @@ Based on M-League rules, with these settings:
 - Scott can end a game at any point (for example, when someone has to leave). It is scored and counted in stats exactly like a game that ended normally. A game ended by hand can be resumed.
 
 ## Stats
-- The home screen's Stats button opens the Stats page: one table with a row per player, sorted by tapping a column (tapping it again reverses it). Tapping a name opens that player's page: all their stats, and a table of each opponent.
+- The home screen's Stats button opens the Stats page: one table with a row per player, sorted by tapping a column (tapping it again reverses it). Tapping a name opens that player's page: all their stats, and a table of each opponent. Chombo count is on the player page only, not in the table.
 - Filters, shared by both pages: 4-player or 3-player (never mixed), length (All, East-only, East-South), and a date range (all time by default). The Stats page also has a minimum number of games (5 by default); players below it are hidden, and a note says how many.
 - Stats cover every finished game, from `data.json` and from this device. Games in progress don't count.
-- A hand is every round except chombo. Win, tsumo, deal-in, and riichi rates are per hand.
+- A hand is every round except chombo. Win, deal-in, and riichi rates are per hand. Tsumo rate is the share of wins that were tsumo.
 - A win is ron, tsumo, or nagashi mangan; nagashi counts as a tsumo win. A deal-in is the ron discarder, and the pao-liable player whenever they pay.
+- Japanese table headers break onto two lines only where the label allows (平均/順位, 合計/ポイント, 平均/ポイント). The table's win value header is just Avg win (平均打点 in Japanese); the player page keeps the full labels.
 - Per player: games, average placement, placement counts, 1st and last rates, bust rate (games the player ended below 0; the player who caused it isn't counted), total and average final points, raw points (the sum of final score minus start points), hands, win, tsumo, deal-in, and riichi rates, and chombo count.
 - Win value, averaged over wins, three ways: the hand alone, with honba, and with riichi sticks (the winner's whole point change for the round, as the round table shows it). Average deal-in is what the discarder paid, honba included. Best hand is the largest hand plus honba, linked to its game.
 - Win values come from each round's point changes minus its riichi stick part, so imported rounds work the same as entered ones. Honba counts 300 each.
