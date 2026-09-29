@@ -166,6 +166,14 @@ test('editing an earlier round recalculates honba and sticks in later rounds', (
   assertEqual(game.rounds[1].deltas, [-1300, 0, 0, 1000 + 300 + 1000]);
 });
 
+test('editing an earlier round keeps the recorded deltas of imported rounds', () => {
+  let game = play(game4(), [{ outcome: 'ron', winner: 1, loser: 2, han: 1, fu: 30, riichi: [] }]);
+  const imported = { outcome: 'ron', winner: 3, loser: 0, riichi: [], deltas: [-7700, 0, 0, 7700], imported: true };
+  game = { ...game, rounds: [...game.rounds, imported] };
+  game = saveRound(game, { outcome: 'draw', tenpai: [false, false, true, false], riichi: [2] }, 0);
+  assertEqual(game.rounds[1].deltas, [-7700, 0, 0, 7700]);
+});
+
 test('deleting a round recalculates the rounds after it', () => {
   let game = play(game4(), [
     { outcome: 'abortive', riichi: [1] },
@@ -220,10 +228,14 @@ test('stick part: draws keep the sticks on the table; nagashi collects them', ()
   assertEqual(sticksOf(game, 1), [0, 0, 1000, 0]);
 });
 
-test('stick part: chombo and imported rounds have none', () => {
+test('stick part: chombo has none', () => {
   const game = play(game4(), [{ outcome: 'chombo', offender: 1 }]);
   assertEqual(sticksOf(game, 0), [0, 0, 0, 0]);
-  assertEqual(stickDeltas({ deltas: [1000, -1000, 0, 0] }, { hand: 0, honba: 0, sticks: 2, scores: [] }, game.rules), [0, 0, 0, 0]);
+});
+
+test('stick part of an imported win: deposits and the sticks collected', () => {
+  const imported = { outcome: 'ron', winner: 0, loser: 1, riichi: [0], deltas: [9000, -8000, 0, 0], imported: true };
+  assertEqual(stickDeltas(imported, { hand: 0, honba: 0, sticks: 1, scores: [] }, defaultRules(4)), [1000, 0, 0, 0]);
 });
 
 test('stick part with pao: the winner still collects every stick', () => {

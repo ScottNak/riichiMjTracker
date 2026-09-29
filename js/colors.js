@@ -2,6 +2,20 @@
 
 // Players' picked colors, by name: 'Name': '#rrggbb'.
 export const PLAYER_COLORS = {
+  Scott: '#81c6e8',
+  Allen: '#c8120a',
+  Matt: '#fcdf1b',
+  Daryl: '#b5a7d6',
+  Rachel: '#fd96c1',
+  James: '#4dd359',
+  Mario: '#b6d7a8',
+  Emily: '#faf673',
+  Ben: '#ffa94d',
+  // Rare players share white.
+  Dave: '#ffffff',
+  Rohit: '#ffffff',
+  Kai: '#ffffff',
+  Rick: '#ffffff',
 };
 
 // Placeholder colors by seat, for players not listed above.

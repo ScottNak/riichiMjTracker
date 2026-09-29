@@ -22,7 +22,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - A round from a tapped-in hand also stores the hand: the hand tiles, winning tile, melds, dora and ura indicators, nuki-dora count, and the yaku toggles that were on. Riichi, ron or tsumo, and the winds come from the round and game, not the stored hand. Its han, fu, yakuman count, and pao are stored as well, and recalculating later rounds uses those, never a new reading of the hand.
 - Current scores are the sum of all point changes. Dealer, honba, and riichi sticks are recalculated from the round list.
 - Loading a game never recalculates its point changes, so changing rule settings or fixing the engine does not alter past games.
-- Editing or deleting a round recalculates the point changes of every round after it from their entered details and the game's own rules, since their honba and sticks may have changed. Rounds without entered details (imported history) keep their recorded point changes.
+- Editing or deleting a round recalculates the point changes of every round after it from their entered details and the game's own rules, since their honba and sticks may have changed. Imported rounds keep their recorded point changes.
 - If an edit means the game should have ended earlier, the game screen says after which round, and Scott fixes or deletes the rounds after it.
 
 ## Display
@@ -41,8 +41,8 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - Winner strip: the winner's identity color for ron, tsumo, and nagashi mangan; gray for exhaustive and abortive draws; black for chombo.
 - Player header: the player's name on their identity color. Identity colors appear only in the score tiles (as a tint), the headers, and the winner strip.
 - Thin vertical lines separate the player columns.
-- Identity colors are the colors the players picked, listed by name in `js/colors.js`. A player not listed gets a placeholder color by seat.
-- Player cell: the whole payment for the hand, including honba, in large type. Under it, one small line holds a small riichi stick icon if the player declared riichi, then the riichi stick movement: −1,000 for the player's deposit, and the sticks the winner collects (this round's plus any carried over). The amount is left out when it is 0, and the line when there is nothing on it. In an exhaustive draw where everyone is tenpai or nobody is, the large 0 is replaced with a small gray Tenpai or Noten (テンパイ / ノーテン in Japanese). Imported rounds without entered details show their whole point change in large type.
+- Identity colors are listed by name in `js/colors.js`: Scott light blue, Allen red, Matt yellow, Daryl lavender, Rachel pink, James green, Mario sage, Emily pale yellow, Ben orange (temporary until he picks). Players who rarely play (Dave, Rohit, Kai, Rick) share white. A player not listed gets a placeholder color by seat. Header text is black or white, whichever reads better on the color.
+- Player cell: the whole payment for the hand, including honba, in large type. Under it, one small line holds a small riichi stick icon if the player declared riichi, then the riichi stick movement: −1,000 for the player's deposit, and the sticks the winner collects (this round's plus any carried over). The amount is left out when it is 0, and the line when there is nothing on it. In an exhaustive draw where everyone is tenpai or nobody is, the large 0 is replaced with a small gray Tenpai or Noten (テンパイ / ノーテン in Japanese).
 
 ## Round entry
 - The table's last row is the entry row for the next round, on a light gray background to show it is active. It is hidden when the game is over and for viewers.
@@ -93,9 +93,11 @@ Per player, across all games: average placement, placement counts, win rate, dea
 Between players: relationship stats, such as who deals into whom.
 
 ## Past history
-- Past games live in a spreadsheet, one game per sheet. Each 局 has one or more rows of point changes, one column per player, with running totals after each 局.
-- Riichi deposits appear as separate −1000 rows, and collected riichi sticks as separate +1000 rows.
-- Imported games keep their point changes exactly as recorded. They are never checked against current scoring rules, because older games used different rules (for example, no kiriage mangan).
+- Past games were kept in `MJResults.xlsx`, one game per tab, and are imported once into `data.json`. New games are entered in the app only.
+- In a game tab, each 局's first row is the payment for the hand, one column per player. Riichi deposits appear as separate −1000 rows under it, and collected sticks as separate + rows.
+- `tools/import_history.py` reads the tabs into `tools/history.json`, and `tools/finish_import.mjs` turns that into `data.json`. Every correction to the spreadsheet's data (point fixes, dates, names, seating, rounds the numbers can't tell apart) is listed with its reason at the top of `tools/import_history.py`.
+- An imported round stores its outcome, who won, dealt in, was tenpai, or declared riichi, read from its point changes, and its point changes exactly as recorded. It has no han or fu and is marked imported, so it is never recalculated. `tools/finish_import.mjs` checks every imported round against the scoring engine and refuses to write `data.json` if one doesn't fit.
+- An imported game uses today's default rules except for its length, and no sudden death when every scheduled round was played without anyone reaching the return points. Where its payments don't fit today's rules (some older 3-player games added 100 per honba on a tsumo, or paid 2,000 in tenpai payments), its notes say so and that it may have been played incorrectly. Games that stopped before their scheduled end are marked ended by hand, and games the dealer ended in the last round are marked agari-yame.
 
 ## Hand entry
 - The hand entry screen covers the whole game screen. Its top line shows the round, the winner with Ron or Tsumo, and who dealt in on the left, and two tabs on the right: Tiles (selected first) and Han/Fu.
@@ -131,6 +133,7 @@ Between players: relationship stats, such as who deals into whom.
 - `js/analyzer.js`: turns a winning hand into yaku, fu, and han. For an incomplete hand, a hand with no yaku, or impossible input (such as a 5th copy of a tile), it returns an error id, never display text; `js/text.js` has the message for each id.
 - `js/hand.js`: the hand entry screen's pure logic: which picker tiles are still available, placing melds, and turning a stored hand into analyzer input.
 - `js/handview.js`: the hand entry screen's view and its actions.
+- `tools/`: the one-time import of past games (see "Past history"). Not used by the page.
 
 ## Testing
 - A `test.html` page runs the test suite in a browser. Nothing needs to be installed, but the page must be served over http (GitHub Pages, or a local server), since browsers block ES modules opened straight from a file.
@@ -140,6 +143,7 @@ Between players: relationship stats, such as who deals into whom.
 - Phases 1, 2, and 3 are complete, with all tests passing.
 - Scott has reviewed and approved the display names in `js/names.js`.
 - Phase 4 is built, with all tests passing. Next: Scott tries it on his phone, then phase 5.
+- Past games from `MJResults.xlsx` are imported into `data.json`.
 
 ## Phases
 1. **Scoring engine:** han and fu to points, dealer and non-dealer payments, tsumo splits, honba, riichi sticks, draw tenpai payments, nagashi mangan, pao, chombo, 3-player payments, and final standings.

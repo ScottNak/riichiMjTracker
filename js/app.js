@@ -218,7 +218,7 @@ function stripColor(round, game) {
     case 'draw':
     case 'abortive': return DRAW_COLOR;
     case 'chombo': return CHOMBO_COLOR;
-    default: return null; // imported rounds without entered details
+    default: return null;
   }
 }
 

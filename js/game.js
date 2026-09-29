@@ -10,6 +10,7 @@
 //   { outcome: 'abortive', kind, riichi, deltas }   kind: 'kyuushu' | 'suufon' | 'suucha' | 'suukaikan' (missing in older games)
 //   { outcome: 'chombo',   offender, deltas }
 // riichi lists the seats that declared riichi this round. pao is null or { seat, yakuman }.
+// Rounds imported from the old spreadsheet have imported: true and no han or fu. Their deltas are kept as recorded.
 // deltas include riichi deposits (-1000) and collected sticks, so scores are just the sum of deltas.
 
 import { RULES_4P, RULES_3P, winPayments, nagashiPayments, drawPayments, chomboPayments, finalStandings } from './scoring.js';
@@ -87,10 +88,10 @@ function winnerOf(round) {
 
 // The riichi stick part of a round's point changes: -1000 for each deposit, and every stick on the table
 // (carried over plus this round's) to the winner. The rest of the deltas is the payment for the hand, honba included.
-// Chombo returns riichi sticks, and imported rounds have no entered details, so both have no stick part.
+// Chombo returns riichi sticks, so it has no stick part.
 export function stickDeltas(round, state, rules) {
   const deltas = new Array(rules.players).fill(0);
-  if (!round.outcome || round.outcome === 'chombo') return deltas;
+  if (round.outcome === 'chombo') return deltas;
   const riichi = round.riichi ?? [];
   for (const seat of riichi) deltas[seat] -= 1000;
   const winner = winnerOf(round);
@@ -177,12 +178,12 @@ export function deleteRound(game, index) {
   return recalculateFrom({ ...game, rounds }, index);
 }
 
-// Rounds without entered details (imported history) keep their recorded deltas.
+// Imported rounds keep their recorded deltas.
 function recalculateFrom(game, index) {
   const { rules } = game;
   let state = startState(rules);
   const rounds = game.rounds.map((round, i) => {
-    const updated = i >= index && round.outcome ? { ...round, deltas: computeDeltas(round, state, rules) } : round;
+    const updated = i >= index && !round.imported ? { ...round, deltas: computeDeltas(round, state, rules) } : round;
     state = advance(state, updated, rules);
     return updated;
   });
