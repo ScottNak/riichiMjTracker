@@ -16,6 +16,7 @@ export const PLAYER_COLORS = {
   Rohit: '#ffffff',
   Kai: '#ffffff',
   Rick: '#ffffff',
+  Mahima: '#ffffff',
 };
 
 // Placeholder colors by seat, for players not listed above.
