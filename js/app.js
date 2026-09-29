@@ -9,6 +9,7 @@ import { TEXT, limitText } from './text.js';
 import * as store from './store.js';
 import { emptyHand, pick, activeMode, toggleMeldRed, removeIndicator, dropPosition, setWinTile, canAddNuki, analyze, paoYakuman, toStored, fromStored } from './hand.js';
 import { tilesTab } from './handview.js';
+import { statsPage, playerPage, LOW_FIRST } from './statsview.js';
 
 const app = document.getElementById('app');
 let published = [];
@@ -20,6 +21,9 @@ let form = blankForm();
 let editIndex = null; // round being edited, or null when entering a new round
 let armed = null;     // an action waiting for a second tap to confirm
 let rulesOpen = false; // whether the rules shelf on the setup screen is expanded
+// Stats filters and sort, shared by the Stats page and player pages. Dates are 'YYYY-MM-DD', or '' for no limit.
+let statsFilters = { players: 4, length: 'all', from: '', to: '', minGames: 5 };
+let statsSort = { key: 'points', desc: true };
 
 const SWITCHES = ['kiriageMangan', 'kazoeYakuman', 'busting', 'nagashiMangan', 'abortiveDraws', 'agariYame', 'suddenDeath'];
 const t = () => TEXT[language];
@@ -54,7 +58,7 @@ function blankForm(riichi = [], hand = emptyHand()) {
 
 function route() {
   const [name, id] = location.hash.slice(1).split('/');
-  return { name: name || 'home', id };
+  return { name: name || 'home', id: id && decodeURIComponent(id) };
 }
 
 function findGame(id) {
@@ -82,7 +86,13 @@ function roster() {
 
 function render() {
   const { name, id } = route();
-  const view = name === 'new' ? setupView() : name === 'game' ? gameView(id) : homeView();
+  const views = {
+    new: setupView,
+    game: () => gameView(id),
+    stats: () => statsPage({ games: [...published, ...local], filters: statsFilters, sort: statsSort, t: t(), esc, topBar }),
+    player: () => playerPage({ games: [...published, ...local], filters: statsFilters, name: id, t: t(), esc, fmtDate, topBar }),
+  };
+  const view = (views[name] ?? homeView)();
   const warning = saveFailed ? `<p class="warning">${t().saveFailed}</p>` : '';
   // Re-rendering replaces the hand entry screen, so keep its scroll position.
   const scroll = document.querySelector('.overlay')?.scrollTop ?? 0;
@@ -103,7 +113,7 @@ function gameList(games) {
       const color = playerColor(game.players[winner], winner);
       tint = ` style="--tint:${color};--mix:${textOn(color) === '#ffffff' ? 30 : 45}%"`;
     }
-    return `<li><a href="#game/${game.id}"${tint}>${esc(fmtDate(game.date))} · ${game.players.map(esc).join(', ')}</a></li>`;
+    return `<li><a href="#game/${game.id}"${tint}><span class="mode-tag">${t().modeTag[game.rules.players]}</span> ${esc(fmtDate(game.date))} · ${game.players.map(esc).join(', ')}</a></li>`;
   }).join('')}</ul>`;
 }
 
@@ -111,7 +121,7 @@ function homeView() {
   const inProgress = local.filter((game) => !replay(game).over);
   const finished = local.filter((game) => replay(game).over);
   return `
-    <button class="primary wide" data-action="new-game">${t().newGame}</button>
+    <div class="row"><button class="primary" data-action="new-game">${t().newGame}</button><button data-action="stats">${t().stats.title}</button></div>
     ${inProgress.length ? `<section><h2>${t().inProgress}</h2>${gameList(inProgress)}</section>` : ''}
     ${finished.length ? `<section><h2>${t().notExported}</h2>${gameList(finished)}
       <button class="wide" data-action="export">${t().export}</button>
@@ -140,8 +150,8 @@ function setupView() {
   const { rules, names, notes } = setupDraft;
   const oka = (rules.returnPoints - rules.startPoints) * rules.players;
   return `
-    <div class="title-row"><h2>${t().newGame}</h2>
-      <input type="date" data-draft-date value="${setupDraft.date}" aria-label="${t().date}"></div>
+    ${topBar('#', t().newGame)}
+    <div class="date-row"><input type="date" data-draft-date value="${setupDraft.date}" aria-label="${t().date}"></div>
     <div class="row toggles">${seg('players', t().playerOptions, rules.players)}${seg('length', t().lengthOptions, rules.length)}</div>
     <datalist id="roster">${roster().map((name) => `<option value="${esc(name)}">`).join('')}</datalist>
     <div class="setup-grid">
@@ -163,6 +173,11 @@ function setupView() {
     <div class="row"><button data-action="cancel-setup">${t().cancel}</button><button class="primary" data-action="start-game">${t().startGame}</button></div>`;
 }
 
+// The bar at the top of every page but Home: a back button (one level up) on the left and the page title centered.
+function topBar(back, title) {
+  return `<div class="topbar"><a class="back" href="${back}">‹ ${t().back}</a><h2>${title}</h2><span></span></div>`;
+}
+
 function sticksBadge(count) {
   return count > 0 ? `<span class="sticks" title="${t().sticksTitle}">${STICK} × ${count}</span>` : '';
 }
@@ -181,7 +196,7 @@ function scoreTiles(tiles, players) {
 
 function gameView(id) {
   const found = findGame(id);
-  if (!found) return `<p>${t().gameNotFound}</p><p><a href="#">${t().back}</a></p>`;
+  if (!found) return `${topBar('#', '')}<p>${t().gameNotFound}</p>`;
   const { game, editable } = found;
   const { rules, players } = game;
   const result = replay(game);
@@ -189,9 +204,9 @@ function gameView(id) {
   const dealer = dealerOf(state, rules);
   const live = finalStandings(state.scores, state.sticks, rules);
 
-  let html = result.over
-    ? `<h2>${t().over[result.reason]}</h2>`
-    : `<h2 class="round">${roundLabel(windOf(state, rules), handNumberOf(state, rules), state.honba, language)} ${sticksBadge(state.sticks)}</h2>`;
+  let html = topBar('#', result.over
+    ? t().over[result.reason]
+    : `<span class="round">${roundLabel(windOf(state, rules), handNumberOf(state, rules), state.honba, language)} ${sticksBadge(state.sticks)}</span>`);
 
   if (result.over) {
     const order = players.map((_, seat) => seat).sort((a, b) => live[a].rank - live[b].rank);
@@ -213,7 +228,7 @@ function gameView(id) {
   }
   if (editable) html += gameFooter(game, result);
   if (editable && isWin(form)) html += handScreen(game, editIndex === null ? state : result.before[editIndex]);
-  return html + `<p><a href="#">${t().allGames}</a></p>`;
+  return html;
 }
 
 // ---------- Round table ----------
@@ -576,6 +591,12 @@ const ACTIONS = {
     location.hash = `game/${game.id}`;
   },
   export: () => store.exportData(published, local.filter((game) => replay(game).over)),
+  stats: () => { location.hash = 'stats'; },
+  'stats-filter': ({ key, value }) => { statsFilters[key] = key === 'players' ? Number(value) : value; },
+  // Tapping the sorted column flips it; a new column starts with the best value first.
+  sort: ({ key }) => {
+    statsSort = key === statsSort.key ? { key, desc: !statsSort.desc } : { key, desc: !(LOW_FIRST.has(key) || key === 'name') };
+  },
 
   mode: ({ value }) => {
     if (value === 'other') form = { ...blankForm(form.riichi), menu: 'other' };
@@ -717,6 +738,8 @@ document.addEventListener('change', (event) => {
   else if (dataset.uma !== undefined) setupDraft.rules.uma[Number(dataset.uma)] = Number(el.value);
   else if (dataset.switch) setupDraft.rules[dataset.switch] = el.checked;
   else if (dataset.form) form[dataset.form] = el.value === '' ? null : Number(el.value);
+  else if (dataset.statsFilter === 'minGames') statsFilters.minGames = Math.max(1, Number(el.value) || 1);
+  else if (dataset.statsFilter) statsFilters[dataset.statsFilter] = el.value;
   else if (dataset.gameNotes !== undefined) { updateGame({ ...currentGame(), notes: el.value.trim() }); return; }
   else return;
   render();

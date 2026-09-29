@@ -4,7 +4,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 
 ## Platform
 - Static site on GitHub Pages. Plain HTML, CSS, and JavaScript (ES modules). No build step and no third-party libraries.
-- Only Scott enters data. Anyone with the link can view games and stats.
+- Only Scott enters data. Anyone with the link can view games and stats. There is no separate viewer mode: games in `data.json` are read-only on every device, and a game can be edited only on the device it was entered on.
 - Repo: https://github.com/ScottNak/riichiMjTracker. Live site: https://scottnak.github.io/riichiMjTracker/
 - The version lives in `index.html`, after the title. Each commit raises its last number by one, and the commit message starts with the new version (`0.0.15: …`). Scott's local copy is `C:\Users\scott\Claude\RiichiTracker`. Scott runs all git commands himself.
 - Tiles are the Regular SVGs from FluffyStuff's riichi-mahjong-tiles (public domain, CC0), stored in `tiles/`.
@@ -32,6 +32,8 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - When riichi sticks carry over from earlier rounds, the round label shows a riichi stick icon and the count (× 2).
 - Scores are shown as one tile per player, all in a single row in seat order. Each tile has the seat wind top left (東 in Japanese, E/S/W/N otherwise), the name top right, the score large in the middle, and at the bottom the final points the player would get if the game ended now. Each tile is tinted with the player's identity color. The dealer's tile is outlined.
 - When the game is over, the same tiles are sorted by placement, with the place (1st, 2nd…) top left, the final score including leftover sticks, and final points. 1st place is outlined.
+- Every page but Home starts with a bar: a Back link on the left that goes one level up (a player's page to Stats; Stats, new game, and a game to Home), and the page title centered (Stats, the player's name, New game, or the game's current round or result). There is no back link at the bottom of pages. The new game date sits on its own line under the bar.
+- Each game in the home screen's lists starts with a small player-count tag: 四麻 / 三麻 in Japanese, Yonma / Sanma in romaji, 4P / 3P in English.
 - Negative final points are shown with a triangle, like the spreadsheet: ▲17.3. Positive points show a plus sign: +53.3.
 
 ## Round table
@@ -45,7 +47,7 @@ A mobile-friendly riichi mahjong app hosted on GitHub Pages. It tracks points fo
 - Player cell: the whole payment for the hand, including honba, in large type. Under it, one small line holds a small riichi stick icon if the player declared riichi, then the riichi stick movement: −1,000 for the player's deposit, and the sticks the winner collects (this round's plus any carried over). The amount is left out when it is 0, and the line when there is nothing on it. In an exhaustive draw where everyone is tenpai or nobody is, the large 0 is replaced with a small gray Tenpai or Noten (テンパイ / ノーテン in Japanese).
 
 ## Round entry
-- The table's last row is the entry row for the next round, on a light gray background to show it is active. It is hidden when the game is over and for viewers.
+- The table's last row is the entry row for the next round, on a light gray background to show it is active. It is hidden when the game is over and for games already in `data.json`.
 - Each player cell in the entry row has a Riichi toggle, shown as a riichi stick, available at every step. It is disabled for chombo, since chombo returns riichi sticks.
 - A win is entered by tapping cells, with no Ron or Tsumo button: tap the winner's cell, then the cell of the player who dealt in for ron, or the winner's cell again for tsumo.
 - Under the entry row are two buttons, Draw and Other. They are hidden once a winner is tapped; Back brings them back.
@@ -89,8 +91,16 @@ Based on M-League rules, with these settings:
 - Scott can end a game at any point (for example, when someone has to leave). It is scored and counted in stats exactly like a game that ended normally. A game ended by hand can be resumed.
 
 ## Stats
-Per player, across all games: average placement, placement counts, win rate, deal-in rate, riichi rate, average win value, and total score.
-Between players: relationship stats, such as who deals into whom.
+- The home screen's Stats button opens the Stats page: one table with a row per player, sorted by tapping a column (tapping it again reverses it). Tapping a name opens that player's page: all their stats, and a table of each opponent.
+- Filters, shared by both pages: 4-player or 3-player (never mixed), length (All, East-only, East-South), and a date range (all time by default). The Stats page also has a minimum number of games (5 by default); players below it are hidden, and a note says how many.
+- Stats cover every finished game, from `data.json` and from this device. Games in progress don't count.
+- A hand is every round except chombo. Win, tsumo, deal-in, and riichi rates are per hand.
+- A win is ron, tsumo, or nagashi mangan; nagashi counts as a tsumo win. A deal-in is the ron discarder, and the pao-liable player whenever they pay.
+- Per player: games, average placement, placement counts, 1st and last rates, bust rate (games the player ended below 0; the player who caused it isn't counted), total and average final points, raw points (the sum of final score minus start points), hands, win, tsumo, deal-in, and riichi rates, and chombo count.
+- Win value, averaged over wins, three ways: the hand alone, with honba, and with riichi sticks (the winner's whole point change for the round, as the round table shows it). Average deal-in is what the discarder paid, honba included. Best hand is the largest hand plus honba, linked to its game.
+- Win values come from each round's point changes minus its riichi stick part, so imported rounds work the same as entered ones. Honba counts 300 each.
+- Per opponent: games together, how often the player finished above them, deal-ins each way with the points paid, and points exchanged: win and chombo payments between the two, without riichi sticks or tenpai payments.
+- Call rate isn't tracked, since rounds record only the winner's hand.
 
 ## Past history
 - Past games were kept in `MJResults.xlsx`, one game per tab, and are imported once into `data.json`. New games are entered in the app only.
@@ -129,6 +139,7 @@ Between players: relationship stats, such as who deals into whom.
 - `js/tiles.js`: tile notation and helpers. Tiles are written `1m`–`9m`, `1p`–`9p`, `1s`–`9s`, and `1z`–`7z` (East, South, West, North, Haku, Hatsu, Chun); a red five is `0m`, `0p`, or `0s`.
 - `js/scoring.js`: rule defaults and every point payment (wins, pao, nagashi, draws, chombo, final standings).
 - `js/names.js`: every display name for yaku, dora, honor tiles, winds, and round labels, in all three languages. The analyzer returns yaku ids, never display text.
+- `js/stats.js`: every stat, computed from finished games. `js/statsview.js`: the Stats page and player pages; their filter and sort state and actions are in `js/app.js`.
 - `js/text.js`: all other interface text, in all three languages. Every language has the same keys.
 - `js/analyzer.js`: turns a winning hand into yaku, fu, and han. For an incomplete hand, a hand with no yaku, or impossible input (such as a 5th copy of a tile), it returns an error id, never display text; `js/text.js` has the message for each id.
 - `js/hand.js`: the hand entry screen's pure logic: which picker tiles are still available, placing melds, and turning a stored hand into analyzer input.
@@ -142,7 +153,8 @@ Between players: relationship stats, such as who deals into whom.
 ## Progress
 - Phases 1, 2, and 3 are complete, with all tests passing.
 - Scott has reviewed and approved the display names in `js/names.js`.
-- Phase 4 is built, with all tests passing. Next: Scott tries it on his phone, then phase 5.
+- Phase 4 is built, with all tests passing.
+- Phase 5 is built, with all tests passing. Next: Scott reviews the stat labels in `js/text.js` and the Stats page layout on his phone.
 - Past games from `MJResults.xlsx` are imported into `data.json`.
 
 ## Phases
@@ -150,4 +162,4 @@ Between players: relationship stats, such as who deals into whom.
 2. **Hand analyzer:** tiles to every valid reading, then yaku, fu, and han for each, keeping the best.
 3. **Game tracker:** game setup, per-局 entry, live scoreboard, and editable round history.
 4. **Hand entry screen:** the tile picker, which feeds the analyzer and engine.
-5. **Results and stats:** per-player stats across all games, importing past history, and the view-only pages.
+5. **Results and stats:** per-player and per-opponent stats across all games, and importing past history.

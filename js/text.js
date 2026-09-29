@@ -52,7 +52,6 @@ const en = {
   endGame: 'End game',
   gameNotFound: 'Game not found.',
   back: 'Back',
-  allGames: '← All games',
 
   editing: (label) => `Editing ${label}`,
   outcomes: { ron: 'Ron', tsumo: 'Tsumo', draw: 'Draw', nagashi: 'Nagashi', abortive: 'Abortive', chombo: 'Chombo', other: 'Other' },
@@ -125,6 +124,33 @@ const en = {
   resumeGame: 'Resume game',
   deleteGame: 'Delete game',
   tapToDeleteGame: 'Tap again to delete game',
+
+  modeTag: { 4: '4P', 3: '3P' },
+  stats: {
+    title: 'Stats',
+    allLengths: 'All',
+    from: 'From',
+    to: 'To',
+    minGames: 'Min games',
+    player: 'Player',
+    columns: {
+      games: 'Games', avgPlace: 'Avg place', points: 'Points', avgPoints: 'Avg points', raw: 'Raw points',
+      firstRate: '1st rate', lastRate: 'Last rate', bustRate: 'Bust rate',
+      hands: 'Hands', winRate: 'Win rate', tsumoRate: 'Tsumo rate', dealInRate: 'Deal-in rate', riichiRate: 'Riichi rate', chombo: 'Chombo',
+      avgWinHand: 'Avg win: hand', avgWinHonba: 'Avg win: + honba', avgWinAll: 'Avg win: + sticks', avgDealIn: 'Avg deal-in', best: 'Best hand',
+    },
+    noGames: 'No finished games match.',
+    gameCount: (n) => `${n} game${n === 1 ? '' : 's'}.`,
+    hiddenPlayers: (n, min) => `${n} player${n === 1 ? '' : 's'} with fewer than ${min} games hidden.`,
+    tapHint: 'Tap a column to sort, or a name for that player’s stats.',
+    results: 'Results',
+    hands: 'Hands',
+    values: 'Hand values',
+    opponents: {
+      title: 'Opponents', together: 'Games', above: 'Finished above', fedThem: 'Dealt into them', theyFed: 'They dealt in', net: 'Points exchanged',
+      hint: 'Points exchanged: win and chombo payments between the two, without riichi sticks or tenpai payments.',
+    },
+  },
 };
 
 const romaji = {
@@ -171,6 +197,12 @@ const romaji = {
     tenhouNotDealer: 'Tenhou is only for the Oya.',
     chihouDealer: 'Chihou is only for non-dealers.',
     noYaku: 'No Yaku.',
+  },
+  modeTag: { 4: 'Yonma', 3: 'Sanma' },
+  stats: {
+    ...en.stats,
+    columns: { ...en.stats.columns, dealInRate: 'Houjuu rate', bustRate: 'Tobi rate', avgWinHonba: 'Avg win: + Honba', avgDealIn: 'Avg Houjuu' },
+    opponents: { ...en.stats.opponents, fedThem: 'Houjuu to them', theyFed: 'Houjuu from them', hint: 'Points exchanged: win and Chombo payments between the two, without riichi sticks or Tenpai payments.' },
   },
 };
 
@@ -224,7 +256,6 @@ const jp = {
   endGame: '終了する',
   gameNotFound: '対局が見つかりません',
   back: '戻る',
-  allGames: '← 対局一覧',
 
   editing: (label) => `${label}を編集中`,
   outcomes: { ron: 'ロン', tsumo: 'ツモ', draw: '流局', nagashi: '流し満貫', abortive: '途中流局', chombo: 'チョンボ', other: 'その他' },
@@ -297,6 +328,33 @@ const jp = {
   resumeGame: '対局を再開',
   deleteGame: '対局を削除',
   tapToDeleteGame: 'もう一度タップで対局を削除',
+
+  modeTag: { 4: '四麻', 3: '三麻' },
+  stats: {
+    title: '成績',
+    allLengths: '全て',
+    from: '開始日',
+    to: '終了日',
+    minGames: '最低対局数',
+    player: 'プレイヤー',
+    columns: {
+      games: '対局数', avgPlace: '平均順位', points: '合計ポイント', avgPoints: '平均ポイント', raw: '素点収支',
+      firstRate: 'トップ率', lastRate: 'ラス率', bustRate: 'トビ率',
+      hands: '局数', winRate: '和了率', tsumoRate: 'ツモ率', dealInRate: '放銃率', riichiRate: 'リーチ率', chombo: 'チョンボ',
+      avgWinHand: '平均打点', avgWinHonba: '平均打点（本場込み）', avgWinAll: '平均打点（供託込み）', avgDealIn: '平均放銃点', best: '最高打点',
+    },
+    noGames: '該当する対局がありません',
+    gameCount: (n) => `${n}対局`,
+    hiddenPlayers: (n, min) => `${min}対局未満の${n}人は非表示`,
+    tapHint: '列をタップで並べ替え、名前をタップで個人成績',
+    results: '順位・ポイント',
+    hands: '局成績',
+    values: '打点',
+    opponents: {
+      title: '対戦相手', together: '同卓数', above: '先着率', fedThem: '放銃した', theyFed: '放銃された', net: '点数収支',
+      hint: '点数収支：和了とチョンボの支払いの収支（リーチ棒・ノーテン罰符を除く）',
+    },
+  },
 };
 
 export const TEXT = { en, romaji, jp };

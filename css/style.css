@@ -65,8 +65,12 @@ input[type="checkbox"] { min-height: 0; width: 20px; height: 20px; }
 .row > button { flex: 1; }
 .seg { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
 .seg button { flex: 1 1 auto; }
-.title-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.title-row input { min-height: 34px; padding: 4px 8px; }
+/* Top bar: back on the left, the page title centered. The empty right column keeps the title centered. */
+.topbar { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 8px; margin: 4px 0 8px; }
+.topbar h2 { margin: 0; text-align: center; }
+.topbar .back { justify-self: start; color: var(--accent); text-decoration: none; font-weight: 600; white-space: nowrap; padding: 6px 0; }
+.date-row { display: flex; justify-content: flex-end; }
+.date-row input { min-height: 34px; padding: 4px 8px; }
 .row.toggles { margin: 8px 0; }
 .shelf { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 12px 0; padding: 2px 0; }
 .shelf .check input { flex-shrink: 0; }
@@ -194,3 +198,27 @@ ul.yaku { list-style: none; padding: 0; margin: 12px 0 4px; }
 ul.yaku li { display: flex; justify-content: space-between; padding: 3px 0; border-bottom: 1px solid var(--line); }
 .total { text-align: center; font-weight: 700; margin: 6px 0; }
 table.rounds.preview { margin-top: 14px; }
+
+/* Game lists: 3P/4P tag before the date. */
+.mode-tag { display: inline-block; font-size: 0.75rem; padding: 1px 6px; margin-right: 4px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--muted); vertical-align: 1px; }
+
+/* Stats: filters, the sortable table (scrolls sideways, names stay put), and a player's stat grid. */
+.filters .row { margin-top: 8px; align-items: center; }
+.filters .num-field { font-size: 0.85rem; }
+.filters .num-field input { width: auto; min-height: 34px; padding: 4px 6px; font-size: 0.9rem; }
+.filters input[type="number"] { width: 4em; }
+.table-scroll { overflow-x: auto; margin: 12px 0; border: 1px solid var(--line); border-radius: 8px; background: var(--card); }
+table.stats { border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 0.9rem; }
+.stats th, .stats td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: right; white-space: nowrap; }
+.stats thead th { font-size: 0.75rem; color: var(--muted); font-weight: 600; white-space: normal; min-width: 4.5em; vertical-align: bottom; }
+.stats thead th[data-action] { cursor: pointer; }
+.stats thead th.sorted { color: var(--accent); }
+.stats th:first-child { position: sticky; left: 0; z-index: 1; background: var(--card); text-align: left; }
+.stats small { color: var(--muted); }
+.name-chip { display: inline-block; padding: 2px 8px; border-radius: 6px; text-decoration: none; font-weight: 600; box-shadow: inset 0 0 0 1px var(--line); }
+.name-chip.big { font-size: 1.2rem; padding: 4px 12px; }
+.stat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5em, 1fr)); gap: 6px; }
+.stat-grid > div { display: flex; flex-direction: column; gap: 2px; background: var(--card); border: 1px solid var(--line); border-radius: 8px; padding: 6px 8px; }
+.stat-grid > div > span { font-size: 0.75rem; color: var(--muted); }
+.stat-grid strong { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
+.stat-grid small { font-weight: 400; color: var(--muted); font-size: 0.8rem; }

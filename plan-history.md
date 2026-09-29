@@ -14,3 +14,6 @@ Why things are the way they are. Current rules live in [plan.md](plan.md).
 - **Yakuman has its own button instead of typing 13/26/39 han** (see "Hand entry"). 13+ typed han is a counted (kazoe) yakuman: it never becomes a double, pao doesn't apply, and it drops to sanbaiman with kazoe off. A real yakuman must stay distinguishable from it.
 - **Tile entry's Riichi toggle is the entry row's toggle, not a copy** (see "Hand entry"). A forgotten riichi can be fixed without leaving the screen, and one state means the two places can never disagree. There is still no Ron/Tsumo toggle: the cell taps decide it.
 - **Recalculation uses stored han and fu, not the hand** (see "Data model"). Re-reading a stored hand after an earlier round is edited could silently change a result Scott already checked; only honba and sticks should move.
+- **No viewer mode** (see "Platform"). Only Scott can commit `data.json`, and games in it are already read-only, so a separate view-only mode would add nothing. Phase 5 dropped its "view-only pages" item for this reason.
+- **3-player and 4-player stats are never combined** (see "Stats"). Placement and final points mean different things in each (3rd is last in sanma).
+- **No call rate** (see "Stats"). It needs every player's calls each hand, and rounds store only the winner's hand. Imported rounds have no hand at all.
