@@ -155,7 +155,7 @@ Based on M-League rules, with these settings:
 - Phases 1, 2, and 3 are complete, with all tests passing.
 - Scott has reviewed and approved the display names in `js/names.js`.
 - Phase 4 is built, with all tests passing.
-- Phase 5 is built, with all tests passing. Next: Scott reviews the stat labels in `js/text.js` and the Stats page layout on his phone.
+- Phase 5 is complete, with all tests passing. Scott has reviewed the stat labels and the Stats page layout.
 - Past games from `MJResults.xlsx` are imported into `data.json`.
 
 ## Phases
