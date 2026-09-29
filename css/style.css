@@ -34,7 +34,7 @@
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--text); font: 16px/1.4 system-ui, -apple-system, "Hiragino Sans", "Yu Gothic UI", sans-serif; }
 header { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 16px; border-bottom: 1px solid var(--line); background: var(--card); }
-.title { font-weight: 700; color: var(--text); text-decoration: none; }
+.title { font-weight: 700; color: var(--text); text-decoration: none; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
 .title .version { font-size: 0.7rem; font-weight: 400; color: var(--muted); }
 main { max-width: 640px; margin: 0 auto; padding: 12px 16px 48px; }
 h2 { font-size: 1.25rem; margin: 12px 0 8px; }
@@ -223,3 +223,8 @@ table.stats { border-collapse: collapse; font-variant-numeric: tabular-nums; fon
 .stat-grid > div > span { font-size: 0.75rem; color: var(--muted); }
 .stat-grid strong { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
 .stat-grid small { font-weight: 400; color: var(--muted); font-size: 0.8rem; }
+
+/* QR code popup: the code large in the middle, the address under it. Tapping anywhere closes it. */
+.qr-pop { position: fixed; inset: 0; z-index: 20; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; background: rgba(0, 0, 0, 0.7); cursor: pointer; }
+.qr-pop img { width: min(80vw, 360px); height: auto; border-radius: 12px; background: #ffffff; }
+.qr-pop p { margin: 0 16px; color: #ffffff; font-size: 0.9rem; text-align: center; word-break: break-all; }

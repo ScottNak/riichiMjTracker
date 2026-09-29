@@ -3,6 +3,7 @@
 
 const en = {
   loading: 'Loading…',
+  qr: 'QR code for this site',
   saveFailed: 'This browser refused to save. Keep this page open and export or note the scores.',
   newGame: 'New game',
   inProgress: 'In progress',
@@ -209,6 +210,7 @@ const romaji = {
 
 const jp = {
   loading: '読み込み中…',
+  qr: 'このサイトのQRコード',
   saveFailed: 'このブラウザに保存できませんでした。ページを閉じずに、書き出すか点数を控えてください。',
   newGame: '新規対局',
   inProgress: '対局中',

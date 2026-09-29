@@ -24,6 +24,11 @@ let rulesOpen = false; // whether the rules shelf on the setup screen is expande
 // Stats filters and sort, shared by the Stats page and player pages. Dates are 'YYYY-MM-DD', or '' for no limit.
 let statsFilters = { players: 4, length: 'all', from: '', to: '', minGames: 5 };
 let statsSort = { key: 'points', desc: true };
+// The QR code popup, opened by double-tapping the title. qr.png opens this address.
+const SITE_URL = 'https://scottnak.github.io/riichiMjTracker/';
+let showQr = false;
+let lastTitleTap = 0;
+const DOUBLE_TAP_MS = 400;
 
 const SWITCHES = ['kiriageMangan', 'kazoeYakuman', 'busting', 'nagashiMangan', 'abortiveDraws', 'agariYame', 'suddenDeath'];
 const t = () => TEXT[language];
@@ -96,7 +101,8 @@ function render() {
   const warning = saveFailed ? `<p class="warning">${t().saveFailed}</p>` : '';
   // Re-rendering replaces the hand entry screen, so keep its scroll position.
   const scroll = document.querySelector('.overlay')?.scrollTop ?? 0;
-  app.innerHTML = warning + view;
+  const qr = showQr ? `<div class="qr-pop" data-action="close-qr"><img src="qr.png" alt="${t().qr}"><p>${SITE_URL}</p></div>` : '';
+  app.innerHTML = warning + view + qr;
   const overlay = document.querySelector('.overlay');
   if (overlay) overlay.scrollTop = scroll;
   document.body.classList.toggle('locked', Boolean(overlay));
@@ -592,6 +598,13 @@ const ACTIONS = {
   },
   export: () => store.exportData(published, local.filter((game) => replay(game).over)),
   stats: () => { location.hash = 'stats'; },
+  // The title is also the Home link; a second tap within DOUBLE_TAP_MS opens the QR code.
+  title: () => {
+    const now = Date.now();
+    if (now - lastTitleTap < DOUBLE_TAP_MS) showQr = true;
+    lastTitleTap = now;
+  },
+  'close-qr': () => { showQr = false; },
   'stats-filter': ({ key, value }) => { statsFilters[key] = key === 'players' ? Number(value) : value; },
   // Tapping the sorted column flips it; a new column starts with the best value first.
   sort: ({ key }) => {
