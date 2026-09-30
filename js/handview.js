@@ -17,22 +17,26 @@ function tileFile(text) {
 }
 
 // A tile picture. With an action, it is a button.
+let readOnly = false; // set by tilesTab: a read-only hand has no buttons
 function tile(text, action = '', extra = '', faded = false) {
+  if (readOnly) action = '';
   const face = `<img src="tiles/${tileFile(text)}.svg" alt="${text}">`;
   const cls = faded ? 'mj faded' : 'mj';
   return action ? `<button class="${cls}" data-action="${action}" ${extra}>${face}</button>` : `<span class="${cls}">${face}</span>`;
 }
 
-// ctx: { form, rules, riichi, tsumo, dealer, result, paoPicker, t, language }
+// ctx: { form, rules, riichi, tsumo, dealer, result, paoPicker, readOnly, t, language }
+// readOnly shows a stored hand and what it scores, with nothing to tap.
 export function tilesTab(ctx) {
   const { form: f, rules, riichi, tsumo, dealer, result, paoPicker, t, language } = ctx;
+  readOnly = Boolean(ctx.readOnly);
   const { hand } = f;
   const players = rules.players;
   const modes = ['hand', 'chi', 'pon', 'kan', 'ankan'];
   const chosen = [...modes, 'dora', ...(riichi ? ['ura'] : [])].includes(f.mode) ? f.mode : 'hand';
   const mode = activeMode(hand, chosen, riichi);
   // Once the hand scores, the controls hide until a tile is removed or Dora/Ura is tapped (f.expand).
-  const open = !result.ok || f.expand;
+  const open = !readOnly && (!result.ok || f.expand);
 
   // The hand, with the winning tile apart. Tap a tile to remove it; hold one to make it the winning tile.
   const shown = handDisplay(hand);
@@ -48,13 +52,14 @@ export function tilesTab(ctx) {
       return meld.tiles.map((text, p) => (/[05][mps]/.test(text) && meld.type !== 'minkan'
         ? tile(text, 'meld-red', `data-meld="${m}" data-pos="${p}"`) : tile(text))).join('');
     };
-    html += `<div class="hand-row">${hand.melds.map((meld, m) => `<span class="meld">${meldTiles(meld, m)}<button class="x" data-action="meld-remove" data-meld="${m}" aria-label="${t.remove}">✕</button></span>`).join('')}</div>`;
+    html += `<div class="hand-row">${hand.melds.map((meld, m) => `<span class="meld">${meldTiles(meld, m)}${readOnly ? '' : `<button class="x" data-action="meld-remove" data-meld="${m}" aria-label="${t.remove}">✕</button>`}</span>`).join('')}</div>`;
   }
 
   // Dora and ura indicators on one line: each label is the button that points the picker at its tiles.
-  const indicators = (kind, label) => `<span class="ind"><button class="small${open && mode === kind ? ' on' : ''}" data-action="hand-mode" data-value="${kind}">${label}</button>${hand[kind].map((text, p) =>
+  const indicators = (kind, label) => `<span class="ind">${readOnly ? `<span class="muted">${label}</span>` : `<button class="small${open && mode === kind ? ' on' : ''}" data-action="hand-mode" data-value="${kind}">${label}</button>`}${hand[kind].map((text, p) =>
     tile(text, 'indicator-remove', `data-kind="${kind}" data-pos="${p}"`)).join('')}</span>`;
   html += `<div class="ind-row">${indicators('dora', YAKU_NAMES.dora[language])}${riichi ? indicators('ura', YAKU_NAMES.uraDora[language]) : ''}</div>`;
+  if (players === 3 && readOnly && hand.nuki > 0) html += `<div class="ind-row"><span class="muted">${YAKU_NAMES.nukiDora[language]}</span><span>${hand.nuki}</span></div>`;
   if (players === 3 && open) {
     html += `<div class="ind-row"><span class="muted">${YAKU_NAMES.nukiDora[language]}</span>
       <button class="small" data-action="nuki" data-value="-1" ${hand.nuki === 0 ? 'disabled' : ''}>−</button>
@@ -90,7 +95,7 @@ export function tilesTab(ctx) {
       ? t.yakuman(result.yakuman)
       : [t.hanFu(result.han, result.fu), limitText(limitName(result, rules), 0, t)].filter(Boolean).join(' · ');
     html += `<p class="total">${total}</p>`;
-    if (paoYakuman(result) > 0) html += `<div class="value-row">${paoPicker}</div>`;
+    if (paoYakuman(result) > 0 && !readOnly) html += `<div class="value-row">${paoPicker}</div>`;
   }
   return html;
 }

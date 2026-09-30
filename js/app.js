@@ -20,6 +20,7 @@ let setupDraft = null;
 let form = blankForm();
 let editIndex = null; // round being edited, or null when entering a new round
 let armed = null;     // an action waiting for a second tap to confirm
+let viewIndex = null; // round whose hand is shown read-only, or null
 let rulesOpen = false; // whether the rules shelf on the setup screen is expanded
 // Stats filters and sort, shared by the Stats page and player pages. Dates are 'YYYY-MM-DD', or '' for no limit.
 let statsFilters = { players: 4, length: 'all', from: '', to: '', minGames: 5 };
@@ -234,6 +235,7 @@ function gameView(id) {
   }
   if (editable) html += gameFooter(game, result);
   if (editable && isWin(form)) html += handScreen(game, editIndex === null ? state : result.before[editIndex]);
+  if (viewIndex !== null && game.rounds[viewIndex]?.hand) html += handViewScreen(game, viewIndex, result.before[viewIndex]);
   return html;
 }
 
@@ -274,7 +276,9 @@ function roundRow(game, round, stateAt, index, canEdit) {
   const { rules } = game;
   const sticks = stickDeltas(round, stateAt, rules);
   const riichi = round.outcome === 'chombo' ? [] : round.riichi ?? [];
-  const edit = canEdit ? `data-action="edit-round" data-index="${index}"` : '';
+  // An editable round opens for editing; otherwise a round with a stored hand opens it read-only.
+  const edit = canEdit ? `data-action="edit-round" data-index="${index}"`
+    : round.hand && editIndex === null ? `data-action="view-round" data-index="${index}"` : '';
   // A draw where everyone is tenpai, or nobody is, pays nothing; say which instead of showing 0s.
   const word = round.outcome === 'draw' && new Set(round.tenpai).size === 1 ? (round.tenpai[0] ? t().tenpai : t().noten) : null;
   return `<tr>${roundCell(stateAt, rules, edit)}${strip(stripColor(round, game))}${game.players.map((_, seat) =>
@@ -550,6 +554,18 @@ function handScreen(game, stateAt) {
   return `<div class="overlay"><div class="sheet">${html}</div></div>`;
 }
 
+// A stored hand shown read-only over the game screen: the tiles and what they score, with Back.
+function handViewScreen(game, index, stateAt) {
+  const { rules, players } = game;
+  const f = formFromEntry(game.rounds[index]);
+  const context = winContext(f, stateAt, rules);
+  const who = `<strong>${esc(players[f.winner])}</strong> ${t().outcomes[f.outcome]}${f.outcome === 'ron' ? ` · ${esc(players[f.loser])} ${t().dealtIn}` : ''}`;
+  let html = `<div class="sheet-head"><p>${roundLabel(windOf(stateAt, rules), handNumberOf(stateAt, rules), stateAt.honba, language)} · ${who}</p></div>`;
+  html += tilesTab({ form: f, rules, ...context, result: analyze(f.hand, context, rules), readOnly: true, t: t(), language });
+  html += `<div class="row"><button data-action="close-view">${t().back}</button></div>`;
+  return `<div class="overlay"><div class="sheet">${html}</div></div>`;
+}
+
 // The pao picker: None, or any player but the winner.
 function paoPicker(game) {
   const others = game.players.map((name, seat) => [seat, esc(name)]).filter(([seat]) => seat !== form.winner);
@@ -665,6 +681,8 @@ const ACTIONS = {
     editIndex = Number(index);
     form = formFromEntry(currentGame().rounds[editIndex]);
   },
+  'view-round': ({ index }) => { viewIndex = Number(index); },
+  'close-view': () => { viewIndex = null; },
   'cancel-edit': () => { editIndex = null; form = blankForm(); },
   'delete-round': () => {
     updateGame(deleteRound(currentGame(), editIndex));
@@ -765,6 +783,7 @@ document.addEventListener('toggle', (event) => {
 window.addEventListener('hashchange', () => {
   armed = null;
   editIndex = null;
+  viewIndex = null;
   form = blankForm();
   render();
 });
