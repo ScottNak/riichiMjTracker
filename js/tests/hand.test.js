@@ -1,5 +1,5 @@
 import { test, assertEqual } from './runner.js';
-import { HAND_ERRORS, activeMode, completesHand, emptyHand, pick, canPick, removeIndicator, dropPosition, setWinTile, isFull, handDisplay, toggleMeldRed, canAddNuki, analyze, analyzerInput, availableToggles, paoYakuman, toStored, fromStored } from '../hand.js';
+import { HAND_ERRORS, activeMode, completesHand, emptyHand, pick, canPick, removeIndicator, setWinTile, isFull, handDisplay, toggleMeldRed, canAddNuki, analyze, analyzerInput, availableToggles, paoYakuman, toStored, fromStored } from '../hand.js';
 import { tiles } from '../tiles.js';
 import { RULES_4P, RULES_3P } from '../scoring.js';
 import { TEXT } from '../text.js';
@@ -55,33 +55,29 @@ test('ura needs riichi, and no more ura than dora', () => {
   assertEqual(canPick(hand, 'ura', '3m', 4, true), false);
 });
 
-test('at most 4 dora indicators; a removed one leaves a placeholder the next tap fills', () => {
+test('at most 4 dora indicators; removing one closes the gap', () => {
   const hand = emptyHand();
   for (const text of ['1m', '2m', '3m', '4m']) pick(hand, 'dora', text, 4, false);
   assertEqual(canPick(hand, 'dora', '5m', 4, false), false);
-  for (const text of ['1p', '2p', '3p', '4p']) pick(hand, 'ura', text, 4, true);
+  for (const text of ['1p', '2p', '3p']) pick(hand, 'ura', text, 4, true);
   removeIndicator(hand, 'dora', 1);
-  assertEqual([hand.dora, hand.ura], [['1m', null, '3m', '4m'], ['1p', '2p', '3p', '4p']]);
-  assertEqual(activeMode(tapIn(hand, '123m456p789s23s99p4s'), 'hand', true), 'dora');
-  pick(hand, 'dora', '5m', 4, false);
-  assertEqual(hand.dora[1], '5m');
+  assertEqual([hand.dora, hand.ura], [['1m', '3m', '4m'], ['1p', '2p', '3p']]);
   removeIndicator(hand, 'ura', 0);
-  assertEqual(activeMode(hand, 'hand', true), 'ura');
+  assertEqual(hand.ura, ['2p', '3p']);
+  assertEqual(activeMode(tapIn(hand, '123m456p789s23s99p4s'), 'hand', true), 'ura');
   pick(hand, 'ura', '6m', 4, true);
-  assertEqual(hand.ura, ['6m', '2p', '3p', '4p']);
+  assertEqual(hand.ura, ['2p', '3p', '6m']);
 });
 
-test('a placeholder stays until filled; tapping it drops the position', () => {
+test('removing a dora drops the last ura when there would be more ura than dora', () => {
   const hand = emptyHand();
   pick(hand, 'dora', '1m', 4, false);
   pick(hand, 'dora', '2m', 4, false);
   pick(hand, 'ura', '3m', 4, true);
-  removeIndicator(hand, 'dora', 1);
-  assertEqual([hand.dora, hand.ura], [['1m', null], ['3m']]);
-  dropPosition(hand, 1);
-  assertEqual([hand.dora, hand.ura], [['1m'], ['3m']]);
-  removeIndicator(hand, 'ura', 0);
-  dropPosition(hand, 0);
+  pick(hand, 'ura', '4m', 4, true);
+  removeIndicator(hand, 'dora', 0);
+  assertEqual([hand.dora, hand.ura], [['2m'], ['3m']]);
+  removeIndicator(hand, 'dora', 0);
   assertEqual([hand.dora, hand.ura], [[], []]);
 });
 
@@ -94,17 +90,30 @@ test('holding a tile makes it the winning tile once the hand is full', () => {
   assertEqual(partial.tiles, ['1m', '2m', '3m']);
 });
 
-test('melds: one tap places the meld and goes back to Hand', () => {
+test('melds: a meld mode stays selected while another meld fits', () => {
   const hand = emptyHand();
-  assertEqual(pick(hand, 'chi', '3p', 4, false), 'hand');
+  assertEqual(pick(hand, 'chi', '3p', 4, false), 'chi');
   assertEqual(hand.melds, [{ type: 'chi', tiles: ['3p', '4p', '5p'] }]);
   assertEqual(canPick(hand, 'chi', '8p', 4, false), false);
   assertEqual(canPick(hand, 'chi', '1z', 4, false), false);
-  pick(hand, 'kan', '5s', 4, false);
+  assertEqual(pick(hand, 'kan', '5s', 4, false), 'kan');
   assertEqual(hand.melds[1], { type: 'minkan', tiles: ['0s', '5s', '5s', '5s'] });
-  pick(hand, 'ankan', '7z', 4, false);
+  assertEqual(pick(hand, 'ankan', '7z', 4, false), 'ankan');
   assertEqual(hand.melds[2].type, 'ankan');
   assertEqual(hand.tiles.length, 0);
+});
+
+test('melds: back to Hand once four melds are in', () => {
+  const hand = emptyHand();
+  for (const text of ['1z', '2z', '3z']) pick(hand, 'pon', text, 4, false);
+  assertEqual(pick(hand, 'pon', '4z', 4, false), 'hand');
+});
+
+test('melds: back to Hand once the hand has no room for another meld', () => {
+  const hand = tapIn(emptyHand(), '11m');
+  assertEqual(pick(hand, 'pon', '1z', 4, false), 'pon');
+  tapIn(hand, '2345m');
+  assertEqual(pick(hand, 'pon', '2z', 4, false), 'hand');
 });
 
 test('melds: no room once the hand has too many tiles', () => {

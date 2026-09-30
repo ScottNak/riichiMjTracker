@@ -1,0 +1,4509 @@
+[
+ {
+  "id": "import-jan30",
+  "date": "2024-01-30",
+  "createdAt": "2024-01-30T00:00:03Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Jan30\".",
+  "length": "east",
+  "players": [
+   "Matt",
+   "Allen",
+   "Scott",
+   "Dave"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [
+     0,
+     2
+    ],
+    "deltas": [
+     -13000,
+     0,
+     -1000,
+     14000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8000,
+     0,
+     8000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     2000,
+     0,
+     0,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -12000,
+     12000,
+     0,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-feb6",
+  "date": "2024-02-06",
+  "createdAt": "2024-02-06T00:00:04Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Feb6\".",
+  "length": "east",
+  "players": [
+   "Emily",
+   "Matt",
+   "Scott",
+   "Allen"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     2000,
+     -2000,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     true,
+     false,
+     true
+    ],
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     -1500,
+     500,
+     -1500,
+     1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     9300,
+     -8300,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     5200,
+     -5200,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -1500,
+     0,
+     0,
+     1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -8000,
+     8000,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-feb20",
+  "date": "2024-02-20",
+  "createdAt": "2024-02-20T00:00:05Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Feb20\".",
+  "length": "east",
+  "players": [
+   "Dave",
+   "Matt",
+   "Allen",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -1000,
+     1000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -2600,
+     2600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "chombo",
+    "offender": 1,
+    "deltas": [
+     2000,
+     -8000,
+     4000,
+     2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     5000,
+     -2000,
+     -2000,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     8000,
+     0,
+     -8000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-apr16-1",
+  "date": "2024-04-16",
+  "createdAt": "2024-04-16T00:00:06Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Apr16-1\".",
+  "length": "east",
+  "players": [
+   "Dave",
+   "Matt",
+   "Allen",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -8000,
+     8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -7700,
+     7700,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     18300,
+     -18300,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-apr16-2",
+  "date": "2024-04-16",
+  "createdAt": "2024-04-16T00:00:07Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Apr16-2\".",
+  "length": "east",
+  "players": [
+   "Scott",
+   "Allen",
+   "Matt",
+   "Dave"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -700,
+     1500,
+     -400,
+     -400
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [],
+    "deltas": [
+     -1000,
+     -2000,
+     -1000,
+     4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -3900,
+     -3900,
+     11700,
+     -3900
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -2300,
+     2300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     true,
+     false,
+     true
+    ],
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     -1500,
+     1500,
+     -1500,
+     500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     14300,
+     -12300,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-apr23-3m",
+  "date": "2024-04-23",
+  "createdAt": "2024-04-23T00:00:08Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Apr23 (3M)\".",
+  "length": "south",
+  "players": [
+   "Matt",
+   "Scott",
+   "Dave"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8000,
+     8000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8000,
+     0,
+     8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -1300,
+     1300,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     7700,
+     0,
+     -7700
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -4100,
+     6200,
+     -2100
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     12000,
+     -12000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -12000,
+     -12000,
+     24000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-may7",
+  "date": "2024-05-07",
+  "createdAt": "2024-05-07T00:00:09Z",
+  "notes": "Imported from MJResults.xlsx, tab \"May7\".",
+  "length": "east",
+  "players": [
+   "Scott",
+   "Matt",
+   "Allen",
+   "Rohit"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [],
+    "deltas": [
+     -2600,
+     -1300,
+     -1300,
+     5200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -1000,
+     1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     8000,
+     0,
+     -8000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -3000,
+     -3000,
+     12000,
+     -6000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-may21-3m",
+  "date": "2024-05-21",
+  "createdAt": "2024-05-21T00:00:10Z",
+  "notes": "Imported from MJResults.xlsx, tab \"May21 (3M)\".",
+  "length": "east",
+  "players": [
+   "Scott",
+   "Allen",
+   "Rohit"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -2600,
+     2600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     33000,
+     0,
+     -33000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -2000,
+     -2000,
+     4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -3100,
+     9200,
+     -6100
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-aug13",
+  "date": "2024-08-13",
+  "createdAt": "2024-08-13T00:00:11Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Aug13\".",
+  "length": "south",
+  "players": [
+   "Scott",
+   "Rachel",
+   "Matt",
+   "Daryl"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -6000,
+     -3000,
+     12000,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -1000,
+     0,
+     1000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     -1000,
+     -1000,
+     4000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     2600,
+     0,
+     -2600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     0,
+     6200,
+     -5200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     12000,
+     -4000,
+     -4000,
+     -4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     1800,
+     -1800,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     false,
+     true,
+     false
+    ],
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     500,
+     -1500,
+     1500,
+     -1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     9600,
+     0,
+     0,
+     -8600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -2500,
+     2500,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2000,
+     2000,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     12300,
+     0,
+     -12300
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-aug20-3m",
+  "date": "2024-08-20",
+  "createdAt": "2024-08-20T00:00:12Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Aug20 (3M)\".",
+  "length": "south",
+  "players": [
+   "Scott",
+   "Allen",
+   "Rohit"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -1000,
+     -500,
+     1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     13000,
+     -1000,
+     -12000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     0,
+     -13000,
+     13000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     16300,
+     -16300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -6000,
+     -3000,
+     9000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     6200,
+     0,
+     -6200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -3000,
+     9000,
+     -6000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-aug27-3m",
+  "date": "2024-08-27",
+  "createdAt": "2024-08-27T00:00:13Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Aug27 (3M)\".",
+  "length": "south",
+  "players": [
+   "Daryl",
+   "Kai",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     0,
+     -9000,
+     9000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     -16000,
+     17000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     0,
+     13000,
+     -13000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -4000,
+     6000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     0,
+     -3000,
+     3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -18000,
+     0,
+     18000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-sep24",
+  "date": "2024-09-24",
+  "createdAt": "2024-09-24T00:00:14Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Sep24\".",
+  "length": "east",
+  "players": [
+   "James",
+   "Daryl",
+   "Matt",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2000,
+     0,
+     2000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -5200,
+     0,
+     0,
+     5200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -3900,
+     3900,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -400,
+     1400,
+     -600,
+     -400
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -12000,
+     0,
+     12000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -1800,
+     0,
+     0,
+     1800
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-oct15",
+  "date": "2024-10-15",
+  "createdAt": "2024-10-15T00:00:15Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Oct15\".",
+  "length": "east",
+  "players": [
+   "Scott",
+   "Daryl",
+   "Allen",
+   "Rachel"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8000,
+     0,
+     0,
+     8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     6200,
+     0,
+     -5200,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -3900,
+     0,
+     0,
+     3900
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -5800,
+     5800
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-oct22-3m",
+  "date": "2024-10-22",
+  "createdAt": "2024-10-22T00:00:16Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Oct22 (3M)\".",
+  "length": "east",
+  "players": [
+   "Allen",
+   "Daryl",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     24000,
+     -12000,
+     -12000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     true,
+     true
+    ],
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     0,
+     0,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -16600,
+     17600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     9000,
+     -6000,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     3000,
+     -2000,
+     -1000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-oct29",
+  "date": "2024-10-29",
+  "createdAt": "2024-10-29T00:00:17Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Oct29\".",
+  "length": "east",
+  "players": [
+   "Scott",
+   "Daryl",
+   "Rachel",
+   "Rick"
+  ],
+  "rounds": [
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     true,
+     true,
+     true
+    ],
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     -3000,
+     1000,
+     0,
+     1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     14300,
+     -1000,
+     -12300,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     8000,
+     -2000,
+     -4000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     2000,
+     -2000,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-nov5",
+  "date": "2024-11-05",
+  "createdAt": "2024-11-05T00:00:18Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Nov5\".",
+  "length": "east",
+  "players": [
+   "Rachel",
+   "Scott",
+   "Rohit",
+   "Allen"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     0,
+     3000,
+     0,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     1600,
+     -1600,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     -18000,
+     0,
+     19000,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     false,
+     false,
+     true
+    ],
+    "riichi": [],
+    "deltas": [
+     -1000,
+     -1000,
+     -1000,
+     3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     4500,
+     -4500,
+     0,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-nov26",
+  "date": "2024-11-26",
+  "createdAt": "2024-11-26T00:00:19Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Nov26\".",
+  "length": "south",
+  "players": [
+   "Scott",
+   "Matt",
+   "Allen",
+   "James"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -5000,
+     -2000,
+     -2000,
+     9000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     3900,
+     0,
+     -2900
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "chombo",
+    "offender": 3,
+    "deltas": [
+     2000,
+     4000,
+     2000,
+     -8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8300,
+     0,
+     0,
+     8300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -3000,
+     12000,
+     -6000,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     false,
+     true,
+     false
+    ],
+    "riichi": [],
+    "deltas": [
+     -1000,
+     -1000,
+     3000,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     12300,
+     -12300,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -2200,
+     -1200,
+     4600,
+     -1200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     0,
+     3000,
+     0,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     0,
+     -1000,
+     13300,
+     -12300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -1500,
+     1500,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1800,
+     -800,
+     3400,
+     -800
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -3200,
+     3200,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -1300,
+     5200,
+     -1300,
+     -2600
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-jan2125-3m",
+  "date": "2025-01-21",
+  "createdAt": "2025-01-21T00:00:20Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Jan2125 (3M)\".",
+  "length": "east",
+  "players": [
+   "Mario",
+   "Daryl",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8000,
+     0,
+     8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -3600,
+     6200,
+     -2600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     -8100,
+     -17100,
+     25200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     0,
+     1
+    ],
+    "deltas": [
+     -13000,
+     -13000,
+     26000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -18300,
+     0,
+     18300
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-jan2825",
+  "date": "2025-01-28",
+  "createdAt": "2025-01-28T00:00:21Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Jan2825\".",
+  "length": "south",
+  "players": [
+   "Mario",
+   "Scott",
+   "Matt",
+   "Daryl"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     12000,
+     0,
+     -12000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "chombo",
+    "offender": 0,
+    "deltas": [
+     -8000,
+     4000,
+     2000,
+     2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     -2000,
+     -1000,
+     3000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     2600,
+     -2600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     -400,
+     -1400,
+     2500,
+     -700
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -6000,
+     12000,
+     -3000,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "chombo",
+    "offender": 0,
+    "deltas": [
+     -8000,
+     4000,
+     2000,
+     2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     true,
+     true,
+     false
+    ],
+    "riichi": [],
+    "deltas": [
+     1000,
+     1000,
+     1000,
+     -3000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-feb425",
+  "date": "2025-02-04",
+  "createdAt": "2025-02-04T00:00:22Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Feb425\".",
+  "length": "east",
+  "players": [
+   "Allen",
+   "Daryl",
+   "Scott",
+   "James"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -8000,
+     8000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     16000,
+     -16000,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -1000,
+     -1000,
+     3000,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     6100,
+     -6100,
+     0,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-feb1125",
+  "date": "2025-02-11",
+  "createdAt": "2025-02-11T00:00:23Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Feb1125\".",
+  "length": "east",
+  "players": [
+   "Rachel",
+   "Daryl",
+   "Scott",
+   "Matt"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     -12000,
+     0,
+     13000,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -12000,
+     12000,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2300,
+     0,
+     2300,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-feb1825",
+  "date": "2025-02-18",
+  "createdAt": "2025-02-18T00:00:24Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Feb1825\".",
+  "length": "south",
+  "players": [
+   "Daryl",
+   "Scott",
+   "Allen",
+   "Matt"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     12000,
+     -4000,
+     -4000,
+     -4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     false,
+     true,
+     true
+    ],
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     1000,
+     -3000,
+     1000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [
+     0,
+     2
+    ],
+    "deltas": [
+     -4200,
+     6200,
+     -1000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     0,
+     -2600,
+     3600,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -6400,
+     0,
+     0,
+     6400
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     2600,
+     0,
+     -2600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2000,
+     0,
+     0,
+     2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -1000,
+     1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -2600,
+     2600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -12000,
+     12000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-mar425-3m",
+  "date": "2025-03-04",
+  "createdAt": "2025-03-04T00:00:25Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Mar425 (3M)\".",
+  "length": "south",
+  "players": [
+   "Scott",
+   "Matt",
+   "Mario"
+  ],
+  "rounds": [
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     true,
+     true
+    ],
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     -3000,
+     1500,
+     500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     10200,
+     -6100,
+     -3100
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -3000,
+     9000,
+     -6000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     18000,
+     -18000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     9300,
+     -8300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -3000,
+     -6000,
+     9000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     16000,
+     -16000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-mar2525",
+  "date": "2025-03-25",
+  "createdAt": "2025-03-25T00:00:26Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Mar2525\".",
+  "length": "south",
+  "players": [
+   "Rachel",
+   "Daryl",
+   "Matt",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1800,
+     2600,
+     -400,
+     -400
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     0,
+     -1000,
+     2300,
+     -1300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2600,
+     0,
+     0,
+     2600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2600,
+     2600,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     8000,
+     -8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     true,
+     true,
+     false
+    ],
+    "riichi": [],
+    "deltas": [
+     -1500,
+     1500,
+     1500,
+     -1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     -400,
+     -1600,
+     2400,
+     -400
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -8000,
+     0,
+     8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [],
+    "deltas": [
+     -500,
+     -500,
+     -500,
+     1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [],
+    "deltas": [
+     -1400,
+     -1400,
+     -1400,
+     4200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 1,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     0,
+     -4500,
+     -1000,
+     5500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [],
+    "deltas": [
+     -1300,
+     -1300,
+     -1300,
+     3900
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-apr2925",
+  "date": "2025-04-29",
+  "createdAt": "2025-04-29T00:00:27Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Apr2925\".",
+  "length": "south",
+  "players": [
+   "Scott",
+   "Allen",
+   "Daryl",
+   "Matt"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     5800,
+     0,
+     -1000,
+     -4800
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -9300,
+     0,
+     0,
+     9300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "abortive",
+    "kind": "kyuushu",
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     4200,
+     0,
+     -4200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     12600,
+     0,
+     -12600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -1300,
+     5200,
+     -2600,
+     -1300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     4200,
+     -3200,
+     0,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     8700,
+     -1000,
+     0,
+     -7700
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     8300,
+     0,
+     -8300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     6200,
+     -6200,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     0,
+     0,
+     -3000,
+     3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     1000,
+     -1000,
+     0,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-may0625",
+  "date": "2025-05-06",
+  "createdAt": "2025-05-06T00:00:28Z",
+  "notes": "Imported from MJResults.xlsx, tab \"May0625\".",
+  "length": "south",
+  "players": [
+   "James",
+   "Scott",
+   "Mario",
+   "Allen"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [],
+    "deltas": [
+     -500,
+     -300,
+     -300,
+     1100
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     2000,
+     0,
+     -2000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -6000,
+     -6000,
+     18000,
+     -6000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     2300,
+     0,
+     0,
+     -2300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -1300,
+     0,
+     1300,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     5200,
+     -5200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -3000,
+     -6000,
+     12000,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -3600,
+     -2600,
+     8800,
+     -2600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     true,
+     true,
+     true
+    ],
+    "riichi": [
+     1,
+     2
+    ],
+    "deltas": [
+     -3000,
+     0,
+     0,
+     1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     0,
+     -5500,
+     7500,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8900,
+     0,
+     0,
+     8900
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     8000,
+     -8000,
+     0,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-jun0325",
+  "date": "2025-06-03",
+  "createdAt": "2025-06-03T00:00:29Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Jun0325\".",
+  "length": "south",
+  "players": [
+   "Allen",
+   "Scott",
+   "Mario"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -3200,
+     -1600,
+     4800
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     -4000,
+     -9000,
+     13000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8000,
+     8000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -6000,
+     9000,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -12000,
+     12000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     1300,
+     0,
+     -1300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     false,
+     true
+    ],
+    "riichi": [],
+    "deltas": [
+     1500,
+     -3000,
+     1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     1600,
+     -1600
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-sep2-3m-e",
+  "date": "2025-09-02",
+  "createdAt": "2025-09-02T00:00:30Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Sep2(3M-E)\".",
+  "length": "east",
+  "players": [
+   "Scott",
+   "Mario",
+   "Daryl"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     18000,
+     0,
+     -18000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     12300,
+     0,
+     -12300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     12600,
+     -12600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     false,
+     true
+    ],
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     -1000,
+     -1000,
+     1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -10200,
+     0,
+     11200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     0,
+     13000,
+     -13000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-sep2-e",
+  "date": "2025-09-02",
+  "createdAt": "2025-09-02T00:00:31Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Sep2(E)\".",
+  "length": "east",
+  "players": [
+   "Daryl",
+   "Mario",
+   "Scott",
+   "Mahima"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -1300,
+     -700,
+     2700,
+     -700
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1300,
+     -500,
+     -300,
+     2100
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     2600,
+     0,
+     -2600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -7700,
+     7700
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-jan1326",
+  "date": "2026-01-13",
+  "createdAt": "2026-01-13T00:00:32Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Jan1326\".",
+  "length": "south",
+  "players": [
+   "Daryl",
+   "Ben",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     16000,
+     -8000,
+     -8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     true,
+     false
+    ],
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     0,
+     1000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     13600,
+     0,
+     -12600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     false,
+     true
+    ],
+    "riichi": [],
+    "deltas": [
+     -1000,
+     -1000,
+     2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2500,
+     0,
+     2500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     8000,
+     -8000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     9000,
+     -5000,
+     -4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -4100,
+     -2100,
+     6200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -2000,
+     -4000,
+     6000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     12000,
+     -4000,
+     -8000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-jan2726",
+  "date": "2026-01-27",
+  "createdAt": "2026-01-27T00:00:33Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Jan2726\".",
+  "length": "south",
+  "players": [
+   "Matt",
+   "Daryl",
+   "Scott",
+   "Ben"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     7700,
+     -7700,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     1800,
+     -600,
+     -600,
+     -600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     3500,
+     -3500,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 1,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     0,
+     -4800,
+     -1000,
+     5800
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     8000,
+     -8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2600,
+     2600,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     8000,
+     -2000,
+     -2000,
+     -4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -4000,
+     8000,
+     -2000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -2600,
+     2600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     false,
+     true,
+     false
+    ],
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     -1000,
+     -1000,
+     2000,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     3300,
+     -2300,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     3900,
+     0,
+     0,
+     -3900
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-feb1526",
+  "date": "2026-02-15",
+  "createdAt": "2026-02-15T00:00:34Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Feb1526\".",
+  "length": "south",
+  "players": [
+   "Daryl",
+   "Allen",
+   "Ben",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     13000,
+     -4000,
+     -4000,
+     -5000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     4200,
+     -4200,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     2600,
+     -1600,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -4000,
+     12000,
+     -4000,
+     -4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     2300,
+     -1100,
+     -600,
+     -600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     2600,
+     0,
+     -2600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -16000,
+     16000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     3900,
+     -3900,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     5200,
+     0,
+     -4200,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     12600,
+     -4200,
+     -4200,
+     -4200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     false,
+     false,
+     true
+    ],
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     500,
+     -1500,
+     -1500,
+     1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     8000,
+     0,
+     -7000,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [
+     1,
+     2
+    ],
+    "deltas": [
+     7400,
+     -2800,
+     -2800,
+     -1800
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     4700,
+     -4700,
+     0,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-feb1726",
+  "date": "2026-02-17",
+  "createdAt": "2026-02-17T00:00:35Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Feb1726\".",
+  "length": "south",
+  "players": [
+   "Rishab",
+   "Ben",
+   "Scott",
+   "Daryl"
+  ],
+  "rounds": [
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     false,
+     false,
+     false
+    ],
+    "riichi": [],
+    "deltas": [
+     3000,
+     -1000,
+     -1000,
+     -1000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 1,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     0,
+     -5200,
+     0,
+     5200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -2600,
+     2600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2600,
+     0,
+     0,
+     2600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -5800,
+     5800,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     18000,
+     -6000,
+     -6000,
+     -6000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -4800,
+     4800,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     -16000,
+     16000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -12000,
+     12000,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-mar2426",
+  "date": "2026-03-24",
+  "createdAt": "2026-03-24T00:00:36Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Mar2426\".",
+  "length": "south",
+  "players": [
+   "Rachel",
+   "Daryl",
+   "Ben",
+   "Scott"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     6000,
+     -2000,
+     -2000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2300,
+     2300,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2000,
+     0,
+     0,
+     2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     3000,
+     -3000,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     2000,
+     -2000,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [],
+    "deltas": [
+     -1000,
+     -500,
+     -500,
+     2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     2000,
+     0,
+     0,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -5200,
+     0,
+     5200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 1,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     -3900,
+     0,
+     4900
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-april2126",
+  "date": "2026-04-21",
+  "createdAt": "2026-04-21T00:00:37Z",
+  "notes": "Imported from MJResults.xlsx, tab \"April2126\".",
+  "length": "south",
+  "players": [
+   "Scott",
+   "Daryl",
+   "Matt",
+   "Mario"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     8700,
+     -1000,
+     -7700,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -2900,
+     0,
+     2900,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "chombo",
+    "offender": 1,
+    "deltas": [
+     4000,
+     -12000,
+     4000,
+     4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     8000,
+     -8000,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -18000,
+     18000,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-april2126-3m",
+  "date": "2026-04-21",
+  "createdAt": "2026-04-21T00:00:38Z",
+  "notes": "Imported from MJResults.xlsx, tab \"April2126 3M\".",
+  "length": "south",
+  "players": [
+   "Scott",
+   "Matt",
+   "Mario"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -7000,
+     10000,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     5200,
+     -5200,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [
+     0,
+     1
+    ],
+    "deltas": [
+     -1000,
+     -4900,
+     5900
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -8100,
+     -8100,
+     16200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -18600,
+     0,
+     18600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     6100,
+     -6100,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -8000,
+     8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -3000,
+     -6000,
+     9000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 1,
+    "riichi": [],
+    "deltas": [
+     -500,
+     1500,
+     -1000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-may19",
+  "date": "2026-05-19",
+  "createdAt": "2026-05-19T00:00:39Z",
+  "notes": "Imported from MJResults.xlsx, tab \"May19\".",
+  "length": "south",
+  "players": [
+   "Rachel",
+   "Ben",
+   "Scott",
+   "Mario"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -5200,
+     5200,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     8000,
+     0,
+     0,
+     -8000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     12000,
+     -12000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     false,
+     false,
+     true,
+     true
+    ],
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     -1500,
+     -1500,
+     1500,
+     500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -6200,
+     -6200,
+     19600,
+     -6200
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-jul1426",
+  "date": "2026-07-14",
+  "createdAt": "2026-07-14T00:00:40Z",
+  "notes": "Imported from MJResults.xlsx, tab \"jul1426\".",
+  "length": "south",
+  "players": [
+   "Ben",
+   "Matt",
+   "Scott",
+   "Rachel"
+  ],
+  "rounds": [
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     2500,
+     -1500,
+     -500,
+     -500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     3200,
+     -3200,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     3600,
+     -1200,
+     -1200,
+     -1200
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -4800,
+     4800,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     true,
+     true,
+     true
+    ],
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     0,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -3500,
+     0,
+     4500,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -1300,
+     1300,
+     0,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -3000,
+     -3000,
+     12000,
+     -6000
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-jul2725",
+  "date": "2026-07-27",
+  "createdAt": "2026-07-27T00:00:41Z",
+  "notes": "Imported from MJResults.xlsx, tab \"Jul2725\".",
+  "length": "south",
+  "players": [
+   "Scott",
+   "Anvith",
+   "Daryl",
+   "Ben"
+  ],
+  "rounds": [
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     3400,
+     0,
+     -1000,
+     -2400
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     -1100,
+     -1600,
+     3300,
+     -600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [],
+    "deltas": [
+     -2000,
+     -4000,
+     8000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 3,
+    "riichi": [
+     3
+    ],
+    "deltas": [
+     3000,
+     0,
+     0,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 2,
+    "riichi": [
+     1,
+     3
+    ],
+    "deltas": [
+     -500,
+     -1500,
+     4000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     2000,
+     -2000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 1,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     0,
+     -2600,
+     -1000,
+     3600
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 3,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -6400,
+     0,
+     0,
+     6400
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 3,
+    "riichi": [],
+    "deltas": [
+     -2000,
+     -2000,
+     -2000,
+     6000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 3,
+    "riichi": [],
+    "deltas": [
+     0,
+     0,
+     1300,
+     -1300
+    ],
+    "imported": true
+   }
+  ]
+ },
+ {
+  "id": "import-sep22-26",
+  "date": "2026-09-22",
+  "createdAt": "2026-09-22T00:00:42Z",
+  "notes": "Imported from MJResults.xlsx, tab \"sep22 26\".",
+  "length": "south",
+  "players": [
+   "Daryl",
+   "Scott",
+   "Ben"
+  ],
+  "rounds": [
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     true,
+     false
+    ],
+    "riichi": [
+     1
+    ],
+    "deltas": [
+     1500,
+     500,
+     -3000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [
+     0
+    ],
+    "deltas": [
+     -1000,
+     -8300,
+     10300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     12000,
+     -8000,
+     -4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "tsumo",
+    "winner": 0,
+    "riichi": [],
+    "deltas": [
+     6000,
+     -2000,
+     -4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 0,
+    "loser": 2,
+    "riichi": [
+     2
+    ],
+    "deltas": [
+     19000,
+     0,
+     -19000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "chombo",
+    "offender": 0,
+    "deltas": [
+     -8000,
+     4000,
+     4000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 2,
+    "loser": 1,
+    "riichi": [],
+    "deltas": [
+     0,
+     -8300,
+     8300
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 2,
+    "riichi": [],
+    "deltas": [
+     0,
+     12000,
+     -12000
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -18300,
+     18300,
+     0
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "draw",
+    "tenpai": [
+     true,
+     false,
+     false
+    ],
+    "riichi": [],
+    "deltas": [
+     3000,
+     -1500,
+     -1500
+    ],
+    "imported": true
+   },
+   {
+    "outcome": "ron",
+    "winner": 1,
+    "loser": 0,
+    "riichi": [],
+    "deltas": [
+     -8900,
+     8900,
+     0
+    ],
+    "imported": true
+   }
+  ]
+ }
+]

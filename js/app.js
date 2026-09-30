@@ -7,7 +7,7 @@ import { roundLabel, shortRoundLabel, windName } from './names.js';
 import { playerColor, textOn, DRAW_COLOR, CHOMBO_COLOR } from './colors.js';
 import { TEXT, limitText } from './text.js';
 import * as store from './store.js';
-import { emptyHand, pick, activeMode, toggleMeldRed, removeIndicator, dropPosition, setWinTile, canAddNuki, analyze, paoYakuman, toStored, fromStored } from './hand.js';
+import { emptyHand, pick, activeMode, toggleMeldRed, removeIndicator, setWinTile, canAddNuki, analyze, paoYakuman, toStored, fromStored } from './hand.js';
 import { tilesTab } from './handview.js';
 import { statsPage, playerPage, LOW_FIRST } from './statsview.js';
 
@@ -640,7 +640,6 @@ const ACTIONS = {
   'meld-remove': ({ meld }) => { form.hand.melds.splice(Number(meld), 1); },
   'meld-red': ({ meld, pos }) => toggleMeldRed(form.hand, Number(meld), Number(pos), currentGame().rules.players),
   'indicator-remove': ({ kind, pos }) => removeIndicator(form.hand, kind, Number(pos)),
-  'indicator-drop': ({ pos }) => dropPosition(form.hand, Number(pos)),
   nuki: ({ value }) => {
     const { hand } = form;
     if (value === '1' ? canAddNuki(hand, currentGame().rules.players) : hand.nuki > 0) hand.nuki += Number(value);

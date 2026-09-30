@@ -5375,6 +5375,527 @@
         }
       ],
       "endedBy": null
+    },
+    {
+      "id": "munf1ugms2vg",
+      "date": "2026-09-29",
+      "createdAt": "2026-09-30T01:18:02.614Z",
+      "notes": "",
+      "rules": {
+        "kiriageMangan": true,
+        "kazoeYakuman": true,
+        "honbaRon": 300,
+        "notenPaymentTotal": 3000,
+        "length": "south",
+        "busting": true,
+        "nagashiMangan": true,
+        "abortiveDraws": true,
+        "agariYame": true,
+        "suddenDeath": true,
+        "players": 4,
+        "startPoints": 25000,
+        "returnPoints": 30000,
+        "uma": [
+          30,
+          10,
+          -10,
+          -30
+        ],
+        "honbaTsumoEach": 100
+      },
+      "players": [
+        "Daryl",
+        "Scott",
+        "Ben",
+        "Matt"
+      ],
+      "rounds": [
+        {
+          "outcome": "ron",
+          "winner": 2,
+          "han": 1,
+          "fu": 30,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [],
+          "hand": {
+            "concealed": [
+              "6p",
+              "7p",
+              "8p",
+              "9m"
+            ],
+            "winTile": "9m",
+            "melds": [
+              {
+                "type": "pon",
+                "tiles": [
+                  "8m",
+                  "8m",
+                  "8m"
+                ]
+              },
+              {
+                "type": "pon",
+                "tiles": [
+                  "7z",
+                  "7z",
+                  "7z"
+                ]
+              },
+              {
+                "type": "chi",
+                "tiles": [
+                  "7s",
+                  "8s",
+                  "9s"
+                ]
+              }
+            ],
+            "doraIndicators": [
+              "5s"
+            ],
+            "uraIndicators": [],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "loser": 1,
+          "deltas": [
+            0,
+            -1000,
+            1000,
+            0
+          ]
+        },
+        {
+          "outcome": "draw",
+          "tenpai": [
+            true,
+            true,
+            false,
+            true
+          ],
+          "riichi": [
+            0,
+            3
+          ],
+          "deltas": [
+            0,
+            1000,
+            -3000,
+            0
+          ]
+        },
+        {
+          "outcome": "tsumo",
+          "winner": 1,
+          "han": 6,
+          "fu": 40,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [],
+          "hand": {
+            "concealed": [
+              "4s",
+              "4s",
+              "9s",
+              "9s"
+            ],
+            "winTile": "9s",
+            "melds": [
+              {
+                "type": "chi",
+                "tiles": [
+                  "1s",
+                  "2s",
+                  "3s"
+                ]
+              },
+              {
+                "type": "chi",
+                "tiles": [
+                  "6s",
+                  "7s",
+                  "8s"
+                ]
+              },
+              {
+                "type": "pon",
+                "tiles": [
+                  "5s",
+                  "0s",
+                  "5s"
+                ]
+              }
+            ],
+            "doraIndicators": [
+              "6z"
+            ],
+            "uraIndicators": [],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "deltas": [
+            -6100,
+            20300,
+            -6100,
+            -6100
+          ]
+        },
+        {
+          "outcome": "ron",
+          "winner": 2,
+          "han": 4,
+          "fu": 40,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [
+            2
+          ],
+          "hand": {
+            "concealed": [
+              "1m",
+              "2m",
+              "3m",
+              "4m",
+              "5m",
+              "7m",
+              "8m",
+              "9m",
+              "6m",
+              "6s",
+              "6s",
+              "7s",
+              "9s"
+            ],
+            "winTile": "8s",
+            "melds": [],
+            "doraIndicators": [
+              "7s"
+            ],
+            "uraIndicators": [
+              "7p"
+            ],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "loser": 0,
+          "deltas": [
+            -8600,
+            0,
+            8600,
+            0
+          ]
+        },
+        {
+          "outcome": "ron",
+          "winner": 0,
+          "han": 1,
+          "fu": 30,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [
+            1
+          ],
+          "hand": {
+            "concealed": [
+              "2m",
+              "2m",
+              "2m",
+              "6s",
+              "7s",
+              "8s",
+              "2p",
+              "3p",
+              "4p",
+              "5s"
+            ],
+            "winTile": "5s",
+            "melds": [
+              {
+                "type": "chi",
+                "tiles": [
+                  "5p",
+                  "6p",
+                  "7p"
+                ]
+              }
+            ],
+            "doraIndicators": [
+              "5m"
+            ],
+            "uraIndicators": [],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "loser": 3,
+          "deltas": [
+            2000,
+            -1000,
+            0,
+            -1000
+          ]
+        },
+        {
+          "outcome": "ron",
+          "winner": 0,
+          "han": 2,
+          "fu": 30,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [
+            3
+          ],
+          "hand": {
+            "concealed": [
+              "3p",
+              "4p",
+              "5p",
+              "3m",
+              "3m",
+              "8m",
+              "8m"
+            ],
+            "winTile": "3m",
+            "melds": [
+              {
+                "type": "pon",
+                "tiles": [
+                  "6p",
+                  "6p",
+                  "6p"
+                ]
+              },
+              {
+                "type": "chi",
+                "tiles": [
+                  "5m",
+                  "6m",
+                  "7m"
+                ]
+              }
+            ],
+            "doraIndicators": [
+              "4m"
+            ],
+            "uraIndicators": [],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "loser": 2,
+          "deltas": [
+            3000,
+            0,
+            -2000,
+            -1000
+          ]
+        },
+        {
+          "outcome": "ron",
+          "winner": 3,
+          "han": 1,
+          "fu": 30,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [],
+          "hand": {
+            "concealed": [
+              "4p",
+              "4p",
+              "3s",
+              "4s"
+            ],
+            "winTile": "5s",
+            "melds": [
+              {
+                "type": "pon",
+                "tiles": [
+                  "5z",
+                  "5z",
+                  "5z"
+                ]
+              },
+              {
+                "type": "chi",
+                "tiles": [
+                  "2s",
+                  "3s",
+                  "4s"
+                ]
+              },
+              {
+                "type": "chi",
+                "tiles": [
+                  "7m",
+                  "8m",
+                  "9m"
+                ]
+              }
+            ],
+            "doraIndicators": [
+              "6z"
+            ],
+            "uraIndicators": [],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "loser": 0,
+          "deltas": [
+            -1000,
+            0,
+            0,
+            1000
+          ]
+        },
+        {
+          "outcome": "ron",
+          "winner": 3,
+          "han": 3,
+          "fu": 30,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [],
+          "hand": {
+            "concealed": [
+              "1s",
+              "2s",
+              "3s",
+              "9p"
+            ],
+            "winTile": "9p",
+            "melds": [
+              {
+                "type": "chi",
+                "tiles": [
+                  "1m",
+                  "2m",
+                  "3m"
+                ]
+              },
+              {
+                "type": "chi",
+                "tiles": [
+                  "1p",
+                  "2p",
+                  "3p"
+                ]
+              },
+              {
+                "type": "chi",
+                "tiles": [
+                  "7m",
+                  "8m",
+                  "9m"
+                ]
+              }
+            ],
+            "doraIndicators": [
+              "4m"
+            ],
+            "uraIndicators": [],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "loser": 0,
+          "deltas": [
+            -3900,
+            0,
+            0,
+            3900
+          ]
+        },
+        {
+          "outcome": "tsumo",
+          "winner": 3,
+          "han": 2,
+          "fu": 30,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [],
+          "hand": {
+            "concealed": [
+              "2s",
+              "2s",
+              "3s",
+              "4s",
+              "7m",
+              "7m",
+              "2p",
+              "2p",
+              "2p",
+              "0s"
+            ],
+            "winTile": "2s",
+            "melds": [
+              {
+                "type": "chi",
+                "tiles": [
+                  "4p",
+                  "5p",
+                  "6p"
+                ]
+              }
+            ],
+            "doraIndicators": [
+              "9p"
+            ],
+            "uraIndicators": [],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "deltas": [
+            -500,
+            -500,
+            -1000,
+            2000
+          ]
+        },
+        {
+          "outcome": "tsumo",
+          "winner": 0,
+          "han": 4,
+          "fu": 30,
+          "yakuman": 0,
+          "pao": null,
+          "riichi": [
+            0
+          ],
+          "hand": {
+            "concealed": [
+              "3m",
+              "4m",
+              "0m",
+              "5s",
+              "6s",
+              "7s",
+              "5p",
+              "6p",
+              "7p",
+              "6p",
+              "5p",
+              "4p",
+              "9p"
+            ],
+            "winTile": "9p",
+            "melds": [],
+            "doraIndicators": [
+              "2m"
+            ],
+            "uraIndicators": [
+              "2p"
+            ],
+            "nukiDora": 0,
+            "toggles": []
+          },
+          "deltas": [
+            8000,
+            -2000,
+            -2000,
+            -4000
+          ]
+        }
+      ],
+      "endedBy": null
     }
   ]
 }

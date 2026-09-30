@@ -4,7 +4,7 @@
 // A hand being entered:
 //   tiles   hand tiles in the order tapped; once the hand is full, the last one is the winning tile
 //   melds   [{ type: 'chi' | 'pon' | 'minkan' | 'ankan', tiles }]
-//   dora, ura   indicator tiles, paired by position; a removed one leaves null (a face-down placeholder)
+//   dora, ura   indicator tiles; there are never more ura than dora
 //   nuki    number of North tiles pulled as nuki-dora (3-player)
 //   toggles ids of the yaku toggles that are on (see TOGGLES)
 //
@@ -18,9 +18,8 @@ import { analyzeHand } from './analyzer.js';
 // Up to 4 dora indicators, and no more ura indicators than dora.
 export const MAX_DORA = 4;
 export const OPEN_CALLS = ['chi', 'pon', 'kan'];
-const filled = (list) => list.filter(Boolean);
-// The first ura position without a tile, among the dora positions, or -1.
-const openUra = (hand) => Array.from({ length: hand.dora.length }, (_, i) => i).find((i) => !hand.ura[i]) ?? -1;
+// Whether the winner in riichi still needs another ura indicator.
+const needsUra = (hand) => hand.ura.length < hand.dora.length;
 export const TOGGLES = ['doubleRiichi', 'ippatsu', 'haitei', 'rinshan', 'tenhou', 'chihou', 'houtei', 'chankan'];
 // Yakuman a liable player can be named for, and how many yakuman each is worth.
 const PAO_YAKUMAN = { daisangen: 1, daisuushii: 2, suukantsu: 1 };
@@ -31,7 +30,7 @@ export const emptyHand = () => ({ tiles: [], melds: [], dora: [], ura: [], nuki:
 export const handSize = (hand) => 14 - 3 * hand.melds.length;
 export const isFull = (hand) => hand.tiles.length === handSize(hand);
 
-const allTiles = (hand) => [...hand.tiles, ...hand.melds.flatMap((meld) => meld.tiles), ...filled(hand.dora), ...filled(hand.ura)];
+const allTiles = (hand) => [...hand.tiles, ...hand.melds.flatMap((meld) => meld.tiles), ...hand.dora, ...hand.ura];
 
 // Whether these extra tiles still fit: at most 4 of each tile, 3 regular fives and 1 red five per suit
 // (three red fives), and no 2m-8m in 3-player. Pulled Norths count toward the 4 Norths.
@@ -69,32 +68,26 @@ const meldType = (mode) => ({ chi: 'chi', pon: 'pon', kan: 'minkan', ankan: 'ank
 // Whether a tap on this picker tile does anything in this mode.
 export function canPick(hand, mode, text, players, riichi) {
   if (mode === 'hand') return !isFull(hand) && fits(hand, [text], players);
-  if (mode === 'dora') return (hand.dora.includes(null) || hand.dora.length < MAX_DORA) && fits(hand, [text], players);
-  if (mode === 'ura') return riichi && openUra(hand) >= 0 && fits(hand, [text], players);
+  if (mode === 'dora') return hand.dora.length < MAX_DORA && fits(hand, [text], players);
+  if (mode === 'ura') return riichi && needsUra(hand) && fits(hand, [text], players);
   const tiles = meldTiles(meldType(mode), text);
-  if (!tiles) return false;
-  // The hand must still have room once the meld takes 3 tiles of it.
-  return hand.tiles.length <= handSize(hand) - 3 && fits(hand, tiles, players);
+  return Boolean(tiles) && hasMeldRoom(hand) && fits(hand, tiles, players);
 }
 
-// A tap on a picker tile. Returns the new mode: after placing a meld, it goes back to Hand.
+// Whether another meld fits: the hand must still have room once the meld takes 3 tiles of it
+// (with four melds, it never does).
+const hasMeldRoom = (hand) => hand.tiles.length <= handSize(hand) - 3;
+
+// A tap on a picker tile. Returns the new mode: a meld mode stays selected until no more melds fit,
+// then it goes back to Hand.
 export function pick(hand, mode, text, players, riichi) {
   if (!canPick(hand, mode, text, players, riichi)) return mode;
   if (mode === 'hand') hand.tiles.push(text);
-  else if (mode === 'dora') {
-    // A new dora indicator fills the first placeholder, if there is one.
-    const gap = hand.dora.indexOf(null);
-    if (gap >= 0) hand.dora[gap] = text;
-    else hand.dora.push(text);
-  } else if (mode === 'ura') {
-    const gap = openUra(hand);
-    while (hand.ura.length < gap) hand.ura.push(null);
-    hand.ura[gap] = text;
-  }
+  else if (mode === 'dora' || mode === 'ura') hand[mode].push(text);
   else {
     const type = meldType(mode);
     hand.melds.push({ type, tiles: meldTiles(type, text) });
-    return 'hand';
+    if (!hasMeldRoom(hand)) return 'hand';
   }
   return mode;
 }
@@ -110,16 +103,11 @@ export function toggleMeldRed(hand, meldIndex, position, players) {
   if (fits(without, [swapped], players)) meld.tiles[position] = swapped;
 }
 
-// Removes a dora or ura indicator, leaving a placeholder that the next indicator tapped in that row fills.
+// Removes a dora or ura indicator; the rest of its row closes the gap. Removing a dora also drops the
+// last ura if there would be more ura than dora.
 export function removeIndicator(hand, kind, position) {
-  hand[kind][position] = null;
-}
-
-// Drops a whole dora/ura position (tapping a placeholder), for an indicator that shouldn't be there at all.
-export function dropPosition(hand, position) {
-  hand.dora.splice(position, 1);
-  hand.ura.splice(position, 1);
-  while (hand.ura.length && !hand.ura[hand.ura.length - 1]) hand.ura.pop();
+  hand[kind].splice(position, 1);
+  hand.ura.length = Math.min(hand.ura.length, hand.dora.length);
 }
 
 // Makes the hand tile at this position the winning tile (the last one), once the hand is full.
@@ -135,8 +123,8 @@ export function activeMode(hand, mode, riichi) {
   // A hand in riichi is closed, so calls (chi, pon, open kan) aren't available; closed kan still is.
   if (riichi && OPEN_CALLS.includes(mode)) return activeMode(hand, 'hand', riichi);
   if (!isFull(hand)) return mode;
-  if (hand.dora.length === 0 || hand.dora.includes(null)) return 'dora';
-  if (riichi && openUra(hand) >= 0) return 'ura';
+  if (hand.dora.length === 0) return 'dora';
+  if (riichi && needsUra(hand)) return 'ura';
   return mode;
 }
 
@@ -183,8 +171,8 @@ export function analyzerInput(hand, { riichi, tsumo, seatWind, roundWind }) {
     melds: hand.melds.map((meld) => ({ type: meld.type, tiles: [...meld.tiles] })),
     tsumo, seatWind, roundWind,
     riichi: riichi && !toggles.includes('doubleRiichi'),
-    doraIndicators: filled(hand.dora),
-    uraIndicators: riichi ? filled(hand.ura) : [],
+    doraIndicators: [...hand.dora],
+    uraIndicators: riichi ? [...hand.ura] : [],
     nukiDora: hand.nuki,
   };
   for (const id of toggles) input[id] = true;
@@ -196,8 +184,8 @@ export function analyzerInput(hand, { riichi, tsumo, seatWind, roundWind }) {
 export const HAND_ERRORS = ['needDora', 'needUra'];
 export function analyze(hand, context, rules) {
   if (!isFull(hand)) return { ok: false, error: 'tileCount' };
-  if (hand.dora.length === 0 || hand.dora.includes(null)) return { ok: false, error: 'needDora' };
-  if (context.riichi && openUra(hand) >= 0) return { ok: false, error: 'needUra' };
+  if (hand.dora.length === 0) return { ok: false, error: 'needDora' };
+  if (context.riichi && needsUra(hand)) return { ok: false, error: 'needUra' };
   return analyzeHand(analyzerInput(hand, context), rules);
 }
 
@@ -209,7 +197,7 @@ export function toStored(hand) {
     concealed: hand.tiles.slice(0, -1),
     winTile: hand.tiles[hand.tiles.length - 1],
     melds: hand.melds.map((meld) => ({ type: meld.type, tiles: [...meld.tiles] })),
-    doraIndicators: filled(hand.dora), uraIndicators: filled(hand.ura), nukiDora: hand.nuki, toggles: [...hand.toggles],
+    doraIndicators: [...hand.dora], uraIndicators: [...hand.ura], nukiDora: hand.nuki, toggles: [...hand.toggles],
   };
 }
 

@@ -52,10 +52,8 @@ export function tilesTab(ctx) {
   }
 
   // Dora and ura indicators on one line: each label is the button that points the picker at its tiles.
-  // A removed indicator shows face down until the next one fills its place; tapping the face-down tile drops that position.
   const indicators = (kind, label) => `<span class="ind"><button class="small${open && mode === kind ? ' on' : ''}" data-action="hand-mode" data-value="${kind}">${label}</button>${hand[kind].map((text, p) =>
-    (text ? tile(text, 'indicator-remove', `data-kind="${kind}" data-pos="${p}"`)
-      : `<button class="mj back" data-action="indicator-drop" data-pos="${p}" aria-label="${t.remove}"></button>`)).join('')}</span>`;
+    tile(text, 'indicator-remove', `data-kind="${kind}" data-pos="${p}"`)).join('')}</span>`;
   html += `<div class="ind-row">${indicators('dora', YAKU_NAMES.dora[language])}${riichi ? indicators('ura', YAKU_NAMES.uraDora[language]) : ''}</div>`;
   if (players === 3 && open) {
     html += `<div class="ind-row"><span class="muted">${YAKU_NAMES.nukiDora[language]}</span>

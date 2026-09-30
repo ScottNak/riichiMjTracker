@@ -17,3 +17,4 @@ Why things are the way they are. Current rules live in [plan.md](plan.md).
 - **No viewer mode** (see "Platform"). Only Scott can commit `data.json`, and games in it are already read-only, so a separate view-only mode would add nothing. Phase 5 dropped its "view-only pages" item for this reason.
 - **3-player and 4-player stats are never combined** (see "Stats"). Placement and final points mean different things in each (3rd is last in sanma).
 - **No call rate** (see "Stats"). It needs every player's calls each hand, and rounds store only the winner's hand. Imported rounds have no hand at all.
+- **Removed indicators close the gap, with no face-down placeholder** (see "Hand entry"). Placeholders kept dora and ura paired by position, but scoring never uses the pairing, and a leftover face-down tile after a misclick was confusing at the table. Don't add placeholders back.
