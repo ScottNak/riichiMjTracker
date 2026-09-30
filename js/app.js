@@ -554,7 +554,8 @@ function handScreen(game, stateAt) {
   return `<div class="overlay"><div class="sheet">${html}</div></div>`;
 }
 
-// A stored hand shown read-only over the game screen: the tiles and what they score, with Back.
+// A stored hand shown read-only in a panel at the bottom of the screen, over the dimmed game screen:
+// the tiles and what they score. A tap anywhere closes it.
 function handViewScreen(game, index, stateAt) {
   const { rules, players } = game;
   const f = formFromEntry(game.rounds[index]);
@@ -562,8 +563,7 @@ function handViewScreen(game, index, stateAt) {
   const who = `<strong>${esc(players[f.winner])}</strong> ${t().outcomes[f.outcome]}${f.outcome === 'ron' ? ` · ${esc(players[f.loser])} ${t().dealtIn}` : ''}`;
   let html = `<div class="sheet-head"><p>${roundLabel(windOf(stateAt, rules), handNumberOf(stateAt, rules), stateAt.honba, language)} · ${who}</p></div>`;
   html += tilesTab({ form: f, rules, ...context, result: analyze(f.hand, context, rules), readOnly: true, t: t(), language });
-  html += `<div class="row"><button data-action="close-view">${t().back}</button></div>`;
-  return `<div class="overlay"><div class="sheet">${html}</div></div>`;
+  return `<div class="overlay popup" data-action="close-view"><div class="sheet">${html}</div></div>`;
 }
 
 // The pao picker: None, or any player but the winner.

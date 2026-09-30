@@ -158,6 +158,11 @@ button.riichi-toggle { width: 100%; min-height: 30px; margin-top: 4px; padding: 
 /* Hand entry screen: covers the game screen while a win is entered. */
 body.locked { overflow: hidden; }
 .overlay { position: fixed; inset: 0; z-index: 10; overflow-y: auto; background: var(--bg); }
+/* The read-only hand: a panel that slides up from the bottom over the dimmed game screen. */
+.overlay.popup { display: flex; flex-direction: column; justify-content: flex-end; background: rgba(0, 0, 0, 0.45); cursor: pointer; }
+.overlay.popup .sheet { width: 100%; box-sizing: border-box; background: var(--bg); border-radius: 12px 12px 0 0;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom)); animation: slide-up 0.2s ease-out; }
+@keyframes slide-up { from { transform: translateY(100%); } }
 .sheet { max-width: 640px; margin: 0 auto; padding: 12px 16px 32px; --tile: min(calc((100vw - 64px) / 15), 36px); }
 .sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 4px 0 10px; }
 .sheet-head p { margin: 0; min-width: 0; }
@@ -180,6 +185,9 @@ button.mj.faded { opacity: 0.35; }
 .hand-row { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 4px 2px; min-height: calc(var(--tile) * 4 / 3); margin: 6px 0; }
 .win-gap { width: calc(var(--tile) / 2); }
 .meld { display: inline-flex; align-items: flex-end; gap: 1px; margin-right: 10px; }
+/* A tile on its side: the slot takes the turned tile's width and height, and the tile turns inside it. */
+.side { display: inline-flex; align-items: center; justify-content: center; flex: none; width: calc(var(--tile) * 4 / 3); height: var(--tile); }
+.side > .mj { transform: rotate(-90deg); }
 .meld button.x { min-height: 0; padding: 2px 6px; margin-left: 4px; font-size: 0.8rem; align-self: center; }
 .ind-row { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 16px; min-height: calc(var(--tile) * 4 / 3 + 4px); margin: 4px 0; }
 .ind { display: inline-flex; align-items: center; gap: 2px; }

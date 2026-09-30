@@ -45,12 +45,15 @@ export function tilesTab(ctx) {
   if (shown.win) html += `<span class="win-gap"></span>${handTile(shown.win)}`;
   html += '</div>';
 
-  // Melds. A closed kan shows face down at both ends. A 5 in a chi or pon switches red with a tap.
+  // Melds. A closed kan shows face down at both ends; in a chi, pon, or open kan the leftmost tile lies on its side.
+  // A 5 in a chi or pon switches red with a tap.
   if (hand.melds.length) {
     const meldTiles = (meld, m) => {
       if (meld.type === 'ankan') return `<span class="mj back"></span>${tile(meld.tiles[0])}${tile(meld.tiles[1])}<span class="mj back"></span>`;
-      return meld.tiles.map((text, p) => (/[05][mps]/.test(text) && meld.type !== 'minkan'
-        ? tile(text, 'meld-red', `data-meld="${m}" data-pos="${p}"`) : tile(text))).join('');
+      return meld.tiles.map((text, p) => {
+        const html = /[05][mps]/.test(text) && meld.type !== 'minkan' ? tile(text, 'meld-red', `data-meld="${m}" data-pos="${p}"`) : tile(text);
+        return p === 0 ? `<span class="side">${html}</span>` : html;
+      }).join('');
     };
     html += `<div class="hand-row">${hand.melds.map((meld, m) => `<span class="meld">${meldTiles(meld, m)}${readOnly ? '' : `<button class="x" data-action="meld-remove" data-meld="${m}" aria-label="${t.remove}">✕</button>`}</span>`).join('')}</div>`;
   }
